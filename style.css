@@ -1,101 +1,59 @@
-body {
-  font-family: "Cinzel", serif;
-  margin: 0;
-  padding: 0;
-  background: #1a1a1a; /* خلفية داكنة */
-  color: #c0c0c0; /* نص فضي */
-  direction: rtl;
-  text-align: center;
+/* ألوان البراند (Steampunk Style) */
+.bg-dark-custom {
+  background: #1e1e1e;
 }
 
-/* الهيدر */
-header {
-  background: linear-gradient(90deg, #2b2b2b, #1a1a1a);
-  border-bottom: 3px solid #b87333; /* إطار نحاسي */
-  color: #c9a227;
-  padding: 20px;
-  font-size: 22px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
+.text-brass {
+  color: #c9a227 !important; /* ذهب عتيق */
 }
 
-/* روابط */
-nav a {
-  color: #c0c0c0;
-  margin: 0 15px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: 0.3s;
+.btn-brass {
+  background: linear-gradient(135deg, #b87333, #7a4a21);
+  color: #fff;
+  border: none;
 }
 
-nav a:hover {
-  color: #b87333; /* نحاسي */
+.btn-brass:hover {
+  background: linear-gradient(135deg, #c9a227, #7a4a21);
+  color: #fff;
 }
 
 /* البطل */
 .hero {
-  background: url("images/gears-bg.jpg") center/cover no-repeat;
-  padding: 80px 20px;
-  color: #fff;
-  text-shadow: 2px 2px 5px #000;
+  background: url("assets/gears-bg.jpg") center/cover no-repeat fixed;
+  min-height: 100vh;
+  position: relative;
 }
 
-.hero h2 {
-  font-size: 36px;
-  margin-bottom: 20px;
-}
-
-button {
-  background: linear-gradient(#b87333, #7a4a21);
-  border: 2px solid #c9a227;
-  padding: 12px 25px;
-  border-radius: 8px;
-  font-size: 16px;
-  color: #fff;
-  cursor: pointer;
-  box-shadow: inset 0 0 8px #000;
-  transition: transform 0.2s;
-}
-
-button:hover {
-  transform: scale(1.05);
-  background: linear-gradient(#c9a227, #7a4a21);
-}
-
-/* الكروت */
-.card, .plan {
-  background: rgba(43,43,43,0.9);
+/* البطاقات */
+.service-card, .pricing-card {
   border: 2px solid #b87333;
-  color: #c0c0c0;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 0 15px rgba(185,115,51,0.5);
-  transition: transform 0.3s;
+  background: rgba(30,30,30,0.9);
+  color: #ddd;
+  transition: transform 0.3s, border-color 0.3s;
 }
 
-.card:hover, .plan:hover {
+.service-card:hover, .pricing-card:hover {
   transform: translateY(-5px);
   border-color: #c9a227;
 }
 
+/* الأسعار */
+.price {
+  font-size: 24px;
+  font-weight: bold;
+  color: #c9a227;
+}
+
 /* أيقونات السوشيال */
 .social-icons a {
-  margin: 0 12px;
-  font-size: 32px;
-  color: #c0c0c0;
+  font-size: 28px;
+  margin: 0 10px;
+  color: #ddd;
   transition: 0.3s;
 }
 
 .social-icons a:hover {
-  color: #b87333; /* نحاسي عند hover */
-  transform: rotate(15deg) scale(1.2);
-}
-
-/* الفوتر */
-footer {
-  background: #1a1a1a;
-  border-top: 2px solid #b87333;
-  padding: 15px;
-  color: #777;
-  font-size: 14px;
+  color: #b87333;
+  transform: scale(1.2) rotate(10deg);
 }
