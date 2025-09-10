@@ -1,0 +1,78 @@
+body {
+  font-family: "Tahoma", sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f8f8f8;
+  color: #333;
+  text-align: center;
+  direction: rtl;
+}
+
+header {
+  background: #1a2b4c;
+  color: #fff;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  margin: 0;
+}
+
+nav a {
+  color: #fff;
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+.hero {
+  background: #ffd700;
+  padding: 50px 20px;
+}
+
+.hero h2 {
+  margin-bottom: 20px;
+}
+
+button {
+  padding: 10px 20px;
+  background: #1a2b4c;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.services, .pricing, .contact {
+  padding: 40px 20px;
+}
+
+.cards, .plans {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.card, .plan {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  width: 250px;
+}
+
+.price {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1a2b4c;
+}
+
+footer {
+  background: #1a2b4c;
+  color: #fff;
+  padding: 10px;
+  margin-top: 20px;
+}
