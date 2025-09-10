@@ -1,148 +1,101 @@
-/* الأساسيات */
 body {
-  font-family: "Tahoma", sans-serif;
+  font-family: "Cinzel", serif;
   margin: 0;
   padding: 0;
-  background: #f2f2f2; /* Light Grey */
-  color: #212121; /* Charcoal */
-  text-align: center;
+  background: #1a1a1a; /* خلفية داكنة */
+  color: #c0c0c0; /* نص فضي */
   direction: rtl;
-  line-height: 1.6;
+  text-align: center;
 }
 
 /* الهيدر */
 header {
-  background: #1e2a38; /* Dark Blue */
-  color: #fff;
-  padding: 15px 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  background: linear-gradient(90deg, #2b2b2b, #1a1a1a);
+  border-bottom: 3px solid #b87333; /* إطار نحاسي */
+  color: #c9a227;
+  padding: 20px;
+  font-size: 22px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
 
-header h1 {
-  margin: 0;
-}
-
+/* روابط */
 nav a {
-  color: #fff;
-  margin: 0 12px;
+  color: #c0c0c0;
+  margin: 0 15px;
   text-decoration: none;
   font-weight: bold;
-  transition: color 0.3s;
+  transition: 0.3s;
 }
 
 nav a:hover {
-  color: #FDD600; /* Yellow */
+  color: #b87333; /* نحاسي */
 }
 
 /* البطل */
 .hero {
-  background: #FDD600; /* Yellow */
-  color: #1e2a38; /* Dark Blue */
-  padding: 70px 20px;
+  background: url("images/gears-bg.jpg") center/cover no-repeat;
+  padding: 80px 20px;
+  color: #fff;
+  text-shadow: 2px 2px 5px #000;
 }
 
 .hero h2 {
-  margin-bottom: 25px;
-  font-size: 28px;
-  font-weight: bold;
+  font-size: 36px;
+  margin-bottom: 20px;
 }
 
 button {
+  background: linear-gradient(#b87333, #7a4a21);
+  border: 2px solid #c9a227;
   padding: 12px 25px;
-  background: #1e2a38; /* Dark Blue */
-  color: #fff;
-  border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 16px;
+  color: #fff;
   cursor: pointer;
-  transition: background 0.3s;
+  box-shadow: inset 0 0 8px #000;
+  transition: transform 0.2s;
 }
 
 button:hover {
-  background: #212121; /* Charcoal */
+  transform: scale(1.05);
+  background: linear-gradient(#c9a227, #7a4a21);
 }
 
-/* الأقسام */
-.services, .pricing, .contact, .social, .emails {
-  padding: 50px 20px;
-  background: #f2f2f2; /* Light Grey blocks */
+/* الكروت */
+.card, .plan {
+  background: rgba(43,43,43,0.9);
+  border: 2px solid #b87333;
+  color: #c0c0c0;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(185,115,51,0.5);
+  transition: transform 0.3s;
 }
 
-.services h2, .pricing h2, .contact h2, .social h2, .emails h2 {
-  margin-bottom: 25px;
-  color: #1e2a38; /* Dark Blue */
-  font-size: 24px;
-}
-
-/* الكروت والباقات */
-.cards, .plans {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.cards a.card {
-  display: block;
-  text-decoration: none;
-  color: #212121; /* Charcoal */
-}
-
-.cards a.card:hover {
-  background: #FDD600; /* Yellow */
-  color: #1e2a38; /* Dark Blue */
+.card:hover, .plan:hover {
   transform: translateY(-5px);
+  border-color: #c9a227;
 }
 
-
-
-.price {
-  font-size: 22px;
-  font-weight: bold;
-  color: #FDD600; /* Yellow highlight */
-}
-
-/* قسم الأيقونات */
-.social {
-  background: #fff; /* White block */
-}
-
+/* أيقونات السوشيال */
 .social-icons a {
   margin: 0 12px;
   font-size: 32px;
-  color: #1e2a38; /* Dark Blue */
-  transition: color 0.3s, transform 0.3s;
+  color: #c0c0c0;
+  transition: 0.3s;
 }
 
 .social-icons a:hover {
-  color: #FDD600; /* Yellow */
-  transform: scale(1.2);
-}
-
-/* الإيميلات */
-.emails {
-  background: #f2f2f2; /* Light Grey */
-}
-
-.emails a {
-  color: #1e2a38;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-.emails a:hover {
-  text-decoration: underline;
-  color: #FDD600;
+  color: #b87333; /* نحاسي عند hover */
+  transform: rotate(15deg) scale(1.2);
 }
 
 /* الفوتر */
 footer {
-  background: #1e2a38; /* Dark Blue */
-  color: #fff;
+  background: #1a1a1a;
+  border-top: 2px solid #b87333;
   padding: 15px;
-  margin-top: 20px;
+  color: #777;
   font-size: 14px;
 }
-
