@@ -1,117 +1,148 @@
-body {
-  background: #111;
-  color: #ddd;
-  font-family: "Tahoma", sans-serif;
-  overflow-x: hidden;
-}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>عبقرينو | آلة الزمن للسوشيال ميديا</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-/* Page transitions */
-.page-transition {
-  opacity: 0;
-  transition: opacity 1s ease-in-out;
-}
-.page-transition.loaded {
-  opacity: 1;
-}
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- AOS Animations -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="page-transition">
 
-/* Colors */
-.bg-dark-custom {
-  background: #1e1e1e;
-}
-.text-brass {
-  color: #c9a227 !important;
-}
-.btn-brass {
-  background: linear-gradient(135deg, #b87333, #7a4a21);
-  border: none;
-  color: #fff;
-  transition: 0.3s;
-}
-.btn-brass:hover {
-  background: linear-gradient(135deg, #c9a227, #7a4a21);
-  transform: scale(1.1);
-}
+  <!-- خلفية تروس -->
+  <div class="gears-bg">
+    <svg class="gear gear1" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="40" stroke="#FDD600" stroke-width="8" fill="none"/>
+    </svg>
+    <svg class="gear gear2" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="30" stroke="#1e2a38" stroke-width="6" fill="none"/>
+    </svg>
+  </div>
 
-/* Hero */
-.hero {
-  min-height: 100vh;
-  background: url("assets/gears-bg.jpg") center/cover no-repeat fixed;
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.hero h1 {
-  text-shadow: 2px 2px 8px #000;
-}
+  <!-- الهيدر -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark-custom fixed-top">
+    <div class="container">
+      <a class="navbar-brand text-brass" href="index.html">⚙️ عبقرينو</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link click-sound" href="#services">الخدمات</a></li>
+          <li class="nav-item"><a class="nav-link click-sound" href="#pricing">الباقات</a></li>
+          <li class="nav-item"><a class="nav-link click-sound" href="#contact">تواصل معنا</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 
-/* Gears background */
-.gears-bg {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  z-index: 0;
-  overflow: hidden;
-}
-.gear {
-  position: absolute;
-  opacity: 0.15;
-}
-.gear1 {
-  top: 20%;
-  left: 10%;
-  width: 200px;
-  animation: spin 20s linear infinite;
-}
-.gear2 {
-  bottom: 10%;
-  right: 15%;
-  width: 150px;
-  animation: spinReverse 25s linear infinite;
-}
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-@keyframes spinReverse {
-  from { transform: rotate(360deg); }
-  to { transform: rotate(0deg); }
-}
+  <!-- البطل -->
+  <header class="hero d-flex align-items-center text-center">
+    <div class="container" data-aos="zoom-in">
+      <h1 class="display-4 fw-bold text-brass">نحوّل أفكارك لنتائج<br>خدمات تسويق وماركتينج باحتراف</h1>
+      <p class="lead text-light">من المستقبل إلى عملك مباشرة</p>
+      <a href="#services" class="btn btn-brass btn-lg mt-3 click-sound">ابدأ الآن</a>
+    </div>
+  </header>
 
-/* Services & Pricing cards */
-.service-card, .pricing-card {
-  background: rgba(30,30,30,0.9);
-  border: 2px solid #b87333;
-  color: #ddd;
-  padding: 20px;
-  border-radius: 10px;
-  transition: transform 0.3s, border-color 0.3s;
-  text-align: center;
-  display: block;
-  text-decoration: none;
-}
-.service-card:hover, .pricing-card:hover {
-  transform: translateY(-5px) scale(1.05);
-  border-color: #c9a227;
-  color: #fff;
-}
+  <!-- الخدمات -->
+  <section id="services" class="py-5 bg-dark text-light" data-aos="fade-up">
+    <div class="container">
+      <h2 class="text-brass mb-4" data-aos="zoom-in">الخدمات</h2>
+      <div class="row g-4">
+        <div class="col-md-3" data-aos="flip-left">
+          <a href="./services/designs.html" class="card service-card h-100 click-sound">🎨 تصميمات وديزاينات</a>
+        </div>
+        <div class="col-md-3" data-aos="flip-left" data-aos-delay="100">
+          <a href="./services/social.html" class="card service-card h-100 click-sound">📱 إدارة صفحات</a>
+        </div>
+        <div class="col-md-3" data-aos="flip-left" data-aos-delay="200">
+          <a href="./services/video.html" class="card service-card h-100 click-sound">🎬 مونتاج فيديو</a>
+        </div>
+        <div class="col-md-3" data-aos="flip-left" data-aos-delay="300">
+          <a href="./services/websites.html" class="card service-card h-100 click-sound">🌍 إنشاء مواقع</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-/* Price */
-.price {
-  font-size: 24px;
-  font-weight: bold;
-  color: #c9a227;
-}
+  <!-- الباقات -->
+  <section id="pricing" class="py-5" data-aos="fade-up">
+    <div class="container">
+      <h2 class="text-center mb-5 text-brass">الباقات</h2>
+      <div class="row g-4">
+        <div class="col-md-4" data-aos="zoom-in">
+          <div class="card pricing-card h-100 text-center">
+            <div class="card-header bg-dark-custom text-brass">Basic</div>
+            <div class="card-body">
+              <h3 class="price">1000 جنيه</h3>
+              <p>10 بوستات - صفحة واحدة</p>
+              <a href="#contact" class="btn btn-brass">اطلب الآن</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="150">
+          <div class="card pricing-card h-100 text-center">
+            <div class="card-header bg-dark-custom text-brass">Pro</div>
+            <div class="card-body">
+              <h3 class="price">2500 جنيه</h3>
+              <p>20 بوست + 5 فيديو - صفحتين</p>
+              <a href="#contact" class="btn btn-brass">اطلب الآن</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="300">
+          <div class="card pricing-card h-100 text-center">
+            <div class="card-header bg-dark-custom text-brass">VIP</div>
+            <div class="card-body">
+              <h3 class="price">5000 جنيه</h3>
+              <p>محتوى يومي + 3 صفحات</p>
+              <a href="#contact" class="btn btn-brass">اطلب الآن</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-/* Social */
-.social-icons a {
-  margin: 0 12px;
-  font-size: 30px;
-  color: #ddd;
-  transition: 0.3s;
-}
-.social-icons a:hover {
-  color: #b87333;
-  transform: rotate(15deg) scale(1.3);
-}
+  <!-- تواصل -->
+  <section id="contact" class="py-5 bg-dark text-light text-center" data-aos="fade-up">
+    <div class="container">
+      <h2 class="text-brass mb-4">تواصل معنا</h2>
+      <p>📧 <a href="mailto:clients@3bkarinoo.com" class="text-brass">clients@3bkarinoo.com</a></p>
+      <p>📧 <a href="mailto:newsletter@3bkarinoo.com" class="text-brass">newsletter@3bkarinoo.com</a> (للاشتراك في النشرة)</p>
+      <p>📱 <a href="https://wa.me/201120124338" class="text-brass" target="_blank">تواصل عبر واتساب</a></p>
+      <div class="social-icons mt-4">
+        <a href="https://facebook.com/3bkarino997" target="_blank" class="click-sound"><i class="fab fa-facebook"></i></a>
+        <a href="https://instagram.com/3bkarino997" target="_blank" class="click-sound"><i class="fab fa-instagram"></i></a>
+        <a href="https://tiktok.com/@3bkarino997" target="_blank" class="click-sound"><i class="fab fa-tiktok"></i></a>
+        <a href="https://youtube.com/@3bkarino997" target="_blank" class="click-sound"><i class="fab fa-youtube"></i></a>
+        <a href="https://pinterest.com/3bkarino997" target="_blank" class="click-sound"><i class="fab fa-pinterest"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- الفوتر -->
+  <footer class="py-3 bg-dark-custom text-center text-light">
+    <p>© جميع الحقوق محفوظة – عبقرينو 2025</p>
+  </footer>
+
+  <!-- الصوت -->
+  <audio id="click-audio" src="https://www.fesliyanstudios.com/play-mp3/387" preload="auto"></audio>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script>
+    AOS.init({ duration: 1200, once: true });
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>
