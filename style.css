@@ -1,14 +1,139 @@
+/* الخط الأساسي */
+body {
+  font-family: 'Cairo', sans-serif;
+  background-color: #0c0c0c;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+/* الخلفية المتحركة للتروس */
+.gears-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.gear {
+  position: absolute;
+  opacity: 0.05;
+  animation: rotateGear 60s linear infinite;
+}
+
+.gear1 {
+  top: 10%;
+  left: 5%;
+  width: 200px;
+}
+
+.gear2 {
+  bottom: 15%;
+  right: 10%;
+  width: 150px;
+  animation-duration: 90s;
+}
+
+@keyframes rotateGear {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ألوان مميزة */
 .bg-dark-custom {
-  background-color: #121212; /* غامق */
+  background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
 }
+
 .text-brass {
-  color: #c9a227;
+  color: #c9a227 !important;
 }
+
 .btn-brass {
   background-color: #c9a227;
   color: #000;
+  border: none;
+  box-shadow: 0 0 10px rgba(201,162,39,0.4);
+  transition: all 0.3s ease;
 }
 .btn-brass:hover {
   background-color: #b38d1e;
   color: #fff;
+  box-shadow: 0 0 20px rgba(201,162,39,0.8);
+}
+
+/* الهيدر */
+.navbar-brand {
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+.nav-link {
+  color: #ddd !important;
+  transition: color 0.3s;
+}
+.nav-link:hover {
+  color: #c9a227 !important;
+}
+
+/* hero */
+.hero {
+  height: 100vh;
+  background: radial-gradient(circle at center, rgba(201,162,39,0.05) 0%, #0c0c0c 80%);
+  position: relative;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(201,162,39,0.1) 0%, transparent 70%);
+  animation: pulse 6s infinite alternate;
+}
+@keyframes pulse {
+  from { opacity: 0.3; }
+  to { opacity: 0.7; }
+}
+
+/* كروت الخدمات */
+.service-card {
+  background: #1b1b1b;
+  border: 1px solid rgba(201,162,39,0.2);
+  border-radius: 12px;
+  font-size: 1.2rem;
+  padding: 2rem;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.service-card:hover {
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 0 15px rgba(201,162,39,0.4);
+}
+
+/* أيقونات السوشيال */
+.social-icons a {
+  color: #c9a227;
+  text-decoration: none;
+  margin: 0 10px;
+  transition: transform 0.3s, color 0.3s;
+}
+.social-icons a:hover {
+  color: #fff;
+  transform: scale(1.3) rotate(-10deg);
+}
+
+/* الفوتر */
+footer {
+  font-size: 0.9rem;
+  border-top: 1px solid rgba(201,162,39,0.2);
+}
+
+/* سكرول بار ستايل */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+::-webkit-scrollbar-thumb {
+  background: #c9a227;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #b38d1e;
 }
