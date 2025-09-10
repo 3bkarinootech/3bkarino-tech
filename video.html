@@ -1,2 +1,61 @@
-<h2>🎬 مونتاج فيديوهات</h2>
-<p>هنا هتحط عينات فيديو أو روابط يوتيوب لشغلك.</p>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>🎬 مونتاج فيديو | عبقرينو</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page-transition">
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark-custom fixed-top">
+    <div class="container">
+      <a class="navbar-brand text-brass" href="../index.html">⚙️ عبقرينو</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link click-sound" href="../index.html#services">الخدمات</a></li>
+          <li class="nav-item"><a class="nav-link click-sound" href="../index.html#pricing">الأسعار</a></li>
+          <li class="nav-item"><a class="nav-link click-sound" href="../index.html#contact">تواصل</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <section class="py-5 mt-5 text-center text-light" data-aos="fade-up">
+    <div class="container">
+      <h1 class="text-brass mb-4">🎬 مونتاج فيديو</h1>
+      <p class="lead">مونتاج احترافي لفيديوهات السوشيال والإعلانات.</p>
+      <div class="row g-4 mt-4">
+        <div class="col-md-6" data-aos="zoom-in">
+          <div class="card service-card h-100">
+            <video class="w-100" controls>
+              <source src="../assets/sample-video1.mp4" type="video/mp4">
+            </video>
+            <div class="card-body"><h5 class="card-title text-brass">فيديو ترويجي</h5><p>مونتاج سريع وجذاب.</p></div>
+          </div>
+        </div>
+        <div class="col-md-6" data-aos="zoom-in" data-aos-delay="200">
+          <div class="card service-card h-100">
+            <video class="w-100" controls>
+              <source src="../assets/sample-video2.mp4" type="video/mp4">
+            </video>
+            <div class="card-body"><h5 class="card-title text-brass">موشن جرافيك</h5><p>رسوم متحركة لتوضيح الأفكار.</p></div>
+          </div>
+        </div>
+      </div>
+      <a href="../index.html#contact" class="btn btn-brass mt-5 click-sound">اطلب الخدمة</a>
+    </div>
+  </section>
+
+  <footer class="py-3 bg-dark-custom text-center text-light"><p>© جميع الحقوق محفوظة – عبقرينو 2025</p></footer>
+  <audio id="click-audio" src="https://www.fesliyanstudios.com/play-mp3/387" preload="auto"></audio>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script>AOS.init({ duration:1200, once:true });</script>
+  <script src="../script.js"></script>
+</body>
+</html>
