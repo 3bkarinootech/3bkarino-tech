@@ -2,17 +2,16 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>عبقرينو | آلة الزمن</title>
+  <title>عبقرينو | آلة الزمن للسوشيال ميديا</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Bootstrap CSS -->
+  <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- AOS Animation Library -->
+  <!-- AOS Animations -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
-
-  <!-- ملف الـ CSS الخاص بك -->
+  <!-- Custom CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="page-transition">
@@ -30,8 +29,8 @@
   <!-- الهيدر -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark-custom fixed-top">
     <div class="container">
-      <a class="navbar-brand text-brass" href="#">⚙️ عبقرينو</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="تبديل القائمة">
+      <a class="navbar-brand text-brass" href="index.html">⚙️ عبقرينو</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
@@ -46,9 +45,9 @@
 
   <!-- البطل -->
   <header class="hero d-flex align-items-center text-center">
-    <div class="container">
+    <div class="container" data-aos="zoom-in">
       <h1 class="display-4 fw-bold text-brass">⚙️ آلة الزمن للسوشيال</h1>
-      <p class="lead text-light">المستقبل يبدأ من هنا</p>
+      <p class="lead text-light">من المستقبل إلى عملك مباشرة</p>
       <a href="#services" class="btn btn-brass btn-lg mt-3 click-sound">ابدأ الآن</a>
     </div>
   </header>
@@ -59,30 +58,73 @@
       <h2 class="text-brass mb-4" data-aos="zoom-in">الخدمات</h2>
       <div class="row g-4">
         <div class="col-md-3" data-aos="flip-left">
-          <div class="card service-card h-100 click-sound text-center p-4">🎨 تصميمات</div>
+          <a href="services/designs.html" class="card service-card h-100 click-sound">🎨 تصميمات وديزاينات</a>
         </div>
         <div class="col-md-3" data-aos="flip-left" data-aos-delay="100">
-          <div class="card service-card h-100 click-sound text-center p-4">📱 إدارة صفحات</div>
+          <a href="services/social.html" class="card service-card h-100 click-sound">📱 إدارة صفحات</a>
         </div>
         <div class="col-md-3" data-aos="flip-left" data-aos-delay="200">
-          <div class="card service-card h-100 click-sound text-center p-4">🎬 مونتاج</div>
+          <a href="services/video.html" class="card service-card h-100 click-sound">🎬 مونتاج فيديو</a>
         </div>
         <div class="col-md-3" data-aos="flip-left" data-aos-delay="300">
-          <div class="card service-card h-100 click-sound text-center p-4">🌍 مواقع</div>
+          <a href="services/websites.html" class="card service-card h-100 click-sound">🌍 إنشاء مواقع</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- الباقات -->
+  <section id="pricing" class="py-5" data-aos="fade-up">
+    <div class="container">
+      <h2 class="text-center mb-5 text-brass">الباقات</h2>
+      <div class="row g-4">
+        <div class="col-md-4" data-aos="zoom-in">
+          <div class="card pricing-card h-100 text-center">
+            <div class="card-header bg-dark-custom text-brass">Basic</div>
+            <div class="card-body">
+              <h3 class="price">1000 جنيه</h3>
+              <p>10 بوستات - صفحة واحدة</p>
+              <a href="#contact" class="btn btn-brass">اطلب الآن</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="150">
+          <div class="card pricing-card h-100 text-center">
+            <div class="card-header bg-dark-custom text-brass">Pro</div>
+            <div class="card-body">
+              <h3 class="price">2500 جنيه</h3>
+              <p>20 بوست + 5 فيديو - صفحتين</p>
+              <a href="#contact" class="btn btn-brass">اطلب الآن</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="300">
+          <div class="card pricing-card h-100 text-center">
+            <div class="card-header bg-dark-custom text-brass">VIP</div>
+            <div class="card-body">
+              <h3 class="price">5000 جنيه</h3>
+              <p>محتوى يومي + 3 صفحات</p>
+              <a href="#contact" class="btn btn-brass">اطلب الآن</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- تواصل -->
-  <section id="contact" class="py-5 bg-dark text-light text-center">
+  <section id="contact" class="py-5 bg-dark text-light text-center" data-aos="fade-up">
     <div class="container">
       <h2 class="text-brass mb-4">تواصل معنا</h2>
-      <div class="social-icons fs-3">
-        <a href="#" class="click-sound mx-2"><i class="fab fa-facebook"></i></a>
-        <a href="#" class="click-sound mx-2"><i class="fab fa-instagram"></i></a>
-        <a href="#" class="click-sound mx-2"><i class="fab fa-tiktok"></i></a>
-        <a href="#" class="click-sound mx-2"><i class="fab fa-youtube"></i></a>
+      <p>📧 <a href="mailto:clients@3bkarinoo.com" class="text-brass">clients@3bkarinoo.com</a></p>
+      <p>📧 <a href="mailto:newsletter@3bkarinoo.com" class="text-brass">newsletter@3bkarinoo.com</a> (للاشتراك في النشرة)</p>
+      <p>📱 <a href="https://wa.me/201234567890" class="text-brass" target="_blank">تواصل عبر واتساب</a></p>
+      <div class="social-icons mt-4">
+        <a href="https://facebook.com/3bkarinoo" target="_blank" class="click-sound"><i class="fab fa-facebook"></i></a>
+        <a href="https://instagram.com/3bkarinoo" target="_blank" class="click-sound"><i class="fab fa-instagram"></i></a>
+        <a href="https://tiktok.com/@3bkarinoo" target="_blank" class="click-sound"><i class="fab fa-tiktok"></i></a>
+        <a href="https://youtube.com/@3bkarinoo" target="_blank" class="click-sound"><i class="fab fa-youtube"></i></a>
+        <a href="https://pinterest.com/3bkarinoo" target="_blank" class="click-sound"><i class="fab fa-pinterest"></i></a>
       </div>
     </div>
   </section>
@@ -95,7 +137,7 @@
   <!-- الصوت -->
   <audio id="click-audio" src="https://www.fesliyanstudios.com/play-mp3/387" preload="auto"></audio>
 
-  <!-- سكريبتات -->
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
   <script>
