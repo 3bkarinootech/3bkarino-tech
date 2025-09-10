@@ -2,8 +2,8 @@
 :root {
   --dark-blue: #1e2a38;
   --yellow: #FDD600;
-  --light-grey: #F2F2F2;
-  --white: #FFFFFF;
+  --light-grey: #1e2a38; /* أزرق داكن بدل الرمادي */
+  --white: #1e2a38;      /* أزرق داكن بدل الأبيض */
   --charcoal: #212121;
 }
 
@@ -40,7 +40,7 @@ body {
 .hero {
   background: url("assets/gears-bg.jpg") center/cover no-repeat fixed;
   height: 100vh;
-  color: var(--white);
+  color: var(--dark-blue); /* أزرق داكن */
   position: relative;
 }
 
@@ -74,7 +74,7 @@ body {
   transition: 0.3s;
 }
 .social-icons a:hover {
-  color: var(--white);
+  color: var(--dark-blue);
 }
 
 /* Gears Background */
