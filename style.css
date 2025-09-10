@@ -1,18 +1,18 @@
 /* ألوان البراند */
 :root {
-  --dark-blue: #1e2a38;
-  --yellow: #FDD600;
-  --light-grey: #1e2a38; /* أزرق داكن بدل الرمادي */
-  --white: #1e2a38;      /* أزرق داكن بدل الأبيض */
-  --charcoal: #212121;
+  --dark-blue: #1e2a38;   /* الخلفيات الرئيسية */
+  --yellow: #FDD600;      /* الأزرار والعناوين المميزة */
+  --light-grey: #F2F2F2;  /* نصوص ثانوية */
+  --white: #FFFFFF;       /* نصوص على خلفية غامقة */
+  --charcoal: #212121;    /* بلوكات */
 }
 
 body {
   font-family: "Tahoma", sans-serif;
   margin: 0;
   padding: 0;
-  background: var(--light-grey);
-  color: var(--charcoal);
+  background: var(--dark-blue); /* خلفية أساسية غامقة */
+  color: var(--white);          /* النصوص باللون الفاتح */
   direction: rtl;
 }
 
@@ -24,6 +24,7 @@ body {
   background-color: var(--dark-blue) !important;
 }
 
+/* أزرار */
 .btn-brass {
   background: var(--yellow);
   color: var(--dark-blue);
@@ -40,30 +41,49 @@ body {
 .hero {
   background: url("assets/gears-bg.jpg") center/cover no-repeat fixed;
   height: 100vh;
-  color: var(--dark-blue); /* أزرق داكن */
+  color: var(--white); /* النصوص فاتحة */
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 /* Services */
 .service-card {
-  background: var(--white);
+  background: var(--charcoal);  /* بلوكات أغمق */
   border-radius: 10px;
   padding: 30px;
   text-align: center;
   font-weight: bold;
-  color: var(--dark-blue);
+  color: var(--white);
   text-decoration: none;
-  transition: transform 0.3s;
+  transition: transform 0.3s, background 0.3s;
 }
 .service-card:hover {
   transform: scale(1.05);
+  background: var(--yellow);
+  color: var(--dark-blue);
 }
 
 /* Pricing */
 .pricing-card {
+  background: var(--charcoal);
+  color: var(--white);
   border: none;
   border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  transition: transform 0.3s, background 0.3s;
+}
+.pricing-card:hover {
+  transform: translateY(-5px);
+  background: var(--yellow);
+  color: var(--dark-blue);
+}
+.pricing-card .card-header {
+  background: var(--dark-blue);
+  color: var(--yellow);
+  font-weight: bold;
 }
 
 /* Social Icons */
@@ -74,7 +94,14 @@ body {
   transition: 0.3s;
 }
 .social-icons a:hover {
-  color: var(--dark-blue);
+  color: var(--white);
+}
+
+/* Footer */
+footer {
+  background: var(--charcoal);
+  color: var(--light-grey);
+  font-size: 14px;
 }
 
 /* Gears Background */
@@ -87,6 +114,7 @@ body {
 }
 .gear {
   position: absolute;
+  stroke: var(--yellow);
   animation: rotate 20s linear infinite;
 }
 .gear1 {
