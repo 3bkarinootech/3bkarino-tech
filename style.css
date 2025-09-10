@@ -84,18 +84,19 @@ button:hover {
   gap: 20px;
 }
 
-.card, .plan {
-  background: #fff; /* White */
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.12);
-  width: 260px;
-  transition: transform 0.3s;
+.cards a.card {
+  display: block;
+  text-decoration: none;
+  color: #212121; /* Charcoal */
 }
 
-.card:hover, .plan:hover {
+.cards a.card:hover {
+  background: #FDD600; /* Yellow */
+  color: #1e2a38; /* Dark Blue */
   transform: translateY(-5px);
 }
+
+
 
 .price {
   font-size: 22px;
@@ -144,3 +145,4 @@ footer {
   margin-top: 20px;
   font-size: 14px;
 }
+
