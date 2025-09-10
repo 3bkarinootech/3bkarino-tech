@@ -1,17 +1,20 @@
+/* الأساسيات */
 body {
   font-family: "Tahoma", sans-serif;
   margin: 0;
   padding: 0;
-  background: #f8f8f8;
-  color: #333;
+  background: #f2f2f2; /* Light Grey */
+  color: #212121; /* Charcoal */
   text-align: center;
   direction: rtl;
+  line-height: 1.6;
 }
 
+/* الهيدر */
 header {
-  background: #1a2b4c;
+  background: #1e2a38; /* Dark Blue */
   color: #fff;
-  padding: 15px;
+  padding: 15px 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -23,32 +26,57 @@ header h1 {
 
 nav a {
   color: #fff;
-  margin: 0 10px;
+  margin: 0 12px;
   text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s;
 }
 
+nav a:hover {
+  color: #FDD600; /* Yellow */
+}
+
+/* البطل */
 .hero {
-  background: #ffd700;
-  padding: 50px 20px;
+  background: #FDD600; /* Yellow */
+  color: #1e2a38; /* Dark Blue */
+  padding: 70px 20px;
 }
 
 .hero h2 {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  font-size: 28px;
+  font-weight: bold;
 }
 
 button {
-  padding: 10px 20px;
-  background: #1a2b4c;
+  padding: 12px 25px;
+  background: #1e2a38; /* Dark Blue */
   color: #fff;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
+  font-size: 16px;
   cursor: pointer;
+  transition: background 0.3s;
 }
 
-.services, .pricing, .contact {
-  padding: 40px 20px;
+button:hover {
+  background: #212121; /* Charcoal */
 }
 
+/* الأقسام */
+.services, .pricing, .contact, .social, .emails {
+  padding: 50px 20px;
+  background: #f2f2f2; /* Light Grey blocks */
+}
+
+.services h2, .pricing h2, .contact h2, .social h2, .emails h2 {
+  margin-bottom: 25px;
+  color: #1e2a38; /* Dark Blue */
+  font-size: 24px;
+}
+
+/* الكروت والباقات */
 .cards, .plans {
   display: flex;
   justify-content: center;
@@ -57,22 +85,62 @@ button {
 }
 
 .card, .plan {
-  background: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  width: 250px;
+  background: #fff; /* White */
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.12);
+  width: 260px;
+  transition: transform 0.3s;
+}
+
+.card:hover, .plan:hover {
+  transform: translateY(-5px);
 }
 
 .price {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
-  color: #1a2b4c;
+  color: #FDD600; /* Yellow highlight */
 }
 
+/* قسم الأيقونات */
+.social {
+  background: #fff; /* White block */
+}
+
+.social-icons a {
+  margin: 0 12px;
+  font-size: 32px;
+  color: #1e2a38; /* Dark Blue */
+  transition: color 0.3s, transform 0.3s;
+}
+
+.social-icons a:hover {
+  color: #FDD600; /* Yellow */
+  transform: scale(1.2);
+}
+
+/* الإيميلات */
+.emails {
+  background: #f2f2f2; /* Light Grey */
+}
+
+.emails a {
+  color: #1e2a38;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.emails a:hover {
+  text-decoration: underline;
+  color: #FDD600;
+}
+
+/* الفوتر */
 footer {
-  background: #1a2b4c;
+  background: #1e2a38; /* Dark Blue */
   color: #fff;
-  padding: 10px;
+  padding: 15px;
   margin-top: 20px;
+  font-size: 14px;
 }
