@@ -5,23 +5,15 @@
   <title>عبقرينو | آلة الزمن</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Bootstrap -->
+  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- AOS Animation Library -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
 
-  <!-- CSS -->
+  <!-- ملف الـ CSS الخاص بك -->
   <link rel="stylesheet" href="style.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-<script>
-  AOS.init({
-    duration: 1200,  // سرعة الحركة (ms)
-    once: true       // الحركة تحصل مرة واحدة بس
-  });
-</script>
-
 </head>
 <body class="page-transition">
 
@@ -39,7 +31,7 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark-custom fixed-top">
     <div class="container">
       <a class="navbar-brand text-brass" href="#">⚙️ عبقرينو</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="تبديل القائمة">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
@@ -61,37 +53,36 @@
     </div>
   </header>
 
- <!-- الخدمات -->
-<section id="services" class="py-5 bg-dark text-light" data-aos="fade-up">
-  <div class="container">
-    <h2 class="text-brass mb-4" data-aos="zoom-in">الخدمات</h2>
-    <div class="row g-4">
-      <div class="col-md-3" data-aos="flip-left">
-        <div class="card service-card h-100 click-sound">🎨 تصميمات</div>
-      </div>
-      <div class="col-md-3" data-aos="flip-left" data-aos-delay="100">
-        <div class="card service-card h-100 click-sound">📱 إدارة صفحات</div>
-      </div>
-      <div class="col-md-3" data-aos="flip-left" data-aos-delay="200">
-        <div class="card service-card h-100 click-sound">🎬 مونتاج</div>
-      </div>
-      <div class="col-md-3" data-aos="flip-left" data-aos-delay="300">
-        <div class="card service-card h-100 click-sound">🌍 مواقع</div>
+  <!-- الخدمات -->
+  <section id="services" class="py-5 bg-dark text-light" data-aos="fade-up">
+    <div class="container">
+      <h2 class="text-brass mb-4" data-aos="zoom-in">الخدمات</h2>
+      <div class="row g-4">
+        <div class="col-md-3" data-aos="flip-left">
+          <div class="card service-card h-100 click-sound text-center p-4">🎨 تصميمات</div>
+        </div>
+        <div class="col-md-3" data-aos="flip-left" data-aos-delay="100">
+          <div class="card service-card h-100 click-sound text-center p-4">📱 إدارة صفحات</div>
+        </div>
+        <div class="col-md-3" data-aos="flip-left" data-aos-delay="200">
+          <div class="card service-card h-100 click-sound text-center p-4">🎬 مونتاج</div>
+        </div>
+        <div class="col-md-3" data-aos="flip-left" data-aos-delay="300">
+          <div class="card service-card h-100 click-sound text-center p-4">🌍 مواقع</div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
-
+  </section>
 
   <!-- تواصل -->
   <section id="contact" class="py-5 bg-dark text-light text-center">
     <div class="container">
       <h2 class="text-brass mb-4">تواصل معنا</h2>
-      <div class="social-icons">
-        <a href="#" class="click-sound"><i class="fab fa-facebook"></i></a>
-        <a href="#" class="click-sound"><i class="fab fa-instagram"></i></a>
-        <a href="#" class="click-sound"><i class="fab fa-tiktok"></i></a>
-        <a href="#" class="click-sound"><i class="fab fa-youtube"></i></a>
+      <div class="social-icons fs-3">
+        <a href="#" class="click-sound mx-2"><i class="fab fa-facebook"></i></a>
+        <a href="#" class="click-sound mx-2"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="click-sound mx-2"><i class="fab fa-tiktok"></i></a>
+        <a href="#" class="click-sound mx-2"><i class="fab fa-youtube"></i></a>
       </div>
     </div>
   </section>
@@ -101,11 +92,18 @@
     <p>© جميع الحقوق محفوظة – عبقرينو 2025</p>
   </footer>
 
-  <!-- صوت -->
+  <!-- الصوت -->
   <audio id="click-audio" src="https://www.fesliyanstudios.com/play-mp3/387" preload="auto"></audio>
 
+  <!-- سكريبتات -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 1200,
+      once: true
+    });
+  </script>
   <script src="script.js"></script>
 </body>
 </html>
-
