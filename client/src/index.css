@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Google Fonts Import */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -43,39 +46,46 @@
 }
 
 :root {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
-  --sidebar-primary: var(--color-blue-600);
-  --sidebar-primary-foreground: var(--color-blue-50);
-  --chart-1: var(--color-blue-300);
-  --chart-2: var(--color-blue-500);
-  --chart-3: var(--color-blue-600);
-  --chart-4: var(--color-blue-700);
-  --chart-5: var(--color-blue-800);
+  /* 3BKARiNO Brand Colors */
+  --color-navy: #1F3A5F;
+  --color-yellow: #FFD700;
+  --color-white: #FFFFFF;
+  --color-dark-gray: #2D3E50;
+  --color-light-gray: #F5F7FA;
+  
+  --primary: #FFD700;
+  --primary-foreground: #1F3A5F;
+  --sidebar-primary: #FFD700;
+  --sidebar-primary-foreground: #1F3A5F;
+  --chart-1: #FFD700;
+  --chart-2: #FFC700;
+  --chart-3: #FFB700;
+  --chart-4: #FFA700;
+  --chart-5: #FF9700;
   --radius: 0.65rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.235 0.015 65);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.235 0.015 65);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.235 0.015 65);
-  --secondary: oklch(0.98 0.001 286.375);
-  --secondary-foreground: oklch(0.4 0.015 65);
-  --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.141 0.005 285.823);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.623 0.214 259.815);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.235 0.015 65);
-  --sidebar-accent: oklch(0.967 0.001 286.375);
-  --sidebar-accent-foreground: oklch(0.141 0.005 285.823);
-  --sidebar-border: oklch(0.92 0.004 286.32);
-  --sidebar-ring: oklch(0.623 0.214 259.815);
+  --background: #FFFFFF;
+  --foreground: #1F3A5F;
+  --card: #FFFFFF;
+  --card-foreground: #1F3A5F;
+  --popover: #FFFFFF;
+  --popover-foreground: #1F3A5F;
+  --secondary: #F5F7FA;
+  --secondary-foreground: #2D3E50;
+  --muted: #E8EEF5;
+  --muted-foreground: #6B8CAE;
+  --accent: #FFD700;
+  --accent-foreground: #1F3A5F;
+  --destructive: #EF4444;
+  --destructive-foreground: #FFFFFF;
+  --border: #E8EEF5;
+  --input: #F5F7FA;
+  --ring: #FFD700;
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #1F3A5F;
+  --sidebar-accent: #FFD700;
+  --sidebar-accent-foreground: #1F3A5F;
+  --sidebar-border: #E8EEF5;
+  --sidebar-ring: #FFD700;
 }
 
 .dark {
@@ -118,7 +128,21 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+    font-family: 'Inter', sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+  }
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl;
+  }
+  h2 {
+    @apply text-3xl md:text-4xl;
+  }
+  h3 {
+    @apply text-2xl md:text-3xl;
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
@@ -134,6 +158,50 @@
 }
 
 @layer components {
+  /* Animation utilities for Bold Modern design */
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slide-in-left {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes glow {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    }
+    50% {
+      box-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.8s ease-out;
+  }
+
+  .animate-slide-in-left {
+    animation: slide-in-left 0.8s ease-out;
+  }
+
+  .animate-glow {
+    animation: glow 3s ease-in-out infinite;
+  }
+
   /**
    * Custom container utility that centers content and adds responsive padding.
    *
