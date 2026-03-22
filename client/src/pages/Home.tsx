@@ -95,9 +95,11 @@ export default function Home() {
                 <Button
                   variant="outline"
                   className="border-2 border-white text-white hover:bg-white/10 font-bold px-8 py-6 text-lg rounded-lg"
+                  onClick={() => window.open('https://wa.me/201120124338', '_blank')}
                 >
-                  تعرف أكثر
+                  واتساب
                 </Button>
+
               </div>
 
               <div className="flex gap-8 pt-8">
@@ -260,29 +262,66 @@ export default function Home() {
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
-            {[1, 2, 3, 4].map((item) => (
+            {[
+              {
+                name: "مصنع كيرفي لانجيري",
+                project: "تطوير الهوية التسويقية وإنشاء حملات إعلانية موجهة لزيادة المبيعات",
+                results: ["زيادة ملحوظة في المبيعات أونلاين", "تحسين معدل التحويل (Conversion Rate)"],
+                services: ["تسويق", "إعلانات ممولة", "Branding", "Content Creation"]
+              },
+              {
+                name: "ليچيندري بيوتي – صالون تجميل",
+                project: "إدارة السوشيال ميديا وإنشاء عروض جذابة لزيادة الحجوزات",
+                results: ["زيادة عدد الحجوزات داخل الصالون", "رفع الوعي بالبراند"],
+                services: ["سوشيال ميديا", "تصميمات", "تسويق", "كتابة محتوى"]
+              },
+              {
+                name: "زد وير – ملابس شباب",
+                project: "بناء هوية براند شبابي وإنشاء محتوى تريندي يجذب الجمهور",
+                results: ["زيادة التفاعل والوصول (Reach)", "تكوين قاعدة عملاء مهتمة بالبراند"],
+                services: ["Content Creation", "Branding", "Social Media"]
+              },
+              {
+                name: "أبو يونس – ملابس أطفال",
+                project: "إدارة حسابات السوشيال ميديا وإنشاء محتوى بيعي لزيادة الطلبات",
+                results: ["زيادة التفاعل بنسبة كبيرة", "زيادة الطلبات من السوشيال ميديا"],
+                services: ["سوشيال ميديا", "كتابة محتوى", "تصميمات"]
+              }
+            ].map((client, index) => (
               <Card
-                key={item}
+                key={index}
                 className="group overflow-hidden border-0 hover:shadow-xl transition-all duration-300"
               >
-                <div className="relative h-64 bg-gradient-to-br from-navy-900 to-navy-800 overflow-hidden">
+                <div className="relative h-48 bg-gradient-to-br from-navy-900 to-navy-800 overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="w-full h-full flex items-center justify-center text-white font-bold text-2xl">
-                    مشروع {item}
+                  <div className="w-full h-full flex items-center justify-center text-white font-bold text-lg text-center px-4">
+                    {client.name}
                   </div>
                 </div>
-                <div className="p-6 space-y-3">
-                  <h3 className="text-xl font-bold text-navy-900">عميل {item}</h3>
-                  <p className="text-gray-600">
-                    زيادة المبيعات بنسبة 150% خلال 3 أشهر من خلال استراتيجية تسويقية متكاملة
-                  </p>
+                <div className="p-6 space-y-4">
+                  <div>
+                    <h4 className="text-sm font-semibold text-yellow-600 mb-1">المشروع:</h4>
+                    <p className="text-gray-700 text-sm leading-relaxed">
+                      {client.project}
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-semibold text-yellow-600 mb-2">النتائج:</h4>
+                    <ul className="space-y-1">
+                      {client.results.map((result, i) => (
+                        <li key={i} className="text-gray-600 text-sm flex items-start gap-2">
+                          <span className="text-yellow-400 mt-1">✓</span>
+                          <span>{result}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                   <div className="flex gap-2 flex-wrap pt-2">
-                    <span className="bg-yellow-100 text-navy-900 px-3 py-1 rounded-full text-sm font-medium">
-                      سوشيال ميديا
-                    </span>
-                    <span className="bg-yellow-100 text-navy-900 px-3 py-1 rounded-full text-sm font-medium">
-                      تسويق
-                    </span>
+                    {client.services.map((service, i) => (
+                      <span key={i} className="bg-yellow-100 text-navy-900 px-2 py-1 rounded-full text-xs font-medium">
+                        {service}
+                      </span>
+                    ))}
                   </div>
                 </div>
               </Card>
@@ -305,20 +344,20 @@ export default function Home() {
             </div>
 
             <div className="grid md:grid-cols-3 gap-8 mb-12">
-              <Card className="border-0 p-6 text-center hover:shadow-lg transition-shadow">
+              <Card className="border-0 p-6 text-center hover:shadow-lg transition-shadow cursor-pointer" onClick={() => window.open('mailto:3bkarinoo.tech@gmail.com')}>
                 <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mx-auto mb-4">
                   <Mail className="w-6 h-6 text-yellow-600" />
                 </div>
                 <h3 className="font-bold text-navy-900 mb-2">البريد الإلكتروني</h3>
-                <p className="text-gray-600">info@3bkarino.com</p>
+                <p className="text-gray-600">3bkarinoo.tech@gmail.com</p>
               </Card>
 
-              <Card className="border-0 p-6 text-center hover:shadow-lg transition-shadow">
+              <Card className="border-0 p-6 text-center hover:shadow-lg transition-shadow cursor-pointer" onClick={() => window.open('https://wa.me/201120124338', '_blank')}>
                 <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mx-auto mb-4">
                   <Phone className="w-6 h-6 text-yellow-600" />
                 </div>
-                <h3 className="font-bold text-navy-900 mb-2">الهاتف</h3>
-                <p className="text-gray-600">+966 50 123 4567</p>
+                <h3 className="font-bold text-navy-900 mb-2">الهاتف والواتساب</h3>
+                <p className="text-gray-600">01120124338</p>
               </Card>
 
               <Card className="border-0 p-6 text-center hover:shadow-lg transition-shadow">
@@ -326,7 +365,7 @@ export default function Home() {
                   <MapPin className="w-6 h-6 text-yellow-600" />
                 </div>
                 <h3 className="font-bold text-navy-900 mb-2">الموقع</h3>
-                <p className="text-gray-600">الرياض، المملكة العربية السعودية</p>
+                <p className="text-gray-600">مصر</p>
               </Card>
             </div>
 
@@ -342,7 +381,7 @@ export default function Home() {
                       value={formData.name}
                       onChange={handleInputChange}
                       placeholder="أدخل اسمك"
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                      className="bg-white/10 border-white/20 text-white placeholder:text-white/50 rounded-lg"
                     />
                   </div>
                   <div className="space-y-2">
@@ -353,7 +392,7 @@ export default function Home() {
                       value={formData.email}
                       onChange={handleInputChange}
                       placeholder="أدخل بريدك الإلكتروني"
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                      className="bg-white/10 border-white/20 text-white placeholder:text-white/50 rounded-lg"
                     />
                   </div>
                 </div>
@@ -364,7 +403,7 @@ export default function Home() {
                     value={formData.message}
                     onChange={handleInputChange}
                     placeholder="أخبرنا عن مشروعك"
-                    className="bg-white/10 border-white/20 text-white placeholder:text-white/50 min-h-32"
+                    className="bg-white/10 border-white/20 text-white placeholder:text-white/50 min-h-32 rounded-lg"
                   />
                 </div>
                 <Button
@@ -392,8 +431,13 @@ export default function Home() {
                 <span className="font-bold text-lg">عبقرينو تك</span>
               </div>
               <p className="text-gray-400 text-sm">
-                وكالة تسويق رقمي متخصصة في تحويل الأفكار إلى نتائج ملموسة
+                وكالة تسويق رقمي متخصصة في إدارة السوشيال ميديا والذكاء الاصطناعي والتسويق الاستراتيجي
               </p>
+              <div className="flex gap-4 pt-2">
+                <a href="https://www.facebook.com/share/18XLyd51AX/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-yellow-400 transition-colors">Facebook</a>
+                <a href="https://www.instagram.com/3bkarino997?igsh=d2o3bzdndnp5NGoz" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-yellow-400 transition-colors">Instagram</a>
+                <a href="https://www.tiktok.com/@3bkarino997?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-yellow-400 transition-colors">TikTok</a>
+              </div>
             </div>
 
             <div className="space-y-4">
@@ -417,14 +461,20 @@ export default function Home() {
             <div className="space-y-4">
               <h4 className="font-bold text-yellow-400">تابعنا</h4>
               <div className="flex gap-4">
-                <a href="#" className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-yellow-400 hover:text-navy-900 transition-all">
+                <a href="https://www.facebook.com/share/18XLyd51AX/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-yellow-400 hover:text-navy-900 transition-all" title="Facebook">
                   f
                 </a>
-                <a href="#" className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-yellow-400 hover:text-navy-900 transition-all">
-                  𝕏
+                <a href="https://www.tiktok.com/@3bkarino997?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-yellow-400 hover:text-navy-900 transition-all" title="TikTok">
+                  ♪
                 </a>
-                <a href="#" className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-yellow-400 hover:text-navy-900 transition-all">
-                  in
+                <a href="https://www.instagram.com/3bkarino997?igsh=d2o3bzdndnp5NGoz" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-yellow-400 hover:text-navy-900 transition-all" title="Instagram">
+                  📷
+                </a>
+                <a href="https://youtube.com/@3bkarino997?si=tiUScsRkDkU247aj" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-yellow-400 hover:text-navy-900 transition-all" title="YouTube">
+                  ▶
+                </a>
+                <a href="https://pin.it/3CmX3Rjmb" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-yellow-400 hover:text-navy-900 transition-all" title="Pinterest">
+                  P
                 </a>
               </div>
             </div>
