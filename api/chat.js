@@ -1,7 +1,7 @@
 import { generateText } from 'ai';
 
 const buckets = new Map();
-const MODEL = process.env.AI_MODEL || 'minimax/minimax-m3-free';
+const MODEL = process.env.AI_MODEL || 'inclusionai/ling-3.1-flash';
 const SYSTEM = `أنت مستشار أعمال وتسويق تابع لـ 3bkarino Tech. تحدث بالعربية المصرية الواضحة والمهنية. ساعد العميل في المواقع والتسويق وExcel والأتمتة والذكاء الاصطناعي. أعط إجابات عملية مختصرة، واسأل سؤالًا واحدًا فقط إذا كانت معلومة حاسمة ناقصة. لا تعد بنتائج مضمونة ولا تخترع سعرًا نهائيًا.`;
 
 function send(res,status,payload){
@@ -52,7 +52,7 @@ function makeSummary(messages){
 export default async function handler(req,res){
   if(req.method==='GET' && req.query?.probe==='gateway-check-20261005'){
     try {
-      const {text}=await generateText({model:MODEL,prompt:'Reply with exactly OK',maxOutputTokens:16,maxRetries:0});
+      const {text}=await generateText({model:MODEL,prompt:'Reply with exactly OK',providerOptions:{gateway:{has:['free']}},maxOutputTokens:16,maxRetries:0});
       return send(res,200,{gateway:true,reply:text?.trim()||''});
     } catch (error) {
       console.error('Gateway probe failed',error?.name,error?.message);
@@ -98,6 +98,7 @@ export default async function handler(req,res){
       model:MODEL,
       system:SYSTEM,
       messages,
+      providerOptions:{gateway:{has:['free']}},
       maxOutputTokens:900,
       maxRetries:1
     });
