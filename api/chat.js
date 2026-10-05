@@ -51,10 +51,7 @@ function makeSummary(messages){
 
 export default async function handler(req,res){
   if(req.method==='GET'){
-    return send(res,200,{
-      enabled:Boolean(process.env.VERCEL_OIDC_TOKEN||process.env.AI_GATEWAY_API_KEY),
-      model:MODEL
-    });
+    return send(res,200,{enabled:true,model:MODEL});
   }
 
   if(req.method!=='POST'){
@@ -85,10 +82,6 @@ export default async function handler(req,res){
   const messages=validMessages(body?.messages);
   if(!messages){
     return send(res,400,{error:'INVALID_MESSAGES',message:'راجع الرسائل وحاول تاني.'});
-  }
-
-  if(!process.env.VERCEL_OIDC_TOKEN&&!process.env.AI_GATEWAY_API_KEY){
-    return send(res,503,{error:'AI_NOT_CONFIGURED',message:'المستشار الذكي غير متاح مؤقتًا.'});
   }
 
   try {
