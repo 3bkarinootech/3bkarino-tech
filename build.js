@@ -8,7 +8,7 @@ fs.mkdirSync('public/assets',{recursive:true});
 const html=fs.readFileSync('site.html');
 fs.writeFileSync('public/index.html',html);
 fs.writeFileSync('public/404.html',html);
-fs.copyFileSync('assets/logo.png','public/assets/logo.png');
+fs.copyFileSync('assets/logo.webp','public/assets/logo.webp');
 
 const routes=[
   'services','portfolio','pricing','blog','tools','contact','ai-consultant',
