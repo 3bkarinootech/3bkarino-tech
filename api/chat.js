@@ -1,107 +1,81 @@
 import { generateText } from 'ai';
 
-const buckets = new Map();
-const MODEL = process.env.AI_MODEL || 'inclusionai/ling-3.1-flash';
-const SYSTEM = `أنت مستشار أعمال وتسويق تابع لـ 3bkarino Tech. تحدث بالعربية المصرية الواضحة والمهنية. ساعد العميل في المواقع والتسويق وExcel والأتمتة والذكاء الاصطناعي. أعط إجابات عملية مختصرة، واسأل سؤالًا واحدًا فقط إذا كانت معلومة حاسمة ناقصة. لا تعد بنتائج مضمونة ولا تخترع سعرًا نهائيًا.`;
+const MODEL=process.env.AI_MODEL||'inclusionai/ling-3.1-flash';
+const SYSTEM=`أنت Lead Qualifier تابع لـ 3bkarino Tech. مهمتك الوحيدة جمع معلومات كافية لتحويل العميل لفريق المبيعات، وليس حل المشروع بالكامل.
+القواعد:
+- رد بالمصري المهني في جملة أو جملتين فقط.
+- اسأل سؤالًا واحدًا في كل رد.
+- لا تعط Strategy كاملة، خطوات تنفيذ تفصيلية، Architecture، كود، Prompts كاملة، خطة تسويق كاملة أو أسرار تنفيذ.
+- لا تدخل في تفاوض طويل ولا تعط سعر نهائي.
+- ركز على: نوع النشاط، الهدف، المشكلة، الخدمة المطلوبة، الميزانية والموعد.
+- لو المعلومات كافية قل باختصار إنك فهمت المطلوب واسأل آخر معلومة ناقصة.
+- بعد 4 رسائل من العميل يجب إنهاء التأهيل وتحويله لواتساب.`;
 
-function send(res,status,payload){
-  res.statusCode=status;
-  res.setHeader('Content-Type','application/json; charset=utf-8');
-  res.setHeader('Cache-Control','no-store');
-  res.end(JSON.stringify(payload));
+const priceMatrix={
+  ecommerce:{service:'متجر إلكتروني / تجربة بيع',price:'10,000 – 20,000 جنيه مبدئيًا',scope:'متجر أو كتالوج، تجربة شراء، واتساب/Checkout، Mobile-first'},
+  system:{service:'نظام داخلي مخصص',price:'12,000 – 30,000 جنيه مبدئيًا',scope:'Workflow، صلاحيات، إدخال بيانات، تقارير ولوحة متابعة'},
+  excel:{service:'Excel Dashboard / Automation',price:'2,500 – 6,500 جنيه مبدئيًا',scope:'تنظيف بيانات، KPIs، Dashboard، أتمتة حسب الملف'},
+  ai:{service:'AI Assistant / Automation',price:'6,000 – 15,000 جنيه مبدئيًا',scope:'مساعد ذكي أو Automation مع Handoff وتكاملات حسب الاحتياج'},
+  marketing:{service:'تسويق ومحتوى / تحسين حملات',price:'3,500 – 8,000 جنيه مبدئيًا',scope:'عرض ورسائل بيع، محتوى، خطة اختبار وقياس'},
+  website:{service:'موقع شركة / Landing Page',price:'2,500 – 12,000 جنيه مبدئيًا',scope:'Landing Page أو موقع خدمات متعدد الصفحات، CTA وواتساب وAnalytics'}
+};
+
+function send(res,status,data){res.statusCode=status;res.setHeader('Content-Type','application/json; charset=utf-8');res.setHeader('Cache-Control','no-store');res.end(JSON.stringify(data))}
+function validMessages(v){if(!Array.isArray(v)||!v.length||v.length>14)return null;const out=[];for(const m of v){if(!m||!['user','assistant'].includes(m.role)||typeof m.content!=='string')return null;const c=m.content.trim();if(!c||c.length>1800)return null;out.push({role:m.role,content:c})}return out}
+function userText(messages){return messages.filter(m=>m.role==='user').map(m=>m.content).join(' | ')}
+function classify(text){
+  const t=text.toLowerCase();
+  if(/متجر|e-?commerce|shop|منتجات|checkout|سلة|طلب اونلاين/.test(t))return priceMatrix.ecommerce;
+  if(/مخزن|مخازن|نظام|صلاحيات|مستخدمين|تشغيل|erp|عمليات|انتاج|production|warehouse/.test(t))return priceMatrix.system;
+  if(/excel|اكسل|إكسل|dashboard|داشبورد|تقارير|report|pivot|power query/.test(t))return priceMatrix.excel;
+  if(/ai|ذكاء|بوت|chatbot|مساعد|automation|أتمت|اتمت/.test(t))return priceMatrix.ai;
+  if(/تسويق|اعلان|إعلان|ads|content|محتوى|سوشيال|marketing/.test(t))return priceMatrix.marketing;
+  return priceMatrix.website;
 }
-
-function originOk(req){
-  const origin=req.headers.origin;
-  if(!origin) return true;
-  try { return new URL(origin).host===req.headers.host; } catch { return false; }
+function missing(text){
+  const out=[];
+  if(!/ميزاني|budget|\b\d{3,}/i.test(text))out.push('الميزانية التقريبية');
+  if(!/اسبوع|أسبوع|شهر|موعد|ميعاد|deadline|خلال/i.test(text))out.push('الموعد المطلوب');
+  if(!/شركة|مطعم|متجر|مصنع|عيادة|مكتب|براند|نشاط|مؤسسة|business/i.test(text))out.push('نوع النشاط');
+  return out.slice(0,3);
 }
-
-function rate(key){
-  const now=Date.now();
-  const item=buckets.get(key)||{count:0,reset:now+60000};
-  if(item.reset<=now){ item.count=0; item.reset=now+60000; }
-  item.count++;
-  buckets.set(key,item);
-  return item.count<=10;
-}
-
-function validMessages(value){
-  if(!Array.isArray(value)||value.length===0||value.length>16) return null;
-  const messages=[];
-  for(const message of value){
-    if(!message||!['user','assistant'].includes(message.role)||typeof message.content!=='string') return null;
-    const content=message.content.trim();
-    if(!content||content.length>2500) return null;
-    messages.push({role:message.role,content});
-  }
-  return messages.at(-1)?.role==='user' ? messages : null;
-}
-
-function wantsHandoff(messages){
-  const userMessages=messages.filter(m=>m.role==='user');
-  const text=userMessages.map(m=>m.content).join(' ');
-  return userMessages.length>=4 || /(عرض\s*سعر|السعر|تكلفة|تنفيذ|ابد[أا]|واتساب|تواصل|احجز|عايز\s*(أعمل|اعمل))/i.test(text);
-}
-
-function makeSummary(messages){
-  const lines=messages.filter(m=>m.role==='user').slice(-6).map((m,i)=>`${i+1}) ${m.content}`);
-  return `ملخص طلب العميل:\n${lines.join('\n')}\n\nالخطوة المطلوبة: مراجعة الاحتياج واقتراح نطاق التنفيذ وعرض السعر المناسب.`;
+function transcript(messages){return messages.map((m,i)=>(i+1)+'. '+(m.role==='user'?'العميل':'المستشار')+': '+m.content).join('\n')}
+function handoff(messages){
+  const text=userText(messages),pick=classify(text),miss=missing(text);
+  const brief=text.length>2200?text.slice(0,2200)+'…':text;
+  const leadId='3BK-'+Date.now().toString(36).toUpperCase();
+  const msg=
+'عميل جديد من مستشار 3bkarino Tech\n'+
+'رقم المتابعة: '+leadId+'\n\n'+
+'— ملخص طلب العميل —\n'+brief+'\n\n'+
+'— اقتراح 3bkarino AI —\n'+
+'الخدمة المقترحة: '+pick.service+'\n'+
+'النطاق المبدئي: '+pick.scope+'\n'+
+'التسعير المبدئي: '+pick.price+'\n'+
+(miss.length?'معلومات ناقصة للاتفاق النهائي: '+miss.join('، ')+'\n':'')+
+'ملاحظة: السعر مبدئي ويُثبت بعد مراجعة النطاق النهائي.\n\n'+
+'— المحادثة كاملة —\n'+transcript(messages);
+  return {suggestedService:pick.service,priceRange:pick.price,scope:pick.scope,missing:miss,whatsappMessage:msg};
 }
 
 export default async function handler(req,res){
-  if(req.method==='GET'){
-    return send(res,200,{enabled:true,model:MODEL});
-  }
-
-  if(req.method!=='POST'){
-    res.setHeader('Allow','GET, POST');
-    return send(res,405,{error:'METHOD_NOT_ALLOWED'});
-  }
-
-  if(!originOk(req)) return send(res,403,{error:'FORBIDDEN'});
-
-  const clientKey=String(
-    req.headers['x-real-ip']||
-    req.headers['x-forwarded-for']||
-    req.socket?.remoteAddress||
-    'unknown'
-  );
-
-  if(!rate(clientKey)){
-    return send(res,429,{error:'RATE_LIMIT',message:'استنى دقيقة وجرب تاني.'});
-  }
-
-  let body=req.body;
-  try {
-    if(typeof body==='string') body=JSON.parse(body);
-  } catch {
-    return send(res,400,{error:'BAD_JSON'});
-  }
-
-  const messages=validMessages(body?.messages);
-  if(!messages){
-    return send(res,400,{error:'INVALID_MESSAGES',message:'راجع الرسائل وحاول تاني.'});
-  }
-
-  try {
+  if(req.method==='GET')return send(res,200,{enabled:true,model:MODEL,mode:'lead-qualifier',maxSeconds:60});
+  if(req.method!=='POST')return send(res,405,{error:'METHOD_NOT_ALLOWED'});
+  let body=req.body;try{if(typeof body==='string')body=JSON.parse(body)}catch{return send(res,400,{error:'BAD_JSON'})}
+  const messages=validMessages(body?.messages);if(!messages)return send(res,400,{error:'INVALID_MESSAGES'});
+  const action=body?.action||'chat';
+  if(action==='handoff')return send(res,200,handoff(messages));
+  const users=messages.filter(m=>m.role==='user').length;
+  if(users>=4)return send(res,200,{forceHandoff:true,reply:'تمام، فهمت المطلوب. هنكمل التفاصيل والاتفاق على واتساب.'});
+  try{
     const {text}=await generateText({
-      model:MODEL,
-      system:SYSTEM,
-      messages,
+      model:MODEL,system:SYSTEM,messages,
       providerOptions:{gateway:{has:['free']}},
-      maxOutputTokens:900,
-      maxRetries:1
+      maxOutputTokens:180,maxRetries:1
     });
-
-    const ready=wantsHandoff(messages);
-    return send(res,200,{
-      reply:text?.trim()||'تمام. احكيلي أكتر عن هدفك.',
-      readyForHuman:ready,
-      summary:ready?makeSummary(messages):''
-    });
-  } catch (error) {
-    console.error('AI generation failed',error?.name,error?.message);
-    return send(res,502,{error:'AI_FAILED',message:'حصلت مشكلة مؤقتة في توليد الرد. جرّب تاني.'});
+    return send(res,200,{reply:(text||'').trim()||'تمام. إيه أهم نتيجة عايز توصل لها؟',forceHandoff:false});
+  }catch(error){
+    const fallback=['إيه نوع نشاطك بالضبط؟','إيه أهم نتيجة عايز الموقع أو النظام يحققها؟','عندك ميزانية وموعد مبدئي للتنفيذ؟'];
+    return send(res,200,{reply:fallback[Math.min(users-1,fallback.length-1)],forceHandoff:false});
   }
 }
