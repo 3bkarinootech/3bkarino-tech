@@ -50,6 +50,15 @@ function makeSummary(messages){
 }
 
 export default async function handler(req,res){
+  if(req.method==='GET' && req.query?.probe==='gateway-check-20261005'){
+    try {
+      const {text}=await generateText({model:MODEL,prompt:'Reply with exactly OK',maxOutputTokens:16,maxRetries:0});
+      return send(res,200,{gateway:true,reply:text?.trim()||''});
+    } catch (error) {
+      console.error('Gateway probe failed',error?.name,error?.message);
+      return send(res,502,{gateway:false,error:error?.message||'probe failed'});
+    }
+  }
   if(req.method==='GET'){
     return send(res,200,{enabled:true,model:MODEL});
   }
