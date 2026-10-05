@@ -52,7 +52,7 @@ function makeSummary(messages){
 export default async function handler(req,res){
   if(req.method==='GET' && req.query?.probe==='gateway-check-20261005'){
     try {
-      const {text}=await generateText({model:MODEL,prompt:'Reply with exactly OK',providerOptions:{gateway:{has:['free']}},maxOutputTokens:16,maxRetries:0});
+      const {text}=await generateText({model:MODEL,prompt:'Reply with exactly OK',providerOptions:{gateway:{has:['free']}},maxOutputTokens:200,maxRetries:0});
       return send(res,200,{gateway:true,reply:text?.trim()||''});
     } catch (error) {
       console.error('Gateway probe failed',error?.name,error?.message);
