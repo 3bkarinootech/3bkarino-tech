@@ -21,7 +21,7 @@ const priceMatrix={
 };
 
 function send(res,status,data){res.statusCode=status;res.setHeader('Content-Type','application/json; charset=utf-8');res.setHeader('Cache-Control','no-store');res.end(JSON.stringify(data))}
-function validMessages(v){if(!Array.isArray(v)||!v.length||v.length>14)return null;const out=[];for(const m of v){if(!m||!['user','assistant'].includes(m.role)||typeof m.content!=='string')return null;const c=m.content.trim();if(!c||c.length>1800)return null;out.push({role:m.role,content:c})}return out}
+function validMessages(v){if(!Array.isArray(v)||!v.length||v.length>14)return null;const out=[];for(const m of v){if(!m||!['user','assistant'].includes(m.role)||typeof m.content!=='string')return null;const c=m.content.trim();if(!c||c.length>900)return null;out.push({role:m.role,content:c})}return out}
 function userText(messages){return messages.filter(m=>m.role==='user').map(m=>m.content).join(' | ')}
 function classify(text){
   const t=text.toLowerCase();
