@@ -1,14 +1,113 @@
-import { generateText, Output } from 'ai';
-import { requestSchema,responseSchema,summaryText,acceptsOrigin,takeRateLimit,systemPrompt } from '../lib/chat-core.js';
-const buckets=new Map();
-export const config={maxDuration:60};
-export function createHandler(generate=generateText,env=process.env){return async function handler(req,res){
- res.setHeader('Cache-Control','no-store');res.setHeader('X-Content-Type-Options','nosniff');
- const enabled=Boolean(env.AI_GATEWAY_API_KEY||env.VERCEL_OIDC_TOKEN);
- if(req.method==='GET')return res.status(200).json({enabled,handoffAfterTurns:6,handoffAfterSeconds:300});
- if(req.method!=='POST'){res.setHeader('Allow','GET, POST');return res.status(405).json({error:'METHOD_NOT_ALLOWED'})}
- if(!acceptsOrigin(req))return res.status(403).json({error:'FORBIDDEN'});
- if(!enabled)return res.status(503).json({error:'AI_NOT_CONFIGURED',message:'المستشار الذكي لسه غير مفعّل. تقدر تتواصل مع الفريق على واتساب.'});
- const key=req.headers['x-real-ip']||req.socket?.remoteAddress||'unknown';
- if(!takeRateLimit(buckets,key)){res.setHeader('Retry-After','60');return res.status(429).json({error:'RATE_LIMIT',message:'استنى دقيقة وجرب تاني.'})}
- let body;try{body=typeof req.body==='string'?JSON.parse(req.body):req.body;if(Buffer.byteLength(JSON.stringify(body)||'')>28000)return res.status(413).json({error:'TOO_LARGE'});body=requestSchema.parse(body);if(body.messages.at(-1).role!=='user')throw new Er���q�^
+import { generateText } from 'ai';
+
+const buckets = new Map();
+const MODEL = process.env.AI_MODEL || 'openai/gpt-5.4-mini';
+const SYSTEM = `أنت مستشار أعمال وتسويق تابع لـ 3bkarino Tech. تحدث بالعربية المصرية الواضحة والمهنية. ساعد العميل في المواقع والتسويق وExcel والأتمتة والذكاء الاصطناعي. أعط إجابات عملية مختصرة، واسأل سؤالًا واحدًا فقط إذا كانت معلومة حاسمة ناقصة. لا تعد بنتائج مضمونة ولا تخترع سعرًا نهائيًا.`;
+
+function send(res,status,payload){
+  res.statusCode=status;
+  res.setHeader('Content-Type','application/json; charset=utf-8');
+  res.setHeader('Cache-Control','no-store');
+  res.end(JSON.stringify(payload));
+}
+
+function originOk(req){
+  const origin=req.headers.origin;
+  if(!origin) return true;
+  try { return new URL(origin).host===req.headers.host; } catch { return false; }
+}
+
+function rate(key){
+  const now=Date.now();
+  const item=buckets.get(key)||{count:0,reset:now+60000};
+  if(item.reset<=now){ item.count=0; item.reset=now+60000; }
+  item.count++;
+  buckets.set(key,item);
+  return item.count<=10;
+}
+
+function validMessages(value){
+  if(!Array.isArray(value)||value.length===0||value.length>16) return null;
+  const messages=[];
+  for(const message of value){
+    if(!message||!['user','assistant'].includes(message.role)||typeof message.content!=='string') return null;
+    const content=message.content.trim();
+    if(!content||content.length>2500) return null;
+    messages.push({role:message.role,content});
+  }
+  return messages.at(-1)?.role==='user' ? messages : null;
+}
+
+function wantsHandoff(messages){
+  const userMessages=messages.filter(m=>m.role==='user');
+  const text=userMessages.map(m=>m.content).join(' ');
+  return userMessages.length>=4 || /(عرض\s*سعر|السعر|تكلفة|تنفيذ|ابد[أا]|واتساب|تواصل|احجز|عايز\s*(أعمل|اعمل))/i.test(text);
+}
+
+function makeSummary(messages){
+  const lines=messages.filter(m=>m.role==='user').slice(-6).map((m,i)=>`${i+1}) ${m.content}`);
+  return `ملخص طلب العميل:\n${lines.join('\n')}\n\nالخطوة المطلوبة: مراجعة الاحتياج واقتراح نطاق التنفيذ وعرض السعر المناسب.`;
+}
+
+export default async function handler(req,res){
+  if(req.method==='GET'){
+    return send(res,200,{
+      enabled:Boolean(process.env.VERCEL_OIDC_TOKEN||process.env.AI_GATEWAY_API_KEY),
+      model:MODEL
+    });
+  }
+
+  if(req.method!=='POST'){
+    res.setHeader('Allow','GET, POST');
+    return send(res,405,{error:'METHOD_NOT_ALLOWED'});
+  }
+
+  if(!originOk(req)) return send(res,403,{error:'FORBIDDEN'});
+
+  const clientKey=String(
+    req.headers['x-real-ip']||
+    req.headers['x-forwarded-for']||
+    req.socket?.remoteAddress||
+    'unknown'
+  );
+
+  if(!rate(clientKey)){
+    return send(res,429,{error:'RATE_LIMIT',message:'استنى دقيقة وجرب تاني.'});
+  }
+
+  let body=req.body;
+  try {
+    if(typeof body==='string') body=JSON.parse(body);
+  } catch {
+    return send(res,400,{error:'BAD_JSON'});
+  }
+
+  const messages=validMessages(body?.messages);
+  if(!messages){
+    return send(res,400,{error:'INVALID_MESSAGES',message:'راجع الرسائل وحاول تاني.'});
+  }
+
+  if(!process.env.VERCEL_OIDC_TOKEN&&!process.env.AI_GATEWAY_API_KEY){
+    return send(res,503,{error:'AI_NOT_CONFIGURED',message:'المستشار الذكي غير متاح مؤقتًا.'});
+  }
+
+  try {
+    const {text}=await generateText({
+      model:MODEL,
+      system:SYSTEM,
+      messages,
+      maxOutputTokens:900,
+      maxRetries:1
+    });
+
+    const ready=wantsHandoff(messages);
+    return send(res,200,{
+      reply:text?.trim()||'تمام. احكيلي أكتر عن هدفك.',
+      readyForHuman:ready,
+      summary:ready?makeSummary(messages):''
+    });
+  } catch (error) {
+    console.error('AI generation failed',error?.name,error?.message);
+    return send(res,502,{error:'AI_FAILED',message:'حصلت مشكلة مؤقتة في توليد الرد. جرّب تاني.'});
+  }
+}
