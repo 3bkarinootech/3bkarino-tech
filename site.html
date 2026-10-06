@@ -144,6 +144,21 @@ h1,h2,h3,p{margin-top:0}.hero h1{font-size:clamp(46px,7vw,80px);line-height:1.04
 @media(max-width:900px){.book-sales-hero,.preview-grid,.benefit-grid,.product-grid{grid-template-columns:1fr 1fr}.community-box{grid-template-columns:1fr}}
 @media(max-width:680px){.book-sales-hero,.preview-grid,.benefit-grid,.product-grid,.book-stat-grid{grid-template-columns:1fr}}
 
+
+.records-login{max-width:650px;margin:auto}
+.records-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}
+.records-stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px}
+.records-stat span{display:block;font-size:11px;color:#777}.records-stat b{font-size:28px}
+.records-list{display:grid;gap:12px}
+.record-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px}
+.record-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.record-meta{font-size:11px;color:#777}.record-card h3{margin:4px 0}
+.record-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.record-box{background:#f5f5ef;border:1px solid #e2e1d9;border-radius:10px;padding:10px;font-size:12px}
+.record-actions{display:grid;grid-template-columns:220px 1fr auto;gap:8px;margin-top:12px}
+.record-actions select,.record-actions textarea{border:1px solid #cecec6;border-radius:9px;padding:9px;background:#fff}
+@media(max-width:760px){.records-stats{grid-template-columns:1fr 1fr}.record-grid,.record-actions{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -330,18 +345,40 @@ function toolsPage(){
 }
 function contactPage(){
   var qs=new URLSearchParams(location.search),plan=qs.get('plan')||'',project=qs.get('project')||'';
-  return pageHero('ابدأ مشروعك','اكتب الأساسيات فقط. هنجهز رسالة واتساب منظمة ونكمل معاك من هناك.')+
-  '<section class="section"><div class="container contact-grid"><form class="card form" id="lead"><div class="field"><label>الاسم</label><input id="nm" required autocomplete="name"></div><div class="field"><label>إيه اللي محتاجه؟</label><select id="tp"><option>موقع / Landing Page</option><option>Excel / Dashboard</option><option>نظام داخلي</option><option>AI / Automation</option><option>تسويق ومحتوى</option></select></div><div class="field full"><label>الباقة أو المشروع</label><input id="pl" value="'+esc(plan||project)+'" placeholder="اختياري"></div><div class="field full"><label>الهدف في سطرين</label><textarea id="ms" rows="5" maxlength="1200" required placeholder="مثال: عايز موقع خدمات يوضح شغل الشركة ويجيب تواصل على واتساب"></textarea></div><button class="btn whatsapp field full" type="submit">كمل على واتساب</button></form><div><div class="card"><span class="eyebrow">مش عارف تكتب الطلب؟</span><h2>جاوب أسئلة سريعة بدل الفورم.</h2><p>مستشار 60 ثانية هيسألك عن نشاطك والهدف والميزانية والموعد، وبعدها يجهز الرسالة كاملة.</p><a class="btn dark" href="/ai-consultant" data-link>استخدم مستشار 60 ثانية</a></div><div class="card" style="margin-top:12px"><h3>معلومة مهمة</h3><p>السعر الموجود بالموقع مبدئي. قبل التنفيذ هنراجع النطاق ونثبت السعر والمدة بوضوح.</p></div></div></div></section>';
+  return pageHero('ابدأ مشروعك','سجّل بياناتك واحتياجك. الطلب بيتسجل عندنا الأول ثم نفتح لك واتساب بنفس رقم المتابعة.')+
+  '<section class="section"><div class="container contact-grid"><form class="card form" id="lead"><div class="field"><label>الاسم الكامل</label><input id="nm" required autocomplete="name"></div><div class="field"><label>رقم الموبايل</label><input id="ph" required autocomplete="tel"></div><div class="field full"><label>البريد الإلكتروني</label><input id="em" type="email" required autocomplete="email"></div><div class="field"><label>إيه اللي محتاجه؟</label><select id="tp"><option>موقع / Landing Page</option><option>Excel / Dashboard</option><option>نظام داخلي</option><option>AI / Automation</option><option>تسويق ومحتوى</option></select></div><div class="field"><label>الباقة أو المشروع</label><input id="pl" value="'+esc(plan||project)+'" placeholder="اختياري"></div><div class="field"><label>الميزانية التقريبية</label><input id="bg" placeholder="مثال: 5000 - 8000 جنيه"></div><div class="field"><label>الموعد المطلوب</label><input id="dl" placeholder="مثال: خلال أسبوعين"></div><div class="field full"><label>الهدف في سطرين</label><textarea id="ms" rows="5" maxlength="1200" required placeholder="مثال: عايز موقع خدمات يوضح شغل الشركة ويجيب تواصل على واتساب"></textarea></div><button class="btn whatsapp field full" id="leadSubmit" type="submit">سجّل الطلب وكمل على واتساب</button></form><div><div class="card"><span class="eyebrow">مش عارف تكتب الطلب؟</span><h2>جاوب أسئلة سريعة بدل الفورم.</h2><p>مستشار 60 ثانية هيسألك عن نشاطك والهدف والميزانية والموعد، وبعدها يسجل Lead ويجهز رسالة المتابعة.</p><a class="btn dark" href="/ai-consultant" data-link>استخدم مستشار 60 ثانية</a></div><div class="card" style="margin-top:12px"><h3>كل طلب له Record</h3><p>بيانات الطلب بتتسجل على السيرفر برقم متابعة قبل فتح واتساب، عشان ما يضيعش أي Lead.</p></div></div></div></section>';
 }
 function aiPage(){
   return pageHero('مستشار 60 ثانية','في أقل من دقيقة هنفهم احتياجك ونجهز بداية مناسبة، وبعدها نكمل التفاصيل والاتفاق على واتساب.')+
   '<section class="section"><div class="container ai-shell"><div class="ai-top"><div><span class="eyebrow" style="color:var(--yellow)">60 ثانية</span><h2 style="margin:3px 0">قولي محتاج تعمل إيه</h2><div style="font-size:12px;color:#999">الوقت يبدأ من أول رسالة. بعد النهاية هنجهز ملخص ونفتح واتساب تلقائيًا.</div></div><div class="timer" id="timer">01:00</div></div><div class="progress"><i id="bar"></i></div><div class="ai-grid"><aside class="ai-side"><h3>هنسألك باختصار عن:</h3><ul class="list"><li>نوع شغلك</li><li>الهدف اللي عايز توصله</li><li>الخدمة الأقرب لطلبك</li><li>الميزانية والموعد لو معروفين</li></ul><p>الدقيقة دي لتحديد الاحتياج فقط. التفاصيل النهائية والتفاوض والاتفاق بنكملهم معاك على واتساب.</p></aside><div><div class="chatbox"><div class="messages" id="messages"></div><form class="chat-form" id="chatForm"><textarea id="chatInput" rows="2" maxlength="900" placeholder="مثال: عندي شركة وعايز موقع خدمات احترافي..." required></textarea><button class="btn primary" id="chatSend">إرسال</button></form></div><div class="handoff" id="handoff"><span class="eyebrow">جاهز نكمل</span><h3>تم تجهيز ملخص طلبك.</h3><p>واتساب هيفتح برسالة فيها احتياجك والمقترح والسعر المبدئي والمحادثة، عشان تكمل من نفس النقطة.</p><div class="summary" id="handoffSummary"></div><a class="btn whatsapp" id="handoffWa" target="_blank" rel="noopener">فتح واتساب الآن</a><div class="redirect" id="redirect">جاري التحويل تلقائيًا...</div></div></div></div></div></section>';
 }
+function recordsAdminPage(){
+  return pageHero('Records Dashboard','لوحة داخلية لمتابعة الـLeads وطلبات الكتاب. البيانات لا تظهر إلا بعد إدخال مفتاح الإدارة.')+
+  '<section class="section"><div class="container"><div class="card records-login" id="recordsLogin"><span class="eyebrow">PRIVATE ADMIN</span><h2>افتح لوحة الطلبات</h2><div class="form"><div class="field full"><label>Admin Key</label><input id="recordsKey" type="password" autocomplete="off" placeholder="مفتاح الإدارة"></div><button class="btn dark field full" id="recordsLoad">عرض الـRecords</button></div><p id="recordsError" class="compare-note"></p></div><div id="recordsPanel" style="display:none"><div class="records-stats" id="recordsStats"></div><div class="records-list" id="recordsList"></div></div></div></section>';
+}
 function notFound(){return '<section class="section"><div class="container card" style="text-align:center"><h1>404</h1><p>الصفحة غير موجودة.</p><a class="btn primary" href="/" data-link>الرئيسية</a></div></section>'}
 
 function initFaq(){document.querySelectorAll('.faq-q').forEach(function(b){b.onclick=function(){var item=b.closest('.faq-item');document.querySelectorAll('.faq-item').forEach(function(x){if(x!==item)x.classList.remove('open')});item.classList.toggle('open')}})}
 function initCalc(){if(!document.getElementById('bud'))return;var ids=['bud','cpc','cv','aov','mar'];function v(id){return +document.getElementById(id).value||0}function run(){var b=v('bud'),c=Math.max(v('cpc'),.01),click=b/c,o=click*v('cv')/100,r=o*v('aov'),p=r*v('mar')/100-b;document.getElementById('rc').textContent=Math.round(click);document.getElementById('ro').textContent=o.toFixed(1);document.getElementById('rr').textContent=Math.round(r)+' ج';document.getElementById('rx').textContent=(b?r/b:0).toFixed(2)+'x';document.getElementById('rp').textContent=Math.round(p)+' ج';document.getElementById('ra').textContent=Math.round(o?b/o:0)+' ج'}ids.forEach(function(id){document.getElementById(id).oninput=run});run()}
-function initLead(){var f=document.getElementById('lead');if(!f)return;f.onsubmit=function(e){e.preventDefault();var t='طلب جديد من موقع 3bkarino Tech\n\nالاسم: '+document.getElementById('nm').value+'\nالخدمة: '+document.getElementById('tp').value+'\nالباقة/المشروع: '+(document.getElementById('pl').value||'غير محدد')+'\nالهدف: '+document.getElementById('ms').value+'\n\nمحتاج أعرف الخطوة التالية والسعر النهائي بعد مراجعة المطلوب.';location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(t)}}
+function initLead(){
+  var f=document.getElementById('lead');if(!f)return;
+  f.onsubmit=async function(e){
+    e.preventDefault();
+    var btn=document.getElementById('leadSubmit'),payload={
+      action:'create',source:'contact',name:nm.value,phone:ph.value,email:em.value,
+      service:tp.value,plan:pl.value,goal:ms.value,budget:bg.value,deadline:dl.value,
+      page:location.pathname+location.search,referrer:document.referrer
+    };
+    var leadId='';
+    btn.disabled=true;btn.textContent='جاري تسجيل الطلب…';
+    try{
+      var r=await fetch('/api/leads',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+      var d=await r.json();if(!r.ok)throw Error('lead');leadId=d.id||'';
+    }catch(err){}
+    var t='طلب جديد من موقع 3bkarino Tech\n'+(leadId?'رقم المتابعة: '+leadId+'\n':'')+'\nالاسم: '+nm.value+'\nالموبايل: '+ph.value+'\nالإيميل: '+em.value+'\nالخدمة: '+tp.value+'\nالباقة/المشروع: '+(pl.value||'غير محدد')+'\nالميزانية: '+(bg.value||'غير محددة')+'\nالموعد: '+(dl.value||'غير محدد')+'\nالهدف: '+ms.value+'\n\nمحتاج أعرف الخطوة التالية والسعر النهائي بعد مراجعة المطلوب.';
+    location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(t);
+  }
+}
 function initAI(){
   if(activeTimer){clearInterval(activeTimer);activeTimer=null}
   var f=document.getElementById('chatForm');if(!f)return;
@@ -359,6 +396,43 @@ function initAI(){
     catch(e){if(!ended)bubble('assistant','قولّي ميزانيتك وموعد التنفيذ التقريبي لو معروفين، وبعدها نكمل على واتساب.')}
     finally{if(!ended)send.disabled=false}
   }
+}
+function initRecordsAdmin(){
+  if(location.pathname!=='/admin/records')return;
+  var keyInput=document.getElementById('recordsKey'),loadBtn=document.getElementById('recordsLoad'),panel=document.getElementById('recordsPanel'),err=document.getElementById('recordsError');
+  if(!keyInput||!loadBtn)return;
+  var saved=sessionStorage.getItem('3bk-records-key')||'';if(saved)keyInput.value=saved;
+  function val(v){return esc(String(v==null?'':v))}
+  function statusOptions(current){
+    var opts=[['new','جديد'],['contacted','تم التواصل'],['qualified','مؤهل'],['pending_payment','انتظار دفع'],['paid','مدفوع'],['won','تم البيع'],['lost','مغلق/مفقود']];
+    return opts.map(function(o){return '<option value="'+o[0]+'" '+(current===o[0]?'selected':'')+'>'+o[1]+'</option>'}).join('');
+  }
+  async function saveCard(id,card){
+    var status=card.querySelector('.record-status').value,notes=card.querySelector('.record-notes').value;
+    var r=await fetch('/api/leads',{method:'POST',headers:{'Content-Type':'application/json','x-admin-key':keyInput.value},body:JSON.stringify({action:'update',id:id,status:status,notes:notes})});
+    if(!r.ok)throw Error('save');
+    var b=card.querySelector('.record-save');b.textContent='تم الحفظ ✓';setTimeout(function(){b.textContent='حفظ'},1200);
+  }
+  function renderRecords(records){
+    var total=records.length,newCount=records.filter(function(x){return x.status==='new'}).length,orders=records.filter(function(x){return x.kind==='order'}).length,paid=records.filter(function(x){return x.status==='paid'||x.status==='won'}).length;
+    recordsStats.innerHTML='<div class="records-stat"><span>إجمالي Records</span><b>'+total+'</b></div><div class="records-stat"><span>جديد</span><b>'+newCount+'</b></div><div class="records-stat"><span>طلبات كتاب</span><b>'+orders+'</b></div><div class="records-stat"><span>مدفوع / تم البيع</span><b>'+paid+'</b></div>';
+    if(!records.length){recordsList.innerHTML='<div class="card">لسه مفيش Records.</div>';return}
+    recordsList.innerHTML=records.map(function(r){
+      var customer=r.name||'Lead من AI',contact=[r.phone,r.email].filter(Boolean).join(' • '),what=r.productLabel||r.service||r.product||'غير محدد',detail=r.goal||r.summary||'',amount=r.amount?String(r.amount)+' '+(r.currency||'EGP'):(r.priceRange||'');
+      return '<article class="record-card" data-id="'+val(r.id)+'"><div class="record-top"><div><span class="eyebrow">'+val(r.source||r.kind)+'</span><h3>'+val(customer)+'</h3><div class="record-meta">'+val(r.id)+' • '+val(new Date(r.createdAt||Date.now()).toLocaleString('ar-EG'))+'</div></div><span class="license-badge">'+val(r.status||'new')+'</span></div><div class="record-grid"><div class="record-box"><b>الطلب</b><br>'+val(what)+(amount?'<br><strong>'+val(amount)+'</strong>':'')+'</div><div class="record-box"><b>التواصل</b><br>'+val(contact||'غير متاح')+'</div></div>'+(detail?'<div class="record-box" style="margin-top:10px">'+val(detail).slice(0,900)+'</div>':'')+'<div class="record-actions"><select class="record-status">'+statusOptions(r.status)+'</select><textarea class="record-notes" rows="2" placeholder="ملاحظات داخلية">'+val(r.notes||'')+'</textarea><button class="btn dark sm record-save" type="button">حفظ</button></div></article>';
+    }).join('');
+    document.querySelectorAll('.record-card').forEach(function(card){card.querySelector('.record-save').onclick=function(){saveCard(card.dataset.id,card).catch(function(){alert('تعذر حفظ التعديل')})}});
+  }
+  async function loadRecords(){
+    err.textContent='';loadBtn.disabled=true;loadBtn.textContent='جاري التحميل…';
+    try{
+      var r=await fetch('/api/leads',{headers:{'x-admin-key':keyInput.value}});
+      var d=await r.json();if(!r.ok)throw Error('auth');
+      sessionStorage.setItem('3bk-records-key',keyInput.value);panel.style.display='block';renderRecords(d.records||[]);
+    }catch(e){panel.style.display='none';err.textContent='تعذر فتح اللوحة. راجع مفتاح الإدارة.'}
+    finally{loadBtn.disabled=false;loadBtn.textContent='عرض الـRecords'}
+  }
+  loadBtn.onclick=loadRecords;if(saved)loadRecords();
 }
 function initBookCheckout(){
   var f=document.getElementById('bookCheckout');if(!f)return;
@@ -398,11 +472,11 @@ function initBookAdmin(){
   copyLicense.onclick=function(){navigator.clipboard.writeText(licenseUrl.value)}
 }
 function setTitle(path){
-  var map={'/':'3bkarino Tech | حلول تقنية أبسط وأسرع','/services':'الحلول | 3bkarino Tech','/pricing':'الأسعار | 3bkarino Tech','/portfolio':'أعمالنا | 3bkarino Tech','/blog':'المقالات | 3bkarino Tech','/book':'AI Marketing Machine | 3bkarino Tech','/book/checkout':'شراء الكتاب | 3bkarino Tech','/book/read':'نسختك المرخصة | 3bkarino Tech','/tools':'أدوات مجانية | 3bkarino Tech','/ai-consultant':'مستشار 60 ثانية | 3bkarino Tech','/contact':'ابدأ مشروعك | 3bkarino Tech'};document.title=map[path]||'3bkarino Tech';
+  var map={'/':'3bkarino Tech | حلول تقنية أبسط وأسرع','/services':'الحلول | 3bkarino Tech','/pricing':'الأسعار | 3bkarino Tech','/portfolio':'أعمالنا | 3bkarino Tech','/blog':'المقالات | 3bkarino Tech','/book':'AI Marketing Machine | 3bkarino Tech','/book/checkout':'شراء الكتاب | 3bkarino Tech','/book/read':'نسختك المرخصة | 3bkarino Tech','/tools':'أدوات مجانية | 3bkarino Tech','/ai-consultant':'مستشار 60 ثانية | 3bkarino Tech','/contact':'ابدأ مشروعك | 3bkarino Tech','/admin/records':'Records Dashboard | 3bkarino Tech'};document.title=map[path]||'3bkarino Tech';
 }
 function render(){
   if(activeTimer){clearInterval(activeTimer);activeTimer=null}
-  var p=location.pathname.replace(/\/+$/,'')||'/';setTitle(p);
+  var p=location.pathname.replace(/\/+$/,'')||'/';setTitle(p);var robots=document.querySelector('meta[name="robots"]');if(robots)robots.content=p.indexOf('/admin/')===0?'noindex,nofollow':'index,follow';
   document.querySelectorAll('.navlinks a').forEach(function(a){a.classList.toggle('active',a.getAttribute('href')===p)});
   if(p==='/')app.innerHTML=home();
   else if(p==='/services')app.innerHTML=servicesPage();
@@ -417,8 +491,9 @@ function render(){
   else if(p==='/tools')app.innerHTML=toolsPage();
   else if(p==='/contact'||p==='/booking')app.innerHTML=contactPage();
   else if(p==='/ai-consultant')app.innerHTML=aiPage();
+  else if(p==='/admin/records')app.innerHTML=recordsAdminPage();
   else app.innerHTML=notFound();
-  initFaq();initCalc();initLead();initAI();initBookCheckout();initBookReader();initBookAdmin();
+  initFaq();initCalc();initLead();initAI();initRecordsAdmin();initBookCheckout();initBookReader();initBookAdmin();
 }
 render();
 })();
