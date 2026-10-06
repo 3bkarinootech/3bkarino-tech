@@ -9,10 +9,11 @@ const html=fs.readFileSync('site.html');
 fs.writeFileSync('public/index.html',html);
 fs.writeFileSync('public/404.html',html);
 fs.copyFileSync('assets/logo-v2.png','public/assets/logo-v2.png');
+fs.copyFileSync('assets/book-cover-a.jpg','public/assets/book-cover-a.jpg');
 
 const routes=[
   'services','portfolio','pricing','blog','tools','contact','ai-consultant',
-  'book','booking','privacy-policy',
+  'book','book/checkout','book/read','book/admin','booking','privacy-policy',
   'blog/ai-marketing-revolution','blog/analytics-guide','blog/paid-ads-guide'
 ];
 
