@@ -2,7 +2,7 @@ import { saveRecord, readRecord } from '../lib/records.js';
 import { createBookIntention, paymobConfig } from '../lib/paymob.js';
 import { BOOK_META, bookForVersion } from '../lib/book-content.js';
 import { ACCESS_POLICY, token, verifyToken, issueLicenses, createFreshAccess, createReaderSession } from '../lib/book-access.js';
-import { purchaseEmailConfigured, sendAccessRecoveryEmail } from '../lib/email.js';
+import { purchaseEmailConfigured, purchaseEmailProvider, sendAccessRecoveryEmail } from '../lib/email.js';
 
 const ADMIN=process.env.BOOK_ADMIN_KEY||'';
 const WA='201120124338';
@@ -22,7 +22,7 @@ export default async function handler(req,res){
   if(req.method==='GET')return send(res,200,{
     enabled:Boolean(process.env.BOOK_LICENSE_SECRET),
     meta:BOOK_META,products:PRODUCTS,delivery:'licensed-online-reader',
-    accessPolicy:ACCESS_POLICY,pdfAttachment:false,emailConfigured:purchaseEmailConfigured(),
+    accessPolicy:ACCESS_POLICY,pdfAttachment:false,emailConfigured:purchaseEmailConfigured(),emailProvider:purchaseEmailProvider(),
     paymentConfigured:paymobConfig().configured,paymentMode:paymobConfig().mode,
     paymentMethods:{paymob:{enabled:paymobConfig().configured,automatic:true,mode:paymobConfig().mode}}
   });
