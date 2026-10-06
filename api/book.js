@@ -87,9 +87,12 @@ export default async function handler(req,res){
       await saveRecord({
         id,kind:'order',source:'book',status:'pending_payment',createdAt,
         ...customer,product,productLabel:info.label,amount:info.price,currency:'EGP',
-        paymentMethod,paymentReady,recipient
+        paymentMethod,paymentReady,recipient,consentAt:createdAt
       });
-    }catch{}
+    }catch(err){
+      console.error('ORDER_RECORD_FAILED',err);
+      return send(res,503,{error:'ORDER_STORAGE_UNAVAILABLE'});
+    }
     const msg='طلب شراء AI Marketing Machine\nرقم الطلب: '+id+'\nالاسم: '+name+'\nالإيميل: '+email+'\nالموبايل: '+phone+'\nواتساب: '+whatsapp+'\nالمحافظة: '+governorate+'\nالمدينة/المنطقة: '+city+'\nالمنتج: '+info.label+'\nالسعر: '+info.price+' جنيه\nطريقة الدفع: '+paymentMethod+(recipient?'\nالمستلم الثاني: '+recipient.name:'')+'\n\nأريد إتمام الدفع واستلام النسخة/النسخ المرخصة.';
     return send(res,200,{
       orderId:id,product,productLabel:info.label,price:info.price,orderToken,paymentMethod,paymentReady,
