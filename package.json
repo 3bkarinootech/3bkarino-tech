@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "ai": "7.0.127",
-    "@vercel/blob": "2.6.1"
+    "@vercel/blob": "2.6.1",
+    "nodemailer": "7.0.6"
   }
 }
