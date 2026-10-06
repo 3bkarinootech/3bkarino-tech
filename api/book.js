@@ -1,67 +1,32 @@
-import { createHmac, timingSafeEqual } from 'node:crypto';
 import { saveRecord, readRecord } from '../lib/records.js';
 import { createBookIntention, paymobConfig } from '../lib/paymob.js';
+import { BOOK_META, bookForVersion } from '../lib/book-content.js';
+import { ACCESS_POLICY, token, verifyToken, issueLicenses, createFreshAccess, createReaderSession } from '../lib/book-access.js';
+import { purchaseEmailConfigured, sendAccessRecoveryEmail } from '../lib/email.js';
 
-const SECRET=process.env.BOOK_LICENSE_SECRET||'';
 const ADMIN=process.env.BOOK_ADMIN_KEY||'';
 const WA='201120124338';
-
-const BOOK_A=[
-{title:'المقدمة — صدمة الواقع',body:['في 2026، المسوق الذي لا يملك “ماكينة ذكاء اصطناعي” هو مجرد بائع متجول في مدينة ذكية. هذا الكتاب لا يعلّمك الدردشة مع الآلة، بل كيف تستخدمها داخل نظام تسويقي عملي.','الكتاب تفاعلي: اقرأ، نفّذ، اختبر، ثم ارجع للبيانات.']},
-{title:'01 — هندسة الجمهور | Decoding the Persona',body:['الجمهور لا يشتري بالأرقام الديموغرافية فقط. نقطة البداية هي فهم الوجع والمخاوف التي تمنع العميل من اتخاذ القرار.','الأساس المستخدم في هذا الفصل هو التمييز بين الاستجابة العاطفية السريعة والتبرير المنطقي اللاحق.','Prompt العمل: “تقمص شخصية خبير في علم النفس السلوكي. أريد تحليل الوجع العميق لجمهور مهتم بـ [منتجك]. ما هي 3 مخاوف سرية تجعلهم يترددون في الشراء؟ وكيف أصيغ Hook يلمس هذا الوجع في أول 3 ثوانٍ؟”','لغز A: الكود ALPHA-3B- ويحتاج كلمة من نسخة B.']},
-{title:'02 — ترسانة الأدوات | The Weaponry Stack',body:['الذكاء الاصطناعي لا يُستخدم كأداة منفصلة، بل كسلسلة توريد رقمية: التخطيط، الصورة، الصوت، ثم النشر.','ChatGPT/Gemini للعقل والتخطيط، أدوات الصور للفن البصري، وأدوات الصوت/الفيديو للتقديم والإقناع.','Prompt العمل: وزّع إنتاج المحتوى بين التخطيط، الوصف البصري، والصوت مع الحفاظ على هوية واحدة وهدف تحويل واضح.','لغز A: الكود STK-TECH- ويحتاج كلمة من نسخة B.']},
-{title:'03 — هندسة الأوامر | The Master Prompting',body:['بروتوكول R-T-A-F: Role الدور، Task المهمة، Audience الجمهور، Format التنسيق.','كلما كان الأمر محددًا في الدور والمهمة والجمهور والشكل النهائي، أصبحت النتيجة أقرب لما تحتاجه.','Prompt العمل: “تقمص دور Expert Conversion Copywriter... واكتب عرضًا يواجه اعتراضات المشترين قبل أن ينطقوا بها.”','لغز A: الكود CMD-PROMPT- ويحتاج كلمة من نسخة B.']},
-{title:'04 — ماكينة التحويل | The Conversion Funnel',body:['المحتوى يجذب الانتباه، لكن العرض هو الذي يغلق الصفقة. الفصل يبني Funnel يعتمد على الندرة، الاستعجال والدليل الاجتماعي.','قاعدة 80/20: أغلب المحتوى قيمة وفهم وثقة، وجزء أصغر بيع مباشر.','Prompt العمل: صمم Funnel من إعلان يثير الفضول، Landing Page تركز على المشكلة، ثم رسائل متابعة تعتمد على الخوف من الضياع بشكل مسؤول.','لغز A: الكود CONV-FUEL- ويحتاج كلمة من نسخة B.']},
-{title:'05 — لغة الأرقام | The Data Master',body:['ما لا يمكن قياسه لا يمكن تطويره. اقرأ CTR وCPC وROAS كإشارات لاتخاذ قرار، وليس أرقامًا للعرض فقط.','CTR منخفض قد يشير إلى ضعف الهوك، CPC مرتفع قد يشير إلى مشكلة في الاستهداف أو المنافسة، وROAS منخفض يحتاج مراجعة العرض والرحلة كاملة.','Prompt العمل: حلّل نتائج الحملة، حدد نقاط الضعف، واقترح تعديلات على العرض والاستهداف ثم اختبرها تدريجيًا.','لغز A: الكود DATA-NERD- ويحتاج كلمة من نسخة B.']},
-{title:'06 — ذكاء المحتوى | Content Engineering',body:['اقتصاد الانتباه يعني أن المحتوى يجب أن يوقف التمرير سريعًا بدون تضليل. استخدم Pattern Interrupt، قصة قصيرة، ثم CTA واضح.','قاعدة 1:10:100: فكرة أساسية → 10 زوايا → عشرات القطع المناسبة للمنصات المختلفة.','Prompt العمل: حوّل الفكرة إلى Hook ثم Story ثم Reward ثم CTA للتعليق أو التفاعل.','لغز A: الكود CONTENT-VIRAL- ويحتاج كلمة من نسخة B.']},
-{title:'07 — مستقبل الوكالة | 3BKARINO 2026+',body:['المستقبل ليس في Prompt منفرد، بل في أنظمة ووكلاء يعملون معًا تحت رقابة بشرية.','كن المايسترو لا العازف: الإبداع والقرار والرقابة للبشر، والمهام المتكررة للأنظمة.','Prompt العمل: صمم هيكل وكالة صغيرة تستخدم Agents موزعين على البحث، المحتوى، المتابعة والتحليل مع نقاط مراجعة بشرية.','لغز A: الكود FUTURE-PRO- ويحتاج كلمة من نسخة B.']},
-{title:'08 — غرفة العمليات | The War Room',body:['غرفة العمليات هي نقطة الربط بين التعلم والتطبيق. تجمع أكواد الفصول، الشريك صاحب النسخة الأخرى، والملفات المساندة.','الهدف من نظام A/B هو التعاون وفك الشفرات بشكل متبادل، وليس نشر الكلمات أو الملفات خارج النظام الرسمي.']},
-{title:'09 — الخاتمة | The Final Command',body:['أنت المايسترو. الآلة تنفذ، لكن الرؤية والقرار والمسؤولية تظل عندك.','وصايا الماكينة: خاطب الوجع قبل الجيب، اعتمد على الأرقام، كرر الاختبار، استخدم الأتمتة للمهام المتكررة، وحافظ على ميزة العمل داخل نظام واضح.','المهمة التالية: اختر فصلًا واحدًا، طبّق تمرينه على مشروعك الحقيقي، وسجل نتيجة قابلة للقياس.']}
-];
-
-const BOOK_B=BOOK_A.map((chapter,index)=>({
-  title:chapter.title,
-  body:chapter.body.map((p)=>{
-    if(p.startsWith('لغز A:')){
-      const code=(p.match(/الكود\s+([^\s]+)/)||[])[1]||'';
-      return 'تحدي B: نفس هدف الفصل، لكن بسؤال/مثال مختلف ومفتاح مكمل لتجربة A'+(code?' — مرجع الكود '+code:'')+'.';
-    }
-    return p;
-  })
-}));
-
-function send(res,status,data){res.statusCode=status;res.setHeader('Content-Type','application/json; charset=utf-8');res.setHeader('Cache-Control','no-store');res.end(JSON.stringify(data))}
-function b64(s){return Buffer.from(JSON.stringify(s)).toString('base64url')}
-function sign(payload){if(!SECRET)throw new Error('BOOK_SECRET_MISSING');return createHmac('sha256',SECRET).update(payload).digest('base64url')}
-function token(data){const p=b64(data);return p+'.'+sign(p)}
-function verify(t){if(!SECRET||typeof t!=='string')return null;const [p,sig]=t.split('.');if(!p||!sig)return null;const exp=sign(p);try{const a=Buffer.from(sig),b=Buffer.from(exp);if(a.length!==b.length||!timingSafeEqual(a,b))return null;return JSON.parse(Buffer.from(p,'base64url').toString('utf8'))}catch{return null}}
-function clean(v,n=120){return String(v||'').trim().slice(0,n)}
-function maskEmail(email){const [u,d]=email.split('@');if(!d)return email;return (u.slice(0,2)||'*')+'***@'+d}
 const PRODUCTS={
   A:{label:'Version A — Strategic Edition',price:299,versions:['A']},
   B:{label:'Version B — Challenge Edition',price:299,versions:['B']},
   BUNDLE:{label:'A + B Bundle',price:500,versions:['A','B']}
-}
+};
+function send(res,status,data){res.statusCode=status;res.setHeader('Content-Type','application/json; charset=utf-8');res.setHeader('Cache-Control','no-store');res.end(JSON.stringify(data))}
+function clean(v,n=120){return String(v||'').trim().slice(0,n)}
+function maskEmail(email){const [u,d]=String(email||'').split('@');if(!d)return email||'';return (u.slice(0,2)||'*')+'***@'+d}
 function productInfo(v){return PRODUCTS[String(v||'').toUpperCase()]||null}
 function orderId(){return '3BK-BOOK-'+Date.now().toString(36).toUpperCase()}
-function licenseId(ver){return '3BK-'+ver+'-'+Date.now().toString(36).toUpperCase()}
+function customerFromToken(t){return {name:t.name,emailMasked:maskEmail(t.email),licenseId:t.licenseId,version:t.version,orderId:t.orderId}}
 
 export default async function handler(req,res){
-  if(req.method==='GET') return send(res,200,{
-    enabled:Boolean(SECRET),
-    title:'AI Marketing Machine',
-    products:PRODUCTS,
-    delivery:'licensed-online-reader',
-    downloadWindowHours:4,
-    paymentConfigured:paymobConfig().configured,
-    paymentMode:paymobConfig().mode,
-    paymentMethods:{
-      paymob:{enabled:paymobConfig().configured,automatic:true,mode:paymobConfig().mode},
-      vodafone_cash:{enabled:Boolean(process.env.VODAFONE_CASH_NUMBER),automatic:false},
-      instapay:{enabled:Boolean(process.env.INSTAPAY_HANDLE),automatic:false}
-    }
+  if(req.method==='GET')return send(res,200,{
+    enabled:Boolean(process.env.BOOK_LICENSE_SECRET),
+    meta:BOOK_META,products:PRODUCTS,delivery:'licensed-online-reader',
+    accessPolicy:ACCESS_POLICY,pdfAttachment:false,emailConfigured:purchaseEmailConfigured(),
+    paymentConfigured:paymobConfig().configured,paymentMode:paymobConfig().mode,
+    paymentMethods:{paymob:{enabled:paymobConfig().configured,automatic:true,mode:paymobConfig().mode}}
   });
-  if(req.method!=='POST') return send(res,405,{error:'METHOD_NOT_ALLOWED'});
+  if(req.method!=='POST')return send(res,405,{error:'METHOD_NOT_ALLOWED'});
   let body=req.body;try{if(typeof body==='string')body=JSON.parse(body)}catch{return send(res,400,{error:'BAD_JSON'})}
   const action=body?.action;
 
@@ -70,101 +35,95 @@ export default async function handler(req,res){
     const whatsapp=clean(body.whatsapp||body.phone,30),governorate=clean(body.governorate,80),city=clean(body.city,100);
     const country=clean(body.country||'Egypt',80),activity=clean(body.activity,120);
     const secondName=clean(body.secondName,120),secondEmail=clean(body.secondEmail,180).toLowerCase(),secondPhone=clean(body.secondPhone,30);
-    const product=String(body.product||'').toUpperCase(),info=productInfo(product);
-    const paymentMethod=clean(body.paymentMethod||'paymob',40);
-    const allowedPayments=['paymob','vodafone_cash','instapay'];
-    if(name.length<2||!email.includes('@')||phone.length<8||whatsapp.length<8||!governorate||!city||!info||!allowedPayments.includes(paymentMethod)){
-      return send(res,400,{error:'INVALID_CUSTOMER_OR_PRODUCT'});
-    }
-    const id=orderId(),createdAt=Date.now();
-    const customer={name,email,phone,whatsapp,governorate,city,country,activity};
+    const product=String(body.product||'').toUpperCase(),info=productInfo(product),paymentMethod='paymob';
+    if(name.length<2||!email.includes('@')||phone.length<8||whatsapp.length<8||!governorate||!city||!info)return send(res,400,{error:'INVALID_CUSTOMER_OR_PRODUCT'});
+    if(product==='BUNDLE'&&secondName&&secondEmail&&!secondEmail.includes('@'))return send(res,400,{error:'INVALID_SECOND_RECIPIENT_EMAIL'});
+    const id=orderId(),createdAt=Date.now(),customer={name,email,phone,whatsapp,governorate,city,country,activity};
     const recipient=product==='BUNDLE'&&secondName?{name:secondName,email:secondEmail,phone:secondPhone}:null;
     const orderToken=token({type:'order',id,...customer,product,price:info.price,paymentMethod,recipient,createdAt});
-    const paymentReady=paymentMethod==='paymob'
-      ? paymobConfig().configured
-      : paymentMethod==='vodafone_cash'
-        ? Boolean(process.env.VODAFONE_CASH_NUMBER)
-        : Boolean(process.env.INSTAPAY_HANDLE);
+    const paymentReady=paymobConfig().configured;
     try{
-      await saveRecord({
-        id,kind:'order',source:'book',status:'pending_payment',createdAt,
-        ...customer,product,productLabel:info.label,amount:info.price,currency:'EGP',
-        paymentMethod,paymentReady,recipient,consentAt:createdAt
-      });
-    }catch(err){
-      console.error('ORDER_RECORD_FAILED',err);
-      return send(res,503,{error:'ORDER_STORAGE_UNAVAILABLE'});
-    }
-    const msg='طلب شراء AI Marketing Machine\nرقم الطلب: '+id+'\nالاسم: '+name+'\nالإيميل: '+email+'\nالموبايل: '+phone+'\nواتساب: '+whatsapp+'\nالمحافظة: '+governorate+'\nالمدينة/المنطقة: '+city+'\nالمنتج: '+info.label+'\nالسعر: '+info.price+' جنيه\nطريقة الدفع: '+paymentMethod+(recipient?'\nالمستلم الثاني: '+recipient.name:'')+'\n\nأريد إتمام الدفع واستلام النسخة/النسخ المرخصة.';
+      await saveRecord({id,kind:'order',source:'book',status:'pending_payment',createdAt,...customer,product,productLabel:info.label,amount:info.price,currency:'EGP',paymentMethod,paymentReady,recipient,consentAt:createdAt});
+    }catch(err){console.error('ORDER_RECORD_FAILED',err);return send(res,503,{error:'ORDER_STORAGE_UNAVAILABLE'})}
     let paymob=null,paymentError='';
-    if(paymentMethod==='paymob'&&paymentReady){
+    if(paymentReady){
       try{
         paymob=await createBookIntention(req,{id,...customer,product,recipient},info);
         const record=await readRecord(id);
         if(record)await saveRecord({...record,paymentReady:true,paymentStatus:'awaiting_payment',paymobIntentionId:paymob.intentionId,paymobOrderId:String(paymob.paymobOrderId||'')});
       }catch(err){
-        console.error('PAYMOB_START_FAILED',err?.message||err);
-        paymentError='PAYMOB_START_FAILED';
-        const record=await readRecord(id);
-        if(record)await saveRecord({...record,paymentReady:false,paymentStatus:'init_failed'});
+        console.error('PAYMOB_START_FAILED',err?.message||err);paymentError='PAYMOB_START_FAILED';
+        const record=await readRecord(id);if(record)await saveRecord({...record,paymentReady:false,paymentStatus:'init_failed'});
       }
     }
-    return send(res,200,{
-      orderId:id,product,productLabel:info.label,price:info.price,orderToken,paymentMethod,
-      paymentReady:Boolean(paymentMethod==='paymob'?paymob&&paymob.checkoutUrl:paymentReady),
-      paymentMode:paymobConfig().mode,
-      paymentUrl:paymentMethod==='paymob'?(paymob?.checkoutUrl||''):'',
-      paymentError,
-      manualPayment:paymentMethod==='vodafone_cash'
-        ? {type:'vodafone_cash',destination:process.env.VODAFONE_CASH_NUMBER||''}
-        : paymentMethod==='instapay'
-          ? {type:'instapay',destination:process.env.INSTAPAY_HANDLE||''}
-          : null,
-      whatsappUrl:'https://wa.me/'+WA+'?text='+encodeURIComponent(msg)
-    });
+    const msg='طلب شراء AI Marketing Machine\nرقم الطلب: '+id+'\nالاسم: '+name+'\nالإيميل: '+email+'\nالموبايل: '+phone+'\nالمنتج: '+info.label+'\nالسعر: '+info.price+' جنيه';
+    return send(res,200,{orderId:id,product,productLabel:info.label,price:info.price,orderToken,paymentMethod,paymentReady:Boolean(paymob?.checkoutUrl),paymentMode:paymobConfig().mode,paymentUrl:paymob?.checkoutUrl||'',paymentError,whatsappUrl:'https://wa.me/'+WA+'?text='+encodeURIComponent(msg)});
   }
 
   if(action==='issue-license'){
     if(!ADMIN||body.adminKey!==ADMIN)return send(res,403,{error:'ADMIN_REQUIRED'});
-    const order=verify(body.orderToken);if(!order||order.type!=='order')return send(res,400,{error:'INVALID_ORDER'});
+    const order=verifyToken(body.orderToken);if(!order||order.type!=='order')return send(res,400,{error:'INVALID_ORDER'});
     const info=productInfo(order.product);if(!info)return send(res,400,{error:'INVALID_PRODUCT'});
-    const existing=await readRecord(order.id);
-    if(existing?.licenses?.length){
-      const first=existing.licenses[0];
-      return send(res,200,{product:order.product,price:info.price,licenses:existing.licenses,licenseId:first.licenseId,version:first.version,licenseToken:first.licenseToken,readerUrl:first.readerUrl});
-    }
-    const issuedAt=Date.now();
-    const licenses=info.versions.map((version)=>{
-      const lic=licenseId(version);
-      const recipient=version==='B'&&order.recipient?order.recipient:null;
-      const licensedName=recipient?.name||order.name;
-      const licensedEmail=recipient?.email&&recipient.email.includes('@')?recipient.email:order.email;
-      const licensedPhone=recipient?.phone||order.phone;
-      const licenseToken=token({type:'license',licenseId:lic,name:licensedName,email:licensedEmail,phone:licensedPhone,version,product:order.product,orderId:order.id,issuedAt});
-      return {licenseId:lic,version,licenseToken,readerUrl:'/book/read?license='+encodeURIComponent(licenseToken)};
-    });
-    if(existing)await saveRecord({...existing,status:'paid',paymentStatus:existing.paymentStatus||'manual_confirmed',paidAt:existing.paidAt||issuedAt,fulfillmentStatus:'license_issued',licenses});
-    const first=licenses[0];
-    return send(res,200,{product:order.product,price:info.price,licenses,licenseId:first.licenseId,version:first.version,licenseToken:first.licenseToken,readerUrl:first.readerUrl});
+    const existing=await readRecord(order.id);if(!existing)return send(res,404,{error:'ORDER_NOT_FOUND'});
+    if(existing.licenses?.length)return send(res,200,{product:order.product,price:info.price,licenses:existing.licenses});
+    const licenses=issueLicenses(existing,info.versions),issuedAt=Date.now();
+    await saveRecord({...existing,status:'paid',paymentStatus:existing.paymentStatus||'manual_confirmed',paidAt:existing.paidAt||issuedAt,fulfillmentStatus:'license_issued',licenses});
+    return send(res,200,{product:order.product,price:info.price,licenses});
   }
 
   if(action==='order-status'){
-    const order=verify(body.orderToken);if(!order||order.type!=='order')return send(res,401,{error:'INVALID_ORDER_TOKEN'});
+    const order=verifyToken(body.orderToken);if(!order||order.type!=='order')return send(res,401,{error:'INVALID_ORDER_TOKEN'});
     const record=await readRecord(order.id);if(!record)return send(res,404,{error:'ORDER_NOT_FOUND'});
     return send(res,200,{
       orderId:record.id,status:record.status||'pending_payment',paymentStatus:record.paymentStatus||record.status||'pending_payment',
       product:record.product,productLabel:record.productLabel,amount:record.amount,currency:record.currency||'EGP',
-      paymentMethod:record.paymentMethod||'',paidAt:record.paidAt||null,
-      licenses:(record.status==='paid'||record.status==='won')?(record.licenses||[]).map(x=>({licenseId:x.licenseId,version:x.version,readerUrl:x.readerUrl})):[],
+      paidAt:record.paidAt||null,emailStatus:record.emailStatus||'',
+      licenses:(record.status==='paid'||record.status==='won')?(record.licenses||[]).map(x=>({licenseId:x.licenseId,version:x.version,readerUrl:x.readerUrl,activationExpiresAt:x.activationExpiresAt||null})):[],
       mode:paymobConfig().mode
     });
   }
 
+  if(action==='activate-access'){
+    const access=verifyToken(body.accessToken);
+    if(!access||access.type!=='book-access')return send(res,401,{error:'ACCESS_LINK_EXPIRED_OR_INVALID'});
+    const record=await readRecord(access.orderId);if(!record||record.status!=='paid')return send(res,403,{error:'ORDER_NOT_PAID'});
+    const lic=(record.licenses||[]).find(x=>x.licenseId===access.licenseId&&x.version===access.version);
+    if(!lic)return send(res,403,{error:'LICENSE_NOT_FOUND'});
+    const sessionToken=createReaderSession(access);
+    await saveRecord({...record,lastReaderActivationAt:Date.now()});
+    return send(res,200,{valid:true,sessionToken,customer:customerFromToken(access),meta:BOOK_META});
+  }
+
   if(action==='validate'||action==='content'){
-    const lic=verify(body.licenseToken);if(!lic||lic.type!=='license')return send(res,401,{error:'INVALID_LICENSE'});
-    const customer={name:lic.name,emailMasked:maskEmail(lic.email),licenseId:lic.licenseId,version:lic.version,orderId:lic.orderId};
-    if(action==='validate')return send(res,200,{valid:true,customer});
-    return send(res,200,{valid:true,customer,chapters:lic.version==='A'?BOOK_A:BOOK_B});
+    let session=verifyToken(body.sessionToken);
+    if(!session&&body.licenseToken){
+      const legacy=verifyToken(body.licenseToken);
+      if(legacy?.type==='license')session={...legacy,type:'reader-session'};
+    }
+    if(!session||session.type!=='reader-session')return send(res,401,{error:'READER_SESSION_EXPIRED'});
+    const record=await readRecord(session.orderId);if(!record||record.status!=='paid')return send(res,403,{error:'ORDER_NOT_PAID'});
+    const valid=(record.licenses||[]).some(x=>x.licenseId===session.licenseId&&x.version===session.version);
+    if(!valid)return send(res,403,{error:'LICENSE_NOT_FOUND'});
+    const customer=customerFromToken(session);
+    const rotated=createReaderSession(session);
+    if(action==='validate')return send(res,200,{valid:true,customer,sessionToken:rotated,meta:BOOK_META});
+    return send(res,200,{valid:true,customer,sessionToken:rotated,meta:BOOK_META,chapters:bookForVersion(session.version)});
+  }
+
+  if(action==='request-access'){
+    const orderIdInput=clean(body.orderId,120),email=clean(body.email,180).toLowerCase();
+    if(!orderIdInput||!email.includes('@'))return send(res,400,{error:'ORDER_AND_EMAIL_REQUIRED'});
+    const record=await readRecord(orderIdInput);
+    if(!record||record.status!=='paid')return send(res,200,{accepted:true});
+    const lic=(record.licenses||[]).find(x=>String(x.email||record.email).toLowerCase()===email);
+    if(!lic)return send(res,200,{accepted:true});
+    if(!purchaseEmailConfigured())return send(res,503,{error:'EMAIL_NOT_CONFIGURED'});
+    const fresh=createFreshAccess(lic,record.id);
+    const result=await sendAccessRecoveryEmail(record,lic,fresh);
+    if(!result.ok)return send(res,503,{error:'EMAIL_SEND_FAILED'});
+    const updated=(record.licenses||[]).map(x=>x.licenseId===lic.licenseId?{...x,readerUrl:fresh.readerUrl,activationExpiresAt:fresh.expiresAt}:x);
+    await saveRecord({...record,licenses:updated,lastAccessEmailAt:Date.now()});
+    return send(res,200,{accepted:true});
   }
 
   return send(res,400,{error:'UNKNOWN_ACTION'});
