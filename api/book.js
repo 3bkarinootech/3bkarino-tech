@@ -1,5 +1,6 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
-import { saveRecord } from '../lib/records.js';
+import { saveRecord, readRecord } from '../lib/records.js';
+import { createBookIntention, paymobConfig } from '../lib/paymob.js';
 
 const SECRET=process.env.BOOK_LICENSE_SECRET||'';
 const ADMIN=process.env.BOOK_ADMIN_KEY||'';
@@ -52,9 +53,10 @@ export default async function handler(req,res){
     products:PRODUCTS,
     delivery:'licensed-online-reader',
     downloadWindowHours:4,
-    paymentConfigured:Boolean(process.env.BOOK_PAYMENT_URL),
+    paymentConfigured:paymobConfig().configured,
+    paymentMode:paymobConfig().mode,
     paymentMethods:{
-      paymob:{enabled:Boolean(process.env.BOOK_PAYMENT_URL),automatic:true},
+      paymob:{enabled:paymobConfig().configured,automatic:true,mode:paymobConfig().mode},
       vodafone_cash:{enabled:Boolean(process.env.VODAFONE_CASH_NUMBER),automatic:false},
       instapay:{enabled:Boolean(process.env.INSTAPAY_HANDLE),automatic:false}
     }
@@ -79,7 +81,7 @@ export default async function handler(req,res){
     const recipient=product==='BUNDLE'&&secondName?{name:secondName,email:secondEmail,phone:secondPhone}:null;
     const orderToken=token({type:'order',id,...customer,product,price:info.price,paymentMethod,recipient,createdAt});
     const paymentReady=paymentMethod==='paymob'
-      ? Boolean(process.env.BOOK_PAYMENT_URL)
+      ? paymobConfig().configured
       : paymentMethod==='vodafone_cash'
         ? Boolean(process.env.VODAFONE_CASH_NUMBER)
         : Boolean(process.env.INSTAPAY_HANDLE);
@@ -94,9 +96,25 @@ export default async function handler(req,res){
       return send(res,503,{error:'ORDER_STORAGE_UNAVAILABLE'});
     }
     const msg='طلب شراء AI Marketing Machine\nرقم الطلب: '+id+'\nالاسم: '+name+'\nالإيميل: '+email+'\nالموبايل: '+phone+'\nواتساب: '+whatsapp+'\nالمحافظة: '+governorate+'\nالمدينة/المنطقة: '+city+'\nالمنتج: '+info.label+'\nالسعر: '+info.price+' جنيه\nطريقة الدفع: '+paymentMethod+(recipient?'\nالمستلم الثاني: '+recipient.name:'')+'\n\nأريد إتمام الدفع واستلام النسخة/النسخ المرخصة.';
+    let paymob=null,paymentError='';
+    if(paymentMethod==='paymob'&&paymentReady){
+      try{
+        paymob=await createBookIntention(req,{id,...customer,product,recipient},info);
+        const record=await readRecord(id);
+        if(record)await saveRecord({...record,paymentReady:true,paymentStatus:'awaiting_payment',paymobIntentionId:paymob.intentionId,paymobOrderId:String(paymob.paymobOrderId||'')});
+      }catch(err){
+        console.error('PAYMOB_START_FAILED',err?.message||err);
+        paymentError='PAYMOB_START_FAILED';
+        const record=await readRecord(id);
+        if(record)await saveRecord({...record,paymentReady:false,paymentStatus:'init_failed'});
+      }
+    }
     return send(res,200,{
-      orderId:id,product,productLabel:info.label,price:info.price,orderToken,paymentMethod,paymentReady,
-      paymentUrl:paymentMethod==='paymob'?(process.env.BOOK_PAYMENT_URL||''):'',
+      orderId:id,product,productLabel:info.label,price:info.price,orderToken,paymentMethod,
+      paymentReady:Boolean(paymentMethod==='paymob'?paymob&&paymob.checkoutUrl:paymentReady),
+      paymentMode:paymobConfig().mode,
+      paymentUrl:paymentMethod==='paymob'?(paymob?.checkoutUrl||''):'',
+      paymentError,
       manualPayment:paymentMethod==='vodafone_cash'
         ? {type:'vodafone_cash',destination:process.env.VODAFONE_CASH_NUMBER||''}
         : paymentMethod==='instapay'
@@ -110,8 +128,13 @@ export default async function handler(req,res){
     if(!ADMIN||body.adminKey!==ADMIN)return send(res,403,{error:'ADMIN_REQUIRED'});
     const order=verify(body.orderToken);if(!order||order.type!=='order')return send(res,400,{error:'INVALID_ORDER'});
     const info=productInfo(order.product);if(!info)return send(res,400,{error:'INVALID_PRODUCT'});
+    const existing=await readRecord(order.id);
+    if(existing?.licenses?.length){
+      const first=existing.licenses[0];
+      return send(res,200,{product:order.product,price:info.price,licenses:existing.licenses,licenseId:first.licenseId,version:first.version,licenseToken:first.licenseToken,readerUrl:first.readerUrl});
+    }
     const issuedAt=Date.now();
-    const licenses=info.versions.map((version,index)=>{
+    const licenses=info.versions.map((version)=>{
       const lic=licenseId(version);
       const recipient=version==='B'&&order.recipient?order.recipient:null;
       const licensedName=recipient?.name||order.name;
@@ -120,8 +143,21 @@ export default async function handler(req,res){
       const licenseToken=token({type:'license',licenseId:lic,name:licensedName,email:licensedEmail,phone:licensedPhone,version,product:order.product,orderId:order.id,issuedAt});
       return {licenseId:lic,version,licenseToken,readerUrl:'/book/read?license='+encodeURIComponent(licenseToken)};
     });
+    if(existing)await saveRecord({...existing,status:'paid',paymentStatus:existing.paymentStatus||'manual_confirmed',paidAt:existing.paidAt||issuedAt,fulfillmentStatus:'license_issued',licenses});
     const first=licenses[0];
     return send(res,200,{product:order.product,price:info.price,licenses,licenseId:first.licenseId,version:first.version,licenseToken:first.licenseToken,readerUrl:first.readerUrl});
+  }
+
+  if(action==='order-status'){
+    const order=verify(body.orderToken);if(!order||order.type!=='order')return send(res,401,{error:'INVALID_ORDER_TOKEN'});
+    const record=await readRecord(order.id);if(!record)return send(res,404,{error:'ORDER_NOT_FOUND'});
+    return send(res,200,{
+      orderId:record.id,status:record.status||'pending_payment',paymentStatus:record.paymentStatus||record.status||'pending_payment',
+      product:record.product,productLabel:record.productLabel,amount:record.amount,currency:record.currency||'EGP',
+      paymentMethod:record.paymentMethod||'',paidAt:record.paidAt||null,
+      licenses:(record.status==='paid'||record.status==='won')?(record.licenses||[]).map(x=>({licenseId:x.licenseId,version:x.version,readerUrl:x.readerUrl})):[],
+      mode:paymobConfig().mode
+    });
   }
 
   if(action==='validate'||action==='content'){
