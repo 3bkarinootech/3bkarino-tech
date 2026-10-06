@@ -12,7 +12,7 @@ fs.cpSync('assets','public/assets',{recursive:true,force:true});
 
 const routes=[
   'services','portfolio','pricing','blog','tools','contact','ai-consultant',
-  'book','book/checkout','book/read','book/admin','booking','privacy-policy',
+  'book','book/checkout','book/read','book/admin','booking','privacy-policy','admin/records',
   'blog/ai-marketing-revolution','blog/analytics-guide','blog/paid-ads-guide'
 ];
 
