@@ -203,7 +203,7 @@ h1,h2,h3,p{margin-top:0}.hero h1{font-size:clamp(46px,7vw,80px);line-height:1.04
       <p>حلول تقنية أبسط وأسهل: مواقع، أنظمة، Excel، AI وتسويق — حسب احتياجك الحقيقي.</p>
     </div>
     <div><b style="color:#fff">ابدأ</b><a href="/services" data-link>الحلول</a><a href="/pricing" data-link>الأسعار</a><a href="/portfolio" data-link>أعمالنا</a><a href="/contact" data-link>اطلب عرض سعر</a></div>
-    <div><b style="color:#fff">استكشف</b><a href="/blog" data-link>المقالات</a><a href="/book" data-link>الكتاب الإلكتروني</a><a href="/tools" data-link>أدوات مجانية</a><a href="/ai-consultant" data-link>مستشار 60 ثانية</a></div>
+    <div><b style="color:#fff">استكشف</b><a href="/blog" data-link>المقالات</a><a href="/book" data-link>الكتاب الإلكتروني</a><a href="/tools" data-link>أدوات مجانية</a><a href="/ai-consultant" data-link>مستشار 60 ثانية</a><a href="/privacy-policy" data-link>الخصوصية وحماية البيانات</a></div>
   </div>
 </footer>
 <div class="mobile-bar"><a class="btn primary sm" href="/contact" data-link>ابدأ مشروعك</a><a class="btn whatsapp sm" href="https://wa.me/201120124338" target="_blank" rel="noopener">واتساب</a></div>
@@ -386,6 +386,10 @@ function aiPage(){
   return pageHero('مستشار 60 ثانية','في أقل من دقيقة هنفهم احتياجك ونجهز بداية مناسبة، وبعدها نكمل التفاصيل والاتفاق على واتساب.')+
   '<section class="section"><div class="container ai-shell"><div class="ai-top"><div><span class="eyebrow" style="color:var(--yellow)">60 ثانية</span><h2 style="margin:3px 0">قولي محتاج تعمل إيه</h2><div style="font-size:12px;color:#999">الوقت يبدأ من أول رسالة. بعد النهاية هنجهز ملخص ونفتح واتساب تلقائيًا.</div></div><div class="timer" id="timer">01:00</div></div><div class="progress"><i id="bar"></i></div><div class="ai-grid"><aside class="ai-side"><h3>هنسألك باختصار عن:</h3><ul class="list"><li>نوع شغلك</li><li>الهدف اللي عايز توصله</li><li>الخدمة الأقرب لطلبك</li><li>الميزانية والموعد لو معروفين</li></ul><p>الدقيقة دي لتحديد الاحتياج فقط. التفاصيل النهائية والتفاوض والاتفاق بنكملهم معاك على واتساب.</p></aside><div><div class="chatbox"><div class="messages" id="messages"></div><form class="chat-form" id="chatForm"><textarea id="chatInput" rows="2" maxlength="900" placeholder="مثال: عندي شركة وعايز موقع خدمات احترافي..." required></textarea><button class="btn primary" id="chatSend">إرسال</button></form></div><div class="handoff" id="handoff"><span class="eyebrow">جاهز نكمل</span><h3>تم تجهيز ملخص طلبك.</h3><p>واتساب هيفتح برسالة فيها احتياجك والمقترح والسعر المبدئي والمحادثة، عشان تكمل من نفس النقطة.</p><div class="summary" id="handoffSummary"></div><a class="btn whatsapp" id="handoffWa" target="_blank" rel="noopener">فتح واتساب الآن</a><div class="redirect" id="redirect">جاري التحويل تلقائيًا...</div></div></div></div></div></section>';
 }
+function privacyPage(){
+  return pageHero('الخصوصية وحماية بيانات العملاء','بنوضح هنا ببساطة إيه البيانات اللي بنجمعها وقت الطلب وليه بنحتاجها.')+
+  '<section class="section"><div class="container content"><div class="card"><h2>بيانات عمليات الشراء</h2><p>عند شراء منتج رقمي من 3bkarino Tech بنطلب بيانات التواصل الأساسية اللازمة لتنفيذ الطلب: الاسم الكامل، رقم الموبايل، رقم واتساب، البريد الإلكتروني، المحافظة والمدينة/المنطقة، بالإضافة لاختيار المنتج وطريقة الدفع.</p><h2>بنستخدم البيانات في إيه؟</h2><p>لتسجيل الطلب، إصدار رقم متابعة وLicense ID، ربط النسخة بصاحبها، تنفيذ التسليم، متابعة حالة الدفع، وتقديم الدعم المرتبط بالطلب.</p><h2>بيانات الدفع</h2><p>إحنا لا نطلب منك داخل الموقع رقم البطاقة البنكية أو CVV أو كلمة مرور. عند تفعيل بوابة الدفع، البيانات الحساسة الخاصة بالدفع يتم إدخالها لدى مزود الدفع نفسه.</p><h2>الوصول للبيانات</h2><p>سجلات الطلبات محفوظة في مساحة خاصة ولا تظهر في صفحات الموقع العامة. لوحة الطلبات الإدارية محمية بمفتاح إدارة.</p><h2>حقوق الكتاب</h2><p>النسخة الرقمية شخصية ومرتبطة ببيانات المشتري والترخيص. إعادة البيع أو التوزيع غير مسموح بها.</p><p class="compare-note">قد نحدّث السياسة عند إضافة بوابة دفع أو طرق تسليم جديدة، وسنعكس التغييرات هنا.</p></div></div></section>';
+}
 function recordsAdminPage(){
   return pageHero('Records Dashboard','لوحة داخلية لمتابعة الـLeads وطلبات الكتاب. البيانات لا تظهر إلا بعد إدخال مفتاح الإدارة.')+
   '<section class="section"><div class="container"><div class="card records-login" id="recordsLogin"><span class="eyebrow">PRIVATE ADMIN</span><h2>افتح لوحة الطلبات</h2><div class="form"><div class="field full"><label>Admin Key</label><input id="recordsKey" type="password" autocomplete="off" placeholder="مفتاح الإدارة"></div><button class="btn dark field full" id="recordsLoad">عرض الـRecords</button></div><p id="recordsError" class="compare-note"></p></div><div id="recordsPanel" style="display:none"><div class="records-stats" id="recordsStats"></div><div class="records-list" id="recordsList"></div></div></div></section>';
@@ -532,7 +536,7 @@ function initBookAdmin(){
   copyLicense.onclick=function(){navigator.clipboard.writeText(licenseUrl.value)}
 }
 function setTitle(path){
-  var map={'/':'3bkarino Tech | حلول تقنية أبسط وأسرع','/services':'الحلول | 3bkarino Tech','/pricing':'الأسعار | 3bkarino Tech','/portfolio':'أعمالنا | 3bkarino Tech','/blog':'المقالات | 3bkarino Tech','/book':'AI Marketing Machine | 3bkarino Tech','/book/checkout':'شراء الكتاب | 3bkarino Tech','/book/read':'نسختك المرخصة | 3bkarino Tech','/tools':'أدوات مجانية | 3bkarino Tech','/ai-consultant':'مستشار 60 ثانية | 3bkarino Tech','/contact':'ابدأ مشروعك | 3bkarino Tech','/admin/records':'Records Dashboard | 3bkarino Tech'};document.title=map[path]||'3bkarino Tech';
+  var map={'/':'3bkarino Tech | حلول تقنية أبسط وأسرع','/services':'الحلول | 3bkarino Tech','/pricing':'الأسعار | 3bkarino Tech','/portfolio':'أعمالنا | 3bkarino Tech','/blog':'المقالات | 3bkarino Tech','/book':'AI Marketing Machine | 3bkarino Tech','/book/checkout':'شراء الكتاب | 3bkarino Tech','/book/read':'نسختك المرخصة | 3bkarino Tech','/tools':'أدوات مجانية | 3bkarino Tech','/ai-consultant':'مستشار 60 ثانية | 3bkarino Tech','/contact':'ابدأ مشروعك | 3bkarino Tech','/privacy-policy':'الخصوصية | 3bkarino Tech','/admin/records':'Records Dashboard | 3bkarino Tech'};document.title=map[path]||'3bkarino Tech';
 }
 function render(){
   if(activeTimer){clearInterval(activeTimer);activeTimer=null}
@@ -551,6 +555,7 @@ function render(){
   else if(p==='/tools')app.innerHTML=toolsPage();
   else if(p==='/contact'||p==='/booking')app.innerHTML=contactPage();
   else if(p==='/ai-consultant')app.innerHTML=aiPage();
+  else if(p==='/privacy-policy')app.innerHTML=privacyPage();
   else if(p==='/admin/records')app.innerHTML=recordsAdminPage();
   else app.innerHTML=notFound();
   initFaq();initCalc();initLead();initAI();initRecordsAdmin();initBookCheckout();initBookReader();initBookAdmin();
