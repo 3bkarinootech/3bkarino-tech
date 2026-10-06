@@ -46,26 +46,61 @@ function orderId(){return '3BK-BOOK-'+Date.now().toString(36).toUpperCase()}
 function licenseId(ver){return '3BK-'+ver+'-'+Date.now().toString(36).toUpperCase()}
 
 export default async function handler(req,res){
-  if(req.method==='GET') return send(res,200,{enabled:Boolean(SECRET),title:'AI Marketing Machine',products:PRODUCTS,delivery:'licensed-online-reader',paymentConfigured:Boolean(process.env.BOOK_PAYMENT_URL)});
+  if(req.method==='GET') return send(res,200,{
+    enabled:Boolean(SECRET),
+    title:'AI Marketing Machine',
+    products:PRODUCTS,
+    delivery:'licensed-online-reader',
+    downloadWindowHours:4,
+    paymentConfigured:Boolean(process.env.BOOK_PAYMENT_URL),
+    paymentMethods:{
+      paymob:{enabled:Boolean(process.env.BOOK_PAYMENT_URL),automatic:true},
+      vodafone_cash:{enabled:Boolean(process.env.VODAFONE_CASH_NUMBER),automatic:false},
+      instapay:{enabled:Boolean(process.env.INSTAPAY_HANDLE),automatic:false}
+    }
+  });
   if(req.method!=='POST') return send(res,405,{error:'METHOD_NOT_ALLOWED'});
   let body=req.body;try{if(typeof body==='string')body=JSON.parse(body)}catch{return send(res,400,{error:'BAD_JSON'})}
   const action=body?.action;
 
   if(action==='create-order'){
-    const name=clean(body.name),email=clean(body.email,180).toLowerCase(),phone=clean(body.phone,30),secondName=clean(body.secondName,120);
+    const name=clean(body.name),email=clean(body.email,180).toLowerCase(),phone=clean(body.phone,30);
+    const whatsapp=clean(body.whatsapp||body.phone,30),governorate=clean(body.governorate,80),city=clean(body.city,100);
+    const country=clean(body.country||'Egypt',80),activity=clean(body.activity,120);
+    const secondName=clean(body.secondName,120),secondEmail=clean(body.secondEmail,180).toLowerCase(),secondPhone=clean(body.secondPhone,30);
     const product=String(body.product||'').toUpperCase(),info=productInfo(product);
-    if(name.length<2||!email.includes('@')||phone.length<8||!info)return send(res,400,{error:'INVALID_CUSTOMER_OR_PRODUCT'});
+    const paymentMethod=clean(body.paymentMethod||'paymob',40);
+    const allowedPayments=['paymob','vodafone_cash','instapay'];
+    if(name.length<2||!email.includes('@')||phone.length<8||whatsapp.length<8||!governorate||!city||!info||!allowedPayments.includes(paymentMethod)){
+      return send(res,400,{error:'INVALID_CUSTOMER_OR_PRODUCT'});
+    }
     const id=orderId(),createdAt=Date.now();
-    const orderToken=token({type:'order',id,name,email,phone,product,price:info.price,secondName,createdAt});
+    const customer={name,email,phone,whatsapp,governorate,city,country,activity};
+    const recipient=product==='BUNDLE'&&secondName?{name:secondName,email:secondEmail,phone:secondPhone}:null;
+    const orderToken=token({type:'order',id,...customer,product,price:info.price,paymentMethod,recipient,createdAt});
+    const paymentReady=paymentMethod==='paymob'
+      ? Boolean(process.env.BOOK_PAYMENT_URL)
+      : paymentMethod==='vodafone_cash'
+        ? Boolean(process.env.VODAFONE_CASH_NUMBER)
+        : Boolean(process.env.INSTAPAY_HANDLE);
     try{
       await saveRecord({
         id,kind:'order',source:'book',status:'pending_payment',createdAt,
-        name,email,phone,product,productLabel:info.label,amount:info.price,currency:'EGP',
-        secondName
+        ...customer,product,productLabel:info.label,amount:info.price,currency:'EGP',
+        paymentMethod,paymentReady,recipient
       });
     }catch{}
-    const msg='طلب شراء AI Marketing Machine\nرقم الطلب: '+id+'\nالاسم: '+name+'\nالإيميل: '+email+'\nالموبايل: '+phone+'\nالمنتج: '+info.label+'\nالسعر: '+info.price+' جنيه'+(secondName?'\nالمستلم الثاني: '+secondName:'')+'\n\nأريد إتمام الدفع واستلام النسخة/النسخ المرخصة.';
-    return send(res,200,{orderId:id,product,productLabel:info.label,price:info.price,orderToken,paymentUrl:process.env.BOOK_PAYMENT_URL||'',whatsappUrl:'https://wa.me/'+WA+'?text='+encodeURIComponent(msg)});
+    const msg='طلب شراء AI Marketing Machine\nرقم الطلب: '+id+'\nالاسم: '+name+'\nالإيميل: '+email+'\nالموبايل: '+phone+'\nواتساب: '+whatsapp+'\nالمحافظة: '+governorate+'\nالمدينة/المنطقة: '+city+'\nالمنتج: '+info.label+'\nالسعر: '+info.price+' جنيه\nطريقة الدفع: '+paymentMethod+(recipient?'\nالمستلم الثاني: '+recipient.name:'')+'\n\nأريد إتمام الدفع واستلام النسخة/النسخ المرخصة.';
+    return send(res,200,{
+      orderId:id,product,productLabel:info.label,price:info.price,orderToken,paymentMethod,paymentReady,
+      paymentUrl:paymentMethod==='paymob'?(process.env.BOOK_PAYMENT_URL||''):'',
+      manualPayment:paymentMethod==='vodafone_cash'
+        ? {type:'vodafone_cash',destination:process.env.VODAFONE_CASH_NUMBER||''}
+        : paymentMethod==='instapay'
+          ? {type:'instapay',destination:process.env.INSTAPAY_HANDLE||''}
+          : null,
+      whatsappUrl:'https://wa.me/'+WA+'?text='+encodeURIComponent(msg)
+    });
   }
 
   if(action==='issue-license'){
@@ -75,8 +110,11 @@ export default async function handler(req,res){
     const issuedAt=Date.now();
     const licenses=info.versions.map((version,index)=>{
       const lic=licenseId(version);
-      const licensedName=(version==='B'&&order.secondName)?order.secondName:order.name;
-      const licenseToken=token({type:'license',licenseId:lic,name:licensedName,email:order.email,phone:order.phone,version,product:order.product,orderId:order.id,issuedAt});
+      const recipient=version==='B'&&order.recipient?order.recipient:null;
+      const licensedName=recipient?.name||order.name;
+      const licensedEmail=recipient?.email&&recipient.email.includes('@')?recipient.email:order.email;
+      const licensedPhone=recipient?.phone||order.phone;
+      const licenseToken=token({type:'license',licenseId:lic,name:licensedName,email:licensedEmail,phone:licensedPhone,version,product:order.product,orderId:order.id,issuedAt});
       return {licenseId:lic,version,licenseToken,readerUrl:'/book/read?license='+encodeURIComponent(licenseToken)};
     });
     const first=licenses[0];
