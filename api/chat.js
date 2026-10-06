@@ -1,5 +1,6 @@
 import { generateText } from 'ai';
 import { createHmac, randomUUID, timingSafeEqual } from 'node:crypto';
+import { saveRecord } from '../lib/records.js';
 
 const MODEL=process.env.AI_MODEL||'inclusionai/ling-3.1-flash';
 const SECRET=process.env.AI_SESSION_SECRET||'';
@@ -38,6 +39,14 @@ async function makeHandoff(messages,session,reason){
     summary=(out.text||'').trim();
   }catch{}
   const finalMsg='طلب جديد من مستشار 3bkarino Tech\n'+'رقم المتابعة: '+base.leadId+'\n'+'سبب التحويل: '+(reason==='timeout'?'انتهاء 60 ثانية':'اكتمال التأهيل')+'\n'+'مدة المحادثة: '+base.elapsed+' ثانية\n\n'+(summary?'— ملخص سريع —\n'+summary+'\n\n':'')+'— طلب العميل —\n'+base.brief+'\n\n'+'— المقترح المبدئي —\n'+'الخدمة: '+base.pick.service+'\n'+'النطاق: '+base.pick.scope+'\n'+'السعر المبدئي: '+base.pick.price+'\n'+(base.miss.length?'معلومات نحتاج نأكدها: '+base.miss.join('، ')+'\n':'')+'ملاحظة: السعر مبدئي ويتثبت بعد مراجعة النطاق والاتفاق النهائي.\n\n'+'— المحادثة كاملة —\n'+transcript(messages);
+  try{
+    await saveRecord({
+      id:base.leadId,kind:'lead',source:'ai-consultant',status:'new',createdAt:Date.now(),
+      service:base.pick.service,priceRange:base.pick.price,scope:base.pick.scope,
+      goal:base.brief,summary,missing:base.miss,transcript:transcript(messages),
+      meta:{reason,elapsed:base.elapsed}
+    });
+  }catch{}
   return {suggestedService:base.pick.service,priceRange:base.pick.price,scope:base.pick.scope,missing:base.miss,whatsappMessage:finalMsg,leadId:base.leadId};
 }
 
