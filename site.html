@@ -184,6 +184,40 @@ h1,h2,h3,p{margin-top:0}.hero h1{font-size:clamp(46px,7vw,80px);line-height:1.04
 .license-action{display:flex;justify-content:space-between;align-items:center;gap:12px;border:1px solid var(--line);border-radius:13px;padding:12px 14px;text-align:right;background:#fff}
 @keyframes pulsePay{50%{transform:scale(1.07);opacity:.72}}
 
+
+.reader-shell{max-width:1180px}
+.reader-layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:18px;align-items:start}
+.reader-toc{position:sticky;top:92px;max-height:calc(100vh - 120px);overflow:auto;background:#111214;color:#fff;border-radius:16px;padding:14px}
+.reader-toc b{display:block;color:var(--yellow);margin-bottom:8px}
+.reader-toc a{display:block;color:#c9cbd0;font-size:12px;padding:8px;border-radius:8px;border-bottom:1px solid #ffffff0f}
+.reader-toc a:hover{background:#ffffff0d;color:#fff}
+.reader-chapter{user-select:text;padding:34px}
+.reader-chapter h2{font-size:clamp(28px,5vw,42px);margin-bottom:6px}
+.chapter-sub{font-size:17px;color:#777;margin-bottom:22px}
+.chapter-opener{border-right:5px solid var(--yellow);background:#fff9d8;border-radius:10px;padding:16px;margin:18px 0}
+.reader-section{margin:26px 0}
+.reader-section h3{font-size:22px;margin-bottom:8px}
+.reader-example,.reader-prompt,.reader-challenge,.reader-actions,.reader-checklist{position:relative;z-index:1;border-radius:14px;padding:16px;margin:18px 0}
+.reader-example{background:#f2f2ed;border:1px solid #deded6}
+.reader-prompt{background:#111214;color:#fff;border-right:5px solid var(--yellow)}
+.reader-prompt p{color:#ddd}
+.reader-prompt code{display:block;white-space:pre-wrap;font-family:inherit;background:#1b1c20;border:1px solid #37383d;border-radius:10px;padding:14px;color:#ffe76c}
+.reader-challenge{background:#fff4b5;border:1px solid #e2c93b}
+.reader-actions{background:#eef8f0;border:1px solid #cfe6d4}
+.reader-checklist{background:#f6f6f2;border:1px solid #dddcd4}
+.reader-actions li,.reader-checklist li{margin:8px 0}
+.reader-cover-panel{position:relative;z-index:1;background:linear-gradient(135deg,#07131c,#132d3c);border-radius:18px;min-height:260px;padding:26px;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;margin-bottom:24px}
+.reader-cover-panel:before{content:"AI";position:absolute;left:-10px;top:-35px;font-size:180px;font-weight:900;color:#ffffff09;line-height:1}
+.reader-cover-panel small{color:var(--yellow);font-weight:900;letter-spacing:1px}
+.reader-cover-panel h1{font-size:42px;line-height:1.05;margin:8px 0}
+.reader-cover-panel p{color:#c9d2d8;max-width:650px}
+.reader-progress{height:6px;background:#333;border-radius:999px;overflow:hidden;margin-top:8px}
+.reader-progress i{display:block;height:100%;background:var(--yellow);width:0}
+.reader-recover{max-width:620px;margin:16px auto 0;text-align:right}
+.reader-recover .form{margin-top:12px}
+.reader-email-note{font-size:12px;color:#777}
+@media(max-width:900px){.reader-layout{grid-template-columns:1fr}.reader-toc{position:relative;top:auto;max-height:none}.reader-chapter{padding:22px}}
+
 </style>
 </head>
 <body>
@@ -340,14 +374,14 @@ function articlePage(slug){
   return pageHero(a.title,a.desc)+'<section class="section"><article class="container content card"><span class="eyebrow">'+a.tag+'</span>'+a.body.map(function(x){return '<h2>'+x[0]+'</h2><p>'+x[1]+'</p>'}).join('')+'<div style="margin-top:28px;padding:15px;border-right:5px solid var(--yellow);background:#f0f0e9">الخلاصة: ابدأ بهدف واضح، اختبر خطوة واحدة، وقِس النتيجة التجارية.</div></article></section>'+cta();
 }
 function bookPage(){
-  return pageHero('AI Marketing Machine','كتاب عملي وتفاعلي عن التسويق والذكاء الاصطناعي — نفس المحتوى العلمي في A وB، والاختلاف في التحديات والأمثلة والتكملة المتبادلة.')+
-  '<section class="section"><div class="container book-sales-hero"><div class="book-cover-img"><img src="/assets/book-cover-a.jpg?v=10" alt="AI Marketing Machine"></div><div class="book-sales-copy"><span class="eyebrow">3BKARINO TECH / DIGITAL BOOK</span><h2>حوّل الـAI من أداة بتسأله… إلى ماكينة تسويق بتشتغل معاك.</h2><p style="font-size:18px;color:#666">من فهم الجمهور وهندسة الأوامر، لحد صناعة المحتوى، بناء الـFunnel، وقراءة أرقام الحملات. الكتاب معمول عشان تطبق، مش تقرأ وبس.</p><div class="book-stat-grid"><div class="book-stat"><b>≈120</b><span>صفحة تقريبية قبل الإخراج النهائي</span></div><div class="book-stat"><b>7</b><span>فصول أساسية + غرفة العمليات</span></div><div class="book-stat"><b>A / B</b><span>نفس العلم، تحديات متبادلة</span></div></div><div class="hero-actions"><a class="btn primary" href="#buy">اختار نسختك وابدأ</a><a class="btn outline" href="#preview">شوف معاينة مجانية</a></div><p class="compare-note">A وB نفس المادة العلمية. الاختلاف في الأمثلة والأسئلة والتحديات. تقدر تستفيد من نسخة واحدة، والـBundle يعطيك التجربة التفاعلية الكاملة.</p></div></div></section>'+
-  '<section class="section soft"><div class="container"><div class="section-head"><div><span class="eyebrow">ليه تشتريه؟</span><h2>مش معلومات متناثرة. نظام شغل كامل.</h2></div><p>القيمة هنا في إن كل فصل يربط المعرفة بتطبيق مباشر: Prompt، مثال، Challenge وقرار تسويقي قابل للتنفيذ.</p></div><div class="benefit-grid"><div class="benefit-card"><b>افهم جمهورك بعمق</b><p>تحليل الدوافع والاعتراضات بدل الاكتفاء بالسن والنوع.</p></div><div class="benefit-card"><b>اكتب Prompts أقوى</b><p>هيكلة الدور والمهمة والجمهور وشكل الناتج بوضوح.</p></div><div class="benefit-card"><b>حوّل المحتوى لمبيعات</b><p>اربط الإعلان والصفحة والمتابعة داخل Funnel واحد.</p></div><div class="benefit-card"><b>اقرأ أرقامك</b><p>استخدم CTR وCPC وROAS عشان تعرف تعدّل فين بدل التخمين.</p></div></div></div></section>'+
-  '<section class="section" id="preview"><div class="container"><div class="section-head"><div><span class="eyebrow">FREE PREVIEW</span><h2>شوف شكل التجربة قبل ما تشتري.</h2></div><p>دي معاينة مصغرة لطريقة عرض الكتاب. النسخة النهائية هتكون محمية باسم المشتري ورقم الترخيص.</p></div><div class="preview-grid"><article class="preview-page"><span class="mini-brand">3BKARINO TECH</span><h3>AI MARKETING<br>MACHINE</h3><p>دليل عملي لبناء منظومة تسويق تستخدم الذكاء الاصطناعي كجزء من طريقة العمل، مش مجرد شات للأسئلة.</p><div class="preview-code">MISSION 01 — افهم المشكلة قبل ما تكتب الإعلان.</div><span class="page-no">PREVIEW / 01</span></article><article class="preview-page light"><span class="mini-brand">CHAPTER 01</span><h3>هندسة الجمهور<br>Decoding the Persona</h3><p>بدل ما تبدأ بـ “عميل من 25 إلى 40 سنة”، تبدأ بالسؤال الأهم: إيه الاعتراض أو الخوف اللي مأخر قرار الشراء؟</p><div class="preview-code">PROMPT BOX — حوّل الـAI من كاتب نصوص إلى محلل دوافع.</div><span class="page-no">PREVIEW / 02</span></article><article class="preview-page"><span class="mini-brand">A / B CHALLENGE</span><h3>نفس العلم.<br>تجربتان مختلفتان.</h3><p>في نهاية بعض الفصول هتلاقي Challenge مختلف حسب نسختك. جزء من التجربة مصمم عشان تتفاعل مع قارئ عنده النسخة المقابلة.</p><div class="preview-code">COMMUNITY MODE — مجتمع القراء قريبًا.</div><span class="page-no">PREVIEW / 03</span></article></div></div></section>'+
-  '<section class="section soft"><div class="container"><div class="section-head"><div><span class="eyebrow">المحتوى</span><h2>7 فصول تبني الماكينة خطوة بخطوة.</h2></div></div><div class="benefit-grid"><div class="benefit-card"><b>01 هندسة الجمهور</b><p>الدوافع، الاعتراضات، والهوك.</p></div><div class="benefit-card"><b>02 ترسانة الأدوات</b><p>ربط أدوات التخطيط والصورة والصوت.</p></div><div class="benefit-card"><b>03 هندسة الأوامر</b><p>صياغة تعليمات أدق وأوضح.</p></div><div class="benefit-card"><b>04 ماكينة التحويل</b><p>الإعلان، العرض، والـFunnel.</p></div><div class="benefit-card"><b>05 لغة الأرقام</b><p>CTR وCPC وROAS واتخاذ القرار.</p></div><div class="benefit-card"><b>06 ذكاء المحتوى</b><p>Hooks، Pattern Interrupt وتوسيع الفكرة.</p></div><div class="benefit-card"><b>07 مستقبل الوكالة</b><p>AI Agents والرقابة البشرية.</p></div><div class="benefit-card"><b>+ غرفة العمليات</b><p>التحديات والتفاعل بين أصحاب A وB.</p></div></div></div></section>'+
-  '<section class="section" id="buy"><div class="container"><div class="section-head"><div><span class="eyebrow">اختار تجربتك</span><h2>نسخة واحدة تكفي للتعلم. الباكدج للتجربة الكاملة.</h2></div></div><div class="product-grid"><article class="product-card"><span class="eyebrow">VERSION A</span><h3>Strategic Edition</h3><div class="price-tag">299 <small>جنيه</small></div><p>المحتوى العلمي الكامل + تحديات وأمثلة نسخة A.</p><a class="btn dark" href="/book/checkout?product=A" data-link>اختار A</a></article><article class="product-card"><span class="eyebrow">VERSION B</span><h3>Challenge Edition</h3><div class="price-tag">299 <small>جنيه</small></div><p>نفس المحتوى العلمي الكامل + تحديات وأمثلة نسخة B.</p><a class="btn dark" href="/book/checkout?product=B" data-link>اختار B</a></article><article class="product-card featured"><span class="save">الأفضل للتجربة الكاملة</span><h3>A + B Bundle</h3><div class="price-tag">500 <small>جنيه</small></div><p>النسختان معًا؛ مناسبة ليك أو ليك ولشريك/صديق يحل التحديات معاك.</p><a class="btn primary" href="/book/checkout?product=BUNDLE" data-link>هات A + B</a></article></div></div></section>'+
-  '<section class="section"><div class="container community-box"><div><span class="eyebrow" style="color:var(--yellow)">COMMUNITY</span><h2 style="margin:3px 0">مجتمع القراء — قريبًا</h2><p>هنا أصحاب A وB هيتقابلوا، يتبادلوا التحديات، ويطبقوا على مشاريع حقيقية. هنفعّل رابط Facebook لما الجروب يجهز.</p></div><span class="license-badge">SOON</span></div></section>'+
-  '<section class="section soft"><div class="container"><div class="section-head"><div><span class="eyebrow">الحماية</span><h2>نسختك باسمك وترخيصك.</h2></div><p>كل نسخة مدفوعة يتم ربطها ببيانات الطلب وLicense ID، مع Watermark شخصي. الحماية تقلل إعادة التوزيع لكنها لا تمنع التصوير أو النسخ بنسبة 100%.</p></div></div></section>'+cta();
+  return pageHero('AI Marketing Machine — Full Edition','دليل عملي لصاحب المشروع والمسوق: من فهم العميل وبناء العرض، لصناعة المحتوى والإعلانات والقياس والأتمتة بالذكاء الاصطناعي.')+
+  '<section class="section"><div class="container book-sales-hero"><div class="book-cover-img"><img src="/assets/book-cover-a.jpg?v=11" alt="AI Marketing Machine"></div><div class="book-sales-copy"><span class="eyebrow">FULL EDITION 2026</span><h2>مش كتاب عن أدوات AI. ده نظام تتعلم بيه تعمل تسويق أحسن لمشروعك.</h2><p style="font-size:18px;color:#666">هتمشي من الأساس: السوق والعميل والعرض، وبعدها تستخدم الذكاء الاصطناعي في البحث والكتابة والمحتوى والإعلانات والتحليل والأتمتة — مع تطبيقات على مشروع حقيقي.</p><div class="book-stat-grid"><div class="book-stat"><b>130–160</b><span>صفحة مستهدفة عند الإخراج</span></div><div class="book-stat"><b>18</b><span>فصل عملي + Toolkit</span></div><div class="book-stat"><b>30 يوم</b><span>خطة تنفيذ في نهاية الكتاب</span></div></div><div class="hero-actions"><a class="btn primary" href="#buy">اختار نسختك</a><a class="btn outline" href="#preview">شوف التجربة</a></div><p class="compare-note">A وB نفس المادة العلمية بالكامل. الاختلاف فقط في الـChallenges والتطبيقات المتبادلة؛ أي نسخة منفردة كتاب كامل ومفيد بذاته.</p></div></div></section>'+
+  '<section class="section soft"><div class="container"><div class="section-head"><div><span class="eyebrow">النتيجة اللي هنوصلك لها</span><h2>تخلص الكتاب ومعاك Marketing System، مش ملاحظات.</h2></div><p>كل فصل: شرح واضح → مثال → Prompt → تطبيق → Checklist → Challenge. والـAI يفضل مساعد تحت حكمك، مش بديل عن التفكير.</p></div><div class="benefit-grid"><div class="benefit-card"><b>Customer Research</b><p>تفهم Pain وDesire وObjections من بيانات حقيقية.</p></div><div class="benefit-card"><b>Offer & Copy</b><p>تبني عرض ورسالة أقوى بدل الاعتماد على الخصم.</p></div><div class="benefit-card"><b>Content & Ads</b><p>تخطط محتوى واختبارات إعلانات مرتبطة بهدف.</p></div><div class="benefit-card"><b>Data & Automation</b><p>تقرأ CTR/CPC/CPA/ROAS وتؤتمت ما يتكرر بحدود واضحة.</p></div></div></div></section>'+
+  '<section class="section" id="preview"><div class="container"><div class="section-head"><div><span class="eyebrow">UNIQUE READING EXPERIENCE</span><h2>الكتاب بيتقرأ كأنه Workshop شخصية.</h2></div><p>كل Chapter له مهمة حقيقية. مش هتعدي للفصل التالي وإنت بس “فهمت الفكرة”؛ هتطلع بحاجة مكتوبة لمشروعك.</p></div><div class="preview-grid"><article class="preview-page"><span class="mini-brand">FOUNDATION</span><h3>من التحول الرقمي<br>لـAI Marketing</h3><p>ليه الشغل اتغير، وإزاي تستخدم AI لتقليل الوقت بدون تسليم القرار للآلة.</p><div class="preview-code">ACTION — اختار مشروعًا واحدًا تطبق عليه الكتاب كله.</div><span class="page-no">01</span></article><article class="preview-page light"><span class="mini-brand">BUILD</span><h3>Customer → Offer<br>→ Content → Ads</h3><p>كل خطوة بتبني على اللي قبلها. مفيش Prompt سحري يعالج أساس تسويقي ضعيف.</p><div class="preview-code">PROMPT + WHY IT WORKS + PRACTICE</div><span class="page-no">02</span></article><article class="preview-page"><span class="mini-brand">OPERATE</span><h3>Marketing OS<br>خلال 30 يوم</h3><p>في النهاية تجمع Brand Brief وInsights وContent Matrix وAd Log وDashboard في نظام واحد.</p><div class="preview-code">A/B CHALLENGE — نفس العلم، تطبيقان مختلفان.</div><span class="page-no">03</span></article></div></div></section>'+
+  '<section class="section soft"><div class="container"><div class="section-head"><div><span class="eyebrow">ROADMAP</span><h2>رحلة التعلم داخل الكتاب.</h2></div><p>18 فصل من الصفر للتنفيذ: التحول الرقمي، التسويق، العميل، العرض، AI، Prompting، المحتوى، Copywriting، الفيديو، Social، Ads، Funnel، WhatsApp، Analytics، Automation، Marketing OS، خطة 30 يوم وToolkit.</p></div><div class="benefit-grid"><div class="benefit-card"><b>1 — Foundation</b><p>التحول الرقمي + أساسيات التسويق + فهم العميل + العرض.</p></div><div class="benefit-card"><b>2 — Creation</b><p>AI Workflow + Prompting + Content + Copy + Visuals.</p></div><div class="benefit-card"><b>3 — Growth</b><p>Social + Paid Ads + Landing Pages + Follow-up.</p></div><div class="benefit-card"><b>4 — Scale</b><p>Analytics + Automation + Marketing OS + 30-Day Plan.</p></div></div></div></section>'+
+  '<section class="section" id="buy"><div class="container"><div class="section-head"><div><span class="eyebrow">اختار تجربتك</span><h2>نسخة واحدة كاملة للتعلم — والـBundle للتحديات المتبادلة.</h2></div></div><div class="product-grid"><article class="product-card"><span class="eyebrow">VERSION A</span><h3>Strategic Edition</h3><div class="price-tag">299 <small>جنيه</small></div><p>Full Edition كامل + Challenges نسخة A.</p><a class="btn dark" href="/book/checkout?product=A" data-link>اختار A</a></article><article class="product-card"><span class="eyebrow">VERSION B</span><h3>Challenge Edition</h3><div class="price-tag">299 <small>جنيه</small></div><p>نفس Full Edition كامل + Challenges نسخة B.</p><a class="btn dark" href="/book/checkout?product=B" data-link>اختار B</a></article><article class="product-card featured"><span class="save">وفر 98 جنيه</span><h3>A + B Bundle</h3><div class="price-tag">500 <small>جنيه</small></div><p>النسختان؛ ليك أو ليك ولشريك يشاركك التحديات.</p><a class="btn primary" href="/book/checkout?product=BUNDLE" data-link>هات A + B</a></article></div></div></section>'+
+  '<section class="section"><div class="container community-box"><div><span class="eyebrow" style="color:var(--yellow)">COMMUNITY</span><h2 style="margin:3px 0">التجربة مصممة عشان تتكلم عنها.</h2><p>Challenges A/B تخلق سببًا طبيعيًا للتفاعل بين القراء، من غير ما نخلي أي معلومة أساسية ناقصة من نسخة منفردة.</p></div><span class="license-badge">A ↔ B</span></div></section>'+
+  '<section class="section soft"><div class="container"><div class="section-head"><div><span class="eyebrow">الوصول والحماية</span><h2>مش هنرسل PDF عادي قابل للتداول.</h2></div><p>بعد الدفع: License شخصي + رابط تفعيل صالح 24 ساعة + جلسة قراءة آمنة تتجدد مع الاستخدام + Watermark باسم المشتري. وتقدر تطلب رابط دخول جديد من بريد الشراء عند الحاجة.</p></div></div></section>'+cta();
 }
 function bookCheckoutPage(){
   var product=(new URLSearchParams(location.search).get('product')||'A').toUpperCase();
@@ -357,7 +391,7 @@ function bookCheckoutPage(){
   var govs=['القاهرة','الجيزة','الإسكندرية','القليوبية','الشرقية','الدقهلية','الغربية','المنوفية','البحيرة','كفر الشيخ','دمياط','بورسعيد','الإسماعيلية','السويس','الفيوم','بني سويف','المنيا','أسيوط','سوهاج','قنا','الأقصر','أسوان','البحر الأحمر','الوادي الجديد','مطروح','شمال سيناء','جنوب سيناء'];
   return pageHero('شراء AI Marketing Machine','اختار نسختك وسجّل بيانات الشراء. كل طلب بياخد رقم متابعة وبياناته بتتحفظ قبل خطوة الدفع.')+
   '<section class="section"><div class="container"><div class="card checkout-card"><div class="checkout-summary"><span class="eyebrow" style="color:var(--yellow)">اختيارك</span><h3 style="margin:5px 0">'+labels[product]+'</h3><p style="margin:0">السعر النهائي: <b>'+prices[product]+' جنيه</b></p></div>'+
-  '<div class="checkout-note"><b>بيانات العميل مطلوبة لكل عملية شراء.</b> بنستخدمها لتسجيل الطلب، إصدار الترخيص، حماية النسخة، والتواصل المرتبط بالطلب فقط.</div>'+
+  '<div class="checkout-note"><b>بيانات العميل مطلوبة لكل عملية شراء.</b> بنستخدمها لتسجيل الطلب، إصدار الترخيص، حماية النسخة، وإرسال رابط الدخول وإشعارات الطلب فقط.</div>'+
   '<form class="form" id="bookCheckout"><input id="bookProduct" type="hidden" value="'+product+'">'+
   '<div class="field"><label>الاسم الكامل *</label><input id="bookName" required autocomplete="name" placeholder="الاسم كما تحب يظهر على الترخيص"></div>'+
   '<div class="field"><label>رقم الموبايل *</label><input id="bookPhone" required autocomplete="tel" inputmode="tel" placeholder="01xxxxxxxxx"></div>'+
@@ -370,7 +404,7 @@ function bookCheckoutPage(){
   '<div class="field full"><label>طريقة الدفع *</label><div class="payment-choice" style="grid-template-columns:1fr">'+
   '<label class="payment-option"><input type="radio" name="bookPayment" value="paymob" checked><b>Paymob — دفع إلكتروني آمن</b><small>الدفع بالكارت وتأكيد العملية تلقائيًا. الحساب مربوط حاليًا في Test Mode أثناء التجربة، لذلك لا يتم خصم أموال حقيقية.</small></label>'+
   '</div></div>'+
-  '<div class="field full"><label><input id="bookAgree" type="checkbox" required style="width:auto"> أوافق على استخدام بياناتي لإتمام الطلب وإصدار الترخيص، وأوافق أن النسخة شخصية وغير قابلة لإعادة البيع.</label><div class="privacy-mini">لن نطلب رقم بطاقة بنكية أو كلمة مرور داخل الموقع. الدفع الإلكتروني يتم عبر بوابة الدفع بعد تفعيلها.</div></div>'+
+  '<div class="field full"><label><input id="bookAgree" type="checkbox" required style="width:auto"> أوافق على استخدام بياناتي لإتمام الطلب وإصدار الترخيص، وأوافق أن النسخة شخصية وغير قابلة لإعادة البيع.</label><div class="privacy-mini">لن نطلب رقم بطاقة أو CVV داخل موقعنا؛ الدفع يتم داخل Paymob. بعد نجاح الدفع يصدر License تلقائيًا ويُجهّز رابط تفعيل آمن صالح 24 ساعة.</div></div>'+
   '<button class="btn primary field full" id="bookBuy" type="submit">تسجيل الطلب والانتقال للدفع — '+prices[product]+' ج</button></form>'+
   '<div class="order-result" id="orderResult"><span class="license-badge" id="orderVersion"></span><h3 id="orderTitle"></h3><p id="orderText"></p><div class="payment-state" id="paymentState"></div><div class="hero-actions"><a class="btn dark" id="orderPay" target="_blank" rel="noopener" style="display:none">الانتقال للدفع الآمن</a><a class="btn whatsapp" id="orderWa" target="_blank" rel="noopener" style="display:none">مساعدة عبر واتساب</a></div><p class="compare-note">نجاح الدفع → تأكيد Webhook آمن → إصدار License → إتاحة النسخة تلقائيًا بدون تدخل يدوي.</p></div></div></div></section>';
 }
@@ -379,7 +413,7 @@ function bookPaymentResultPage(){
   '<section class="section"><div class="container"><div class="card payment-result-card pending" id="paymentResultCard"><div class="payment-result-icon" id="paymentResultIcon">…</div><span class="eyebrow">PAYMOB / SECURE CHECK</span><h2 id="paymentResultTitle">جاري تأكيد الدفع…</h2><p id="paymentResultText">ماتقفلش الصفحة. التأكيد بيتم من السيرفر عن طريق Webhook آمن.</p><div id="paymentResultMeta" class="payment-state"></div><div id="paymentLicenses" class="license-actions"></div><div class="hero-actions" style="justify-content:center"><a class="btn outline" href="/book" data-link>العودة للكتاب</a></div></div></div></section>';
 }
 function bookReaderPage(){
-  return '<section class="section"><div class="container"><div class="locked-box card" id="readerLoading"><h1>جاري التحقق من الترخيص…</h1><p>لحظات ويتم فتح نسختك إذا كان الـLicense صالحًا.</p></div><div class="reader-shell" id="readerShell" style="display:none"><div class="reader-meta"><div><b id="readerName"></b><div id="readerEmail" style="font-size:11px;color:#aaa"></div></div><div><span class="license-badge" id="readerEdition"></span><div id="readerLicense" style="font-size:11px;margin-top:4px"></div></div></div><div id="readerChapters"></div></div></div></section>';
+  return '<section class="section"><div class="container"><div class="locked-box card" id="readerLoading"><h1>جاري فتح نسختك…</h1><p>بنراجع رابط التفعيل أو جلسة القراءة الآمنة.</p></div><div class="reader-recover card" id="readerRecover" style="display:none"><h2>محتاج رابط دخول جديد؟</h2><p class="reader-email-note">اكتب رقم الطلب وإيميل الشراء. لو البيانات مطابقة هنرسل رابط تفعيل جديد صالح 24 ساعة.</p><form class="form" id="accessRecoverForm"><div class="field"><label>رقم الطلب</label><input id="recoverOrder" required placeholder="3BK-BOOK-..."></div><div class="field"><label>إيميل الشراء</label><input id="recoverEmail" type="email" required></div><button class="btn dark field full">إرسال رابط دخول جديد</button></form><p id="recoverMsg"></p></div><div class="reader-shell" id="readerShell" style="display:none"><div class="reader-meta"><div><b id="readerName"></b><div id="readerEmail" style="font-size:11px;color:#aaa"></div></div><div><span class="license-badge" id="readerEdition"></span><div id="readerLicense" style="font-size:11px;margin-top:4px"></div><div class="reader-progress"><i id="readerProgress"></i></div></div></div><div class="reader-layout"><aside class="reader-toc" id="readerToc"></aside><div><div class="reader-cover-panel"><small id="readerBookEdition">FULL EDITION 2026</small><h1>AI Marketing Machine</h1><p>من الفكرة لأول حملة قابلة للقياس — دليل عملي لصاحب المشروع والمسوق.</p></div><div id="readerChapters"></div></div></div></div></div></section>';
 }
 function bookAdminPage(){
   return pageHero('إصدار ترخيص الكتاب','صفحة تشغيل داخلية لتفعيل نسخة المشتري بعد تأكيد الدفع.')+
@@ -543,7 +577,7 @@ function initBookPaymentResult(){
       var d=await r.json();if(!r.ok)throw Error('status');
       meta.innerHTML='رقم الطلب: <b>'+esc(d.orderId)+'</b><br>الحالة: '+esc(d.paymentStatus||d.status)+(d.mode==='test'?'<br><strong>Test Mode — لا يتم خصم أموال حقيقية</strong>':'');
       if((d.status==='paid'||d.status==='won')&&d.licenses&&d.licenses.length){
-        card.className='card payment-result-card success';icon.textContent='✓';title.textContent='تم تأكيد الدفع وإصدار نسختك';txt.textContent='الترخيص اتصدر تلقائيًا. افتح نسختك من الزر المناسب تحت.';
+        card.className='card payment-result-card success';icon.textContent='✓';title.textContent='تم تأكيد الدفع وإصدار نسختك';txt.textContent='الترخيص اتصدر تلقائيًا. افتح نسختك من الزر المناسب؛ رابط التفعيل صالح 24 ساعة، وبيانات الطلب محفوظة لإرسالها على البريد عند تفعيل خدمة الإيميل.';
         licenses.innerHTML=d.licenses.map(function(x){return '<a class="license-action" href="'+esc(x.readerUrl)+'"><span><b>Version '+esc(x.version)+'</b><br><small>'+esc(x.licenseId)+'</small></span><strong>فتح النسخة ←</strong></a>'}).join('');
         return;
       }
@@ -562,12 +596,73 @@ function initBookPaymentResult(){
 function initBookReader(){
   if(location.pathname!=='/book/read')return;
   document.addEventListener('contextmenu',function(e){if(e.target.closest('.reader-shell'))e.preventDefault()});
-  var lic=new URLSearchParams(location.search).get('license')||'';if(!lic){readerLoading.innerHTML='<h1>الرخصة غير موجودة</h1><p>افتح رابط القراءة الذي تم إرساله لك بعد الشراء.</p><a class="btn primary" href="/book" data-link>صفحة الكتاب</a>';return}
-  fetch('/api/book',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'content',licenseToken:lic})}).then(function(r){if(!r.ok)throw Error('bad');return r.json()}).then(function(d){
-    readerLoading.style.display='none';readerShell.style.display='block';readerName.textContent='Licensed to: '+d.customer.name;readerEmail.textContent=d.customer.emailMasked;readerEdition.textContent='Version '+d.customer.version;readerLicense.textContent=d.customer.licenseId;
+  var qs=new URLSearchParams(location.search),access=qs.get('access')||'',legacy=qs.get('license')||'';
+  var stored=localStorage.getItem('3bk-reader-session')||'';
+
+  function showRecover(msg){
+    readerLoading.style.display='none';readerShell.style.display='none';readerRecover.style.display='block';
+    if(msg)recoverMsg.textContent=msg;
+  }
+  function pList(items){return '<ul>'+items.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>'}
+  function renderBook(d){
+    if(d.sessionToken){localStorage.setItem('3bk-reader-session',d.sessionToken)}
+    if(access||legacy){history.replaceState({},'',location.pathname)}
+    readerLoading.style.display='none';readerRecover.style.display='none';readerShell.style.display='block';
+    readerName.textContent='Licensed to: '+d.customer.name;readerEmail.textContent=d.customer.emailMasked;
+    readerEdition.textContent='Version '+d.customer.version;readerLicense.textContent=d.customer.licenseId;
+    readerBookEdition.textContent=(d.meta&&d.meta.edition)||'FULL EDITION 2026';
     var wm=d.customer.name+' • '+d.customer.emailMasked+' • '+d.customer.licenseId;
-    readerChapters.innerHTML=d.chapters.map(function(ch,i){return '<article class="reader-chapter"><div class="watermark">'+Array(8).fill('<span>'+esc(wm)+'</span>').join('')+'</div><span class="eyebrow">AI MARKETING MACHINE / '+String(i).padStart(2,'0')+'</span><h2>'+esc(ch.title)+'</h2>'+ch.body.map(function(p){return '<p>'+esc(p)+'</p>'}).join('')+'<div class="compare-note">© 2026 3bkarino Tech — ترخيص شخصي غير قابل للنقل.</div></article>'}).join('');
-  }).catch(function(){readerLoading.innerHTML='<h1>الرخصة غير صالحة</h1><p>تأكد أنك تستخدم رابط القراءة الأصلي الخاص بك.</p><a class="btn primary" href="/book" data-link>العودة للكتاب</a>'});
+    readerToc.innerHTML='<b>المحتويات</b>'+d.chapters.map(function(ch,i){return '<a href="#ch-'+i+'">'+esc(ch.id)+' — '+esc(ch.title.replace(/^\d+\s*—\s*/,''))+'</a>'}).join('');
+    readerChapters.innerHTML=d.chapters.map(function(ch,i){
+      var sections=(ch.sections||[]).map(function(sec){return '<section class="reader-section"><h3>'+esc(sec.heading)+'</h3>'+sec.body.map(function(p){return '<p>'+esc(p)+'</p>'}).join('')+'</section>'}).join('');
+      var opener='<div class="chapter-opener">'+(ch.opener||[]).map(function(p){return '<p>'+esc(p)+'</p>'}).join('')+'</div>';
+      var example=ch.example?'<div class="reader-example"><b>CASE / '+esc(ch.example.title)+'</b>'+ch.example.body.map(function(p){return '<p>'+esc(p)+'</p>'}).join('')+'</div>':'';
+      var prompt=ch.prompt?'<div class="reader-prompt"><b>PROMPT LAB — '+esc(ch.prompt.title)+'</b><code>'+esc(ch.prompt.text)+'</code><p><b>ليه بيشتغل؟</b> '+esc(ch.prompt.why)+'</p></div>':'';
+      var actions=ch.action?'<div class="reader-actions"><b>ACTION PLAN</b>'+pList(ch.action)+'</div>':'';
+      var checklist=ch.checklist?'<div class="reader-checklist"><b>CHECKLIST قبل ما تكمل</b>'+pList(ch.checklist)+'</div>':'';
+      var challenge=ch.challengeText?'<div class="reader-challenge"><b>VERSION '+esc(ch.challengeEdition)+' CHALLENGE</b><p>'+esc(ch.challengeText)+'</p><small>النسخة المقابلة فيها Challenge مختلف يكمل تجربة التطبيق، لكن المادة العلمية الأساسية كاملة عندك هنا.</small></div>':'';
+      return '<article class="reader-chapter" id="ch-'+i+'"><div class="watermark">'+Array(10).fill('<span>'+esc(wm)+'</span>').join('')+'</div><span class="eyebrow">AI MARKETING MACHINE / CHAPTER '+esc(ch.id)+'</span><h2>'+esc(ch.title)+'</h2><div class="chapter-sub">'+esc(ch.subtitle||'')+'</div>'+opener+sections+example+prompt+actions+checklist+challenge+'<div class="compare-note">© 2026 3bkarino Tech — '+esc(d.customer.licenseId)+' — ترخيص شخصي غير قابل للنقل.</div></article>';
+    }).join('');
+    function updateProgress(){
+      var h=document.documentElement.scrollHeight-innerHeight;
+      var pct=h>0?Math.max(0,Math.min(100,(scrollY/h)*100)):0;
+      readerProgress.style.width=pct+'%';
+    }
+    addEventListener('scroll',updateProgress,{passive:true});updateProgress();
+  }
+  async function getContent(sessionToken,licenseToken){
+    var payload={action:'content'};if(sessionToken)payload.sessionToken=sessionToken;if(licenseToken)payload.licenseToken=licenseToken;
+    var r=await fetch('/api/book',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    var d=await r.json();if(!r.ok)throw Error(d.error||'reader');renderBook(d);
+  }
+  async function start(){
+    try{
+      if(access){
+        var r=await fetch('/api/book',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'activate-access',accessToken:access})});
+        var a=await r.json();if(!r.ok)throw Error(a.error||'activate');
+        localStorage.setItem('3bk-reader-session',a.sessionToken);
+        await getContent(a.sessionToken,'');return;
+      }
+      if(legacy){await getContent('',legacy);return}
+      if(stored){await getContent(stored,'');return}
+      showRecover('افتح رابط التفعيل اللي وصلك بعد الشراء، أو اطلب رابط جديد من هنا.');
+    }catch(err){
+      localStorage.removeItem('3bk-reader-session');
+      showRecover(err.message==='ACCESS_LINK_EXPIRED_OR_INVALID'?'رابط التفعيل انتهت صلاحيته. اطلب رابط جديد.':'تعذر فتح جلسة القراءة. اطلب رابط دخول جديد.');
+    }
+  }
+  var rf=document.getElementById('accessRecoverForm');
+  if(rf)rf.onsubmit=async function(e){
+    e.preventDefault();recoverMsg.textContent='جاري مراجعة البيانات…';
+    try{
+      var r=await fetch('/api/book',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'request-access',orderId:recoverOrder.value.trim(),email:recoverEmail.value.trim()})});
+      var d=await r.json();
+      if(!r.ok&&d.error==='EMAIL_NOT_CONFIGURED'){recoverMsg.textContent='نظام إرسال البريد لسه محتاج تفعيل خدمة الإيميل على الموقع.';return}
+      if(!r.ok)throw Error('send');
+      recoverMsg.textContent='لو البيانات مطابقة للطلب، تم إرسال رابط دخول جديد إلى بريد الشراء.';
+    }catch{recoverMsg.textContent='تعذر إرسال الرابط حاليًا. حاول لاحقًا أو تواصل مع الدعم.'}
+  };
+  start();
 }
 function initBookAdmin(){
   var f=document.getElementById('licenseForm');if(!f)return;
