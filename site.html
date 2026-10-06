@@ -93,6 +93,28 @@ h1,h2,h3,p{margin-top:0}.hero h1{font-size:clamp(46px,7vw,80px);line-height:1.04
   .section{padding:56px 0}.section-head{align-items:flex-start;flex-direction:column}.grid4,.grid3,.grid2,.price-grid,.process,.work-grid,.form,.results,.footer-grid{grid-template-columns:1fr}.project.main{grid-column:auto}.field.full{grid-column:auto}.quick-help{align-items:flex-start;flex-direction:column}.cta{grid-template-columns:1fr}.messages{height:350px}
 }
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+.book-hero{display:grid;grid-template-columns:.72fr 1.28fr;gap:34px;align-items:center}
+.book-cover-img{border-radius:24px;box-shadow:0 28px 80px #0004;border:7px solid var(--yellow);overflow:hidden;background:#07131c}
+.book-cover-img img{width:100%;height:auto}
+.book-points{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}
+.book-point{background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px}
+.book-point b{display:block;font-size:13px}.book-point span{font-size:11px;color:#777}
+.editions{display:grid;grid-template-columns:1fr 1fr;gap:14px}.edition{position:relative}.edition strong{font-size:44px;display:block;color:var(--yellow);line-height:1}
+.protect-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.protect{background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px}.protect b{display:block;margin-bottom:4px}.protect p{font-size:12px;color:#777;margin:0}
+.checkout-card{max-width:760px;margin:auto}.order-result{display:none;margin-top:15px}.order-result.show{display:block}
+.reader-shell{position:relative;max-width:900px;margin:auto}.reader-meta{position:sticky;top:92px;z-index:10;background:#111214;color:#fff;border-radius:15px;padding:12px 15px;margin-bottom:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.reader-chapter{position:relative;overflow:hidden;background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px;margin-bottom:14px;user-select:none}
+.reader-chapter h2{font-size:28px;line-height:1.2}.reader-chapter p{color:#505258;font-size:16px}
+.watermark{position:absolute;inset:0;pointer-events:none;overflow:hidden;opacity:.065;display:grid;grid-template-columns:repeat(2,1fr);align-content:space-around;transform:rotate(-18deg);font-size:12px;font-weight:900}
+.watermark span{padding:20px;white-space:nowrap}
+.license-badge{display:inline-flex;background:var(--yellow);color:#111;border-radius:999px;padding:5px 9px;font-size:10px;font-weight:900}
+.locked-box{max-width:720px;margin:auto;text-align:center}
+.admin-panel{max-width:820px;margin:auto}
+@media(max-width:900px){.book-hero,.editions{grid-template-columns:1fr}.protect-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:680px){.book-points,.protect-grid{grid-template-columns:1fr}.reader-chapter{padding:20px}.reader-meta{top:78px}}
+@media print{.reader-shell{display:none!important}body:after{content:"هذه النسخة مرخصة للقراءة الرقمية فقط — 3bkarino Tech";display:block;text-align:center;padding:50px;font-size:20px}}
+
 </style>
 </head>
 <body>
@@ -106,6 +128,7 @@ h1,h2,h3,p{margin-top:0}.hero h1{font-size:clamp(46px,7vw,80px);line-height:1.04
       <a href="/services" data-link>الحلول</a>
       <a href="/pricing" data-link>الأسعار</a>
       <a href="/portfolio" data-link>أعمالنا</a>
+      <a href="/book" data-link>الكتاب</a>
       <a href="/blog" data-link>المقالات</a>
     </nav>
     <div class="nav-actions"><a class="btn outline sm" href="/ai-consultant" data-link>مستشار 60 ثانية</a><a class="btn primary sm" href="/contact" data-link>ابدأ مشروعك</a></div>
@@ -248,8 +271,21 @@ function articlePage(slug){
   return pageHero(a.title,a.desc)+'<section class="section"><article class="container content card"><span class="eyebrow">'+a.tag+'</span>'+a.body.map(function(x){return '<h2>'+x[0]+'</h2><p>'+x[1]+'</p>'}).join('')+'<div style="margin-top:28px;padding:15px;border-right:5px solid var(--yellow);background:#f0f0e9">الخلاصة: ابدأ بهدف واضح، اختبر خطوة واحدة، وقِس النتيجة التجارية.</div></article></section>'+cta();
 }
 function bookPage(){
-  return pageHero('AI Marketing Machine','دليل عملي للتسويق بالذكاء الاصطناعي من الاستراتيجية للقياس.')+
-  '<section class="section"><div class="container knowledge-grid"><div class="book-card"><div class="book-logo"><img src="/assets/logo-v2.png?v=8" alt=""></div><span class="eyebrow">E-BOOK</span><h3>AI Marketing Machine</h3><p>دليل 3bkarino Tech للتسويق بالذكاء الاصطناعي.</p></div><div class="card"><h2>مش كتاب Prompts وخلاص.</h2><p>الهدف تبني طريقة شغل: Research → Strategy → Content → Ads → Measurement → Improvement.</p><ul class="list"><li>بناء Brief واضح</li><li>بحث وأفكار وسكريبتات</li><li>تخطيط العروض والحملات</li><li>قياس وتحسين الأداء</li><li>Workflows تقلل الوقت</li></ul><a class="btn primary" style="margin-top:16px" href="https://wa.me/'+WA+'?text='+encodeURIComponent('عايز أسجل اهتمامي بكتاب AI Marketing Machine')+'" target="_blank" rel="noopener">سجل اهتمامك بالكتاب</a></div></div></section>';
+  return pageHero('AI Marketing Machine','كتاب تفاعلي بنظام نسختين A/B، وكل نسخة مرخصة باسم المشتري ولا تُفتح إلا برخصة صحيحة.')+
+  '<section class="section"><div class="container book-hero"><div class="book-cover-img"><img src="/assets/book-cover-a.jpg?v=9" alt="AI Marketing Machine"></div><div><span class="eyebrow">3BKARINO DIGITAL EDITION</span><h2 style="font-size:clamp(38px,6vw,62px);line-height:1.05;margin:7px 0">AI Marketing Machine</h2><p style="font-size:18px;color:#666">دليل التسويق بالذكاء الاصطناعي — من فهم الجمهور وبناء الأوامر لحد التحويل، البيانات، المحتوى ومستقبل الـAI Agents.</p><div class="book-points"><div class="book-point"><b>نسختان A / B</b><span>النظام يوزع النسخة تلقائيًا، وكل إصدار يحمل مفاتيح مختلفة.</span></div><div class="book-point"><b>قارئ Online مرخص</b><span>المحتوى الكامل لا يظهر إلا بعد تفعيل License صحيح.</span></div><div class="book-point"><b>Watermark شخصي</b><span>اسم المشتري + البريد Masked + License ID داخل كل فصل.</span></div><div class="book-point"><b>حقوق 3bkarino Tech</b><span>ترخيص شخصي غير قابل للنقل أو إعادة البيع.</span></div></div><div class="hero-actions"><a class="btn primary" href="/book/checkout" data-link>شراء النسخة</a><a class="btn outline" href="#editions">شوف فكرة A/B</a></div></div></div></section>'+
+  '<section class="section soft" id="editions"><div class="container"><div class="section-head"><div><span class="eyebrow">THE CIPHER SYSTEM</span><h2>نسختان مختلفتان. تجربة واحدة.</h2></div><p>أنت لا تختار الإصدار؛ النظام يخصص A أو B تلقائيًا حسب بيانات الشراء، للحفاظ على تجربة فك الشفرات والتفاعل بين القراء.</p></div><div class="editions"><article class="card edition"><strong>A</strong><h3>The Strategic Cipher Edition</h3><p>النسخة الأساسية الكاملة: 7 فصول + غرفة العمليات + الخاتمة، مع أكواد تحتاج مفاتيح من نسخة B.</p><ul class="list"><li>هندسة الجمهور</li><li>ترسانة الأدوات</li><li>هندسة الأوامر</li><li>ماكينة التحويل</li><li>لغة الأرقام</li><li>ذكاء المحتوى</li><li>مستقبل الوكالة</li></ul></article><article class="card edition"><strong>B</strong><h3>The Keyholder Edition</h3><p>نسخة المفاتيح المكملة: تحتوي الكلمات الذهبية اللازمة لفك شفرات نسخة A، مع محتوى مخصص لحاملي المفاتيح.</p><ul class="list"><li>مفتاح الجمهور: المستقبل</li><li>مفتاح الأدوات: الأتمتة</li><li>مفتاح الأوامر: التنفيذ</li><li>مفتاح التحويل: الاستمرارية</li><li>مفتاح البيانات: السيطرة</li></ul></article></div></div></section>'+
+  '<section class="section"><div class="container"><div class="section-head"><div><span class="eyebrow">الحماية</span><h2>نسختك مرتبطة بهويتك الرقمية.</h2></div><p>الحماية لا تمنع التصوير 100%، لكنها تجعل كل نسخة قابلة للتتبع وتقلل إعادة التوزيع بشكل كبير.</p></div><div class="protect-grid"><div class="protect"><b>License ID</b><p>رقم ترخيص فريد مرتبط بطلب الشراء.</p></div><div class="protect"><b>Personal Watermark</b><p>بيانات الترخيص تظهر داخل الفصول.</p></div><div class="protect"><b>Protected Reader</b><p>المحتوى الكامل غير موجود كملف عام داخل الموقع.</p></div><div class="protect"><b>A/B Assignment</b><p>التوزيع تلقائي حسب البريد ولا يمكن تبديل الإصدار من الواجهة.</p></div></div></div></section>'+cta();
+}
+function bookCheckoutPage(){
+  return pageHero('شراء AI Marketing Machine','سجّل بياناتك، النظام يخصص لك A أو B تلقائيًا ويصدر رقم طلب فريد.')+
+  '<section class="section"><div class="container"><div class="card checkout-card"><form class="form" id="bookCheckout"><div class="field"><label>الاسم الكامل</label><input id="bookName" required autocomplete="name"></div><div class="field"><label>رقم الموبايل</label><input id="bookPhone" required autocomplete="tel"></div><div class="field full"><label>البريد الإلكتروني</label><input id="bookEmail" type="email" required autocomplete="email"></div><div class="field full"><label><input id="bookAgree" type="checkbox" required style="width:auto"> أوافق أن الترخيص شخصي وغير قابل للنقل أو إعادة البيع.</label></div><button class="btn primary field full" id="bookBuy" type="submit">إنشاء طلب الشراء</button></form><div class="order-result" id="orderResult"><span class="license-badge" id="orderVersion"></span><h3 id="orderTitle"></h3><p id="orderText"></p><div class="hero-actions"><a class="btn whatsapp" id="orderWa" target="_blank" rel="noopener">إتمام الدفع عبر واتساب</a><a class="btn dark" id="orderPay" target="_blank" rel="noopener" style="display:none">الدفع الإلكتروني</a></div><p class="compare-note">بعد تأكيد الدفع يتم إصدار License ID ورابط القراءة الشخصي. لا يتم إرسال ملف عام قابل للمشاركة.</p></div></div></div></section>';
+}
+function bookReaderPage(){
+  return '<section class="section"><div class="container"><div class="locked-box card" id="readerLoading"><h1>جاري التحقق من الترخيص…</h1><p>لحظات ويتم فتح نسختك إذا كان الـLicense صالحًا.</p></div><div class="reader-shell" id="readerShell" style="display:none"><div class="reader-meta"><div><b id="readerName"></b><div id="readerEmail" style="font-size:11px;color:#aaa"></div></div><div><span class="license-badge" id="readerEdition"></span><div id="readerLicense" style="font-size:11px;margin-top:4px"></div></div></div><div id="readerChapters"></div></div></div></section>';
+}
+function bookAdminPage(){
+  return pageHero('إصدار ترخيص الكتاب','صفحة تشغيل داخلية لتفعيل نسخة المشتري بعد تأكيد الدفع.')+
+  '<section class="section"><div class="container"><div class="card admin-panel"><form class="form" id="licenseForm"><div class="field full"><label>Admin Key</label><input id="adminKey" type="password" required></div><div class="field full"><label>Order Token</label><textarea id="adminOrder" rows="6" required></textarea></div><button class="btn dark field full" type="submit">إصدار License</button></form><div class="order-result" id="licenseResult"><h3>تم إصدار الرخصة</h3><p id="licenseInfo"></p><input id="licenseUrl" readonly><button class="btn primary" id="copyLicense" type="button" style="margin-top:10px">نسخ رابط القراءة</button></div></div></div></section>';
 }
 function toolsPage(){
   return pageHero('أدوات مجانية','حاسبة مبسطة تساعدك تفهم أرقام الحملة قبل ما تزود الميزانية.')+
@@ -287,8 +323,33 @@ function initAI(){
     finally{if(!ended)send.disabled=false}
   }
 }
+function initBookCheckout(){
+  var f=document.getElementById('bookCheckout');if(!f)return;
+  f.onsubmit=async function(e){e.preventDefault();var btn=document.getElementById('bookBuy');btn.disabled=true;btn.textContent='جاري إنشاء الطلب…';
+    try{var r=await fetch('/api/book',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'create-order',name:bookName.value,email:bookEmail.value,phone:bookPhone.value})});var d=await r.json();if(!r.ok)throw Error('order');
+      localStorage.setItem('3bk-book-order-token',d.orderToken);localStorage.setItem('3bk-book-order-id',d.orderId);
+      orderVersion.textContent='Version '+d.version;orderTitle.textContent='رقم الطلب: '+d.orderId;orderText.textContent='تم تخصيص الإصدار '+d.version+' لك تلقائيًا. أكمل خطوة الدفع ليتم إصدار الرخصة.';
+      orderWa.href=d.whatsappUrl;if(d.paymentUrl){orderPay.href=d.paymentUrl;orderPay.style.display='inline-flex'}orderResult.classList.add('show');orderResult.scrollIntoView({behavior:'smooth',block:'center'});
+    }catch(err){alert('تعذر إنشاء الطلب. جرّب مرة أخرى.')}finally{btn.disabled=false;btn.textContent='إنشاء طلب الشراء'}
+  }
+}
+function initBookReader(){
+  if(location.pathname!=='/book/read')return;
+  document.addEventListener('contextmenu',function(e){if(e.target.closest('.reader-shell'))e.preventDefault()});
+  var lic=new URLSearchParams(location.search).get('license')||'';if(!lic){readerLoading.innerHTML='<h1>الرخصة غير موجودة</h1><p>افتح رابط القراءة الذي تم إرساله لك بعد الشراء.</p><a class="btn primary" href="/book" data-link>صفحة الكتاب</a>';return}
+  fetch('/api/book',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'content',licenseToken:lic})}).then(function(r){if(!r.ok)throw Error('bad');return r.json()}).then(function(d){
+    readerLoading.style.display='none';readerShell.style.display='block';readerName.textContent='Licensed to: '+d.customer.name;readerEmail.textContent=d.customer.emailMasked;readerEdition.textContent='Version '+d.customer.version;readerLicense.textContent=d.customer.licenseId;
+    var wm=d.customer.name+' • '+d.customer.emailMasked+' • '+d.customer.licenseId;
+    readerChapters.innerHTML=d.chapters.map(function(ch,i){return '<article class="reader-chapter"><div class="watermark">'+Array(8).fill('<span>'+esc(wm)+'</span>').join('')+'</div><span class="eyebrow">AI MARKETING MACHINE / '+String(i).padStart(2,'0')+'</span><h2>'+esc(ch.title)+'</h2>'+ch.body.map(function(p){return '<p>'+esc(p)+'</p>'}).join('')+'<div class="compare-note">© 2026 3bkarino Tech — ترخيص شخصي غير قابل للنقل.</div></article>'}).join('');
+  }).catch(function(){readerLoading.innerHTML='<h1>الرخصة غير صالحة</h1><p>تأكد أنك تستخدم رابط القراءة الأصلي الخاص بك.</p><a class="btn primary" href="/book" data-link>العودة للكتاب</a>'});
+}
+function initBookAdmin(){
+  var f=document.getElementById('licenseForm');if(!f)return;
+  f.onsubmit=async function(e){e.preventDefault();try{var r=await fetch('/api/book',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'issue-license',adminKey:adminKey.value,orderToken:adminOrder.value.trim()})});var d=await r.json();if(!r.ok)throw Error('issue');var url=location.origin+d.readerUrl;licenseInfo.textContent=d.licenseId+' — Version '+d.version;licenseUrl.value=url;licenseResult.classList.add('show')}catch{alert('تعذر إصدار الرخصة. راجع المفتاح وOrder Token.')}}
+  copyLicense.onclick=function(){navigator.clipboard.writeText(licenseUrl.value)}
+}
 function setTitle(path){
-  var map={'/':'3bkarino Tech | حلول تقنية أبسط وأسرع','/services':'الحلول | 3bkarino Tech','/pricing':'الأسعار | 3bkarino Tech','/portfolio':'أعمالنا | 3bkarino Tech','/blog':'المقالات | 3bkarino Tech','/book':'AI Marketing Machine | 3bkarino Tech','/tools':'أدوات مجانية | 3bkarino Tech','/ai-consultant':'مستشار 60 ثانية | 3bkarino Tech','/contact':'ابدأ مشروعك | 3bkarino Tech'};document.title=map[path]||'3bkarino Tech';
+  var map={'/':'3bkarino Tech | حلول تقنية أبسط وأسرع','/services':'الحلول | 3bkarino Tech','/pricing':'الأسعار | 3bkarino Tech','/portfolio':'أعمالنا | 3bkarino Tech','/blog':'المقالات | 3bkarino Tech','/book':'AI Marketing Machine | 3bkarino Tech','/book/checkout':'شراء الكتاب | 3bkarino Tech','/book/read':'نسختك المرخصة | 3bkarino Tech','/tools':'أدوات مجانية | 3bkarino Tech','/ai-consultant':'مستشار 60 ثانية | 3bkarino Tech','/contact':'ابدأ مشروعك | 3bkarino Tech'};document.title=map[path]||'3bkarino Tech';
 }
 function render(){
   if(activeTimer){clearInterval(activeTimer);activeTimer=null}
@@ -301,11 +362,14 @@ function render(){
   else if(p==='/blog')app.innerHTML=blogPage();
   else if(p.indexOf('/blog/')===0)app.innerHTML=articlePage(p.split('/')[2]);
   else if(p==='/book')app.innerHTML=bookPage();
+  else if(p==='/book/checkout')app.innerHTML=bookCheckoutPage();
+  else if(p==='/book/read')app.innerHTML=bookReaderPage();
+  else if(p==='/book/admin')app.innerHTML=bookAdminPage();
   else if(p==='/tools')app.innerHTML=toolsPage();
   else if(p==='/contact'||p==='/booking')app.innerHTML=contactPage();
   else if(p==='/ai-consultant')app.innerHTML=aiPage();
   else app.innerHTML=notFound();
-  initFaq();initCalc();initLead();initAI();
+  initFaq();initCalc();initLead();initAI();initBookCheckout();initBookReader();initBookAdmin();
 }
 render();
 })();
