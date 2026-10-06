@@ -1,4 +1,5 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
+import { saveRecord } from '../lib/records.js';
 
 const SECRET=process.env.BOOK_LICENSE_SECRET||'';
 const ADMIN=process.env.BOOK_ADMIN_KEY||'';
@@ -56,6 +57,13 @@ export default async function handler(req,res){
     if(name.length<2||!email.includes('@')||phone.length<8||!info)return send(res,400,{error:'INVALID_CUSTOMER_OR_PRODUCT'});
     const id=orderId(),createdAt=Date.now();
     const orderToken=token({type:'order',id,name,email,phone,product,price:info.price,secondName,createdAt});
+    try{
+      await saveRecord({
+        id,kind:'order',source:'book',status:'pending_payment',createdAt,
+        name,email,phone,product,productLabel:info.label,amount:info.price,currency:'EGP',
+        secondName
+      });
+    }catch{}
     const msg='طلب شراء AI Marketing Machine\nرقم الطلب: '+id+'\nالاسم: '+name+'\nالإيميل: '+email+'\nالموبايل: '+phone+'\nالمنتج: '+info.label+'\nالسعر: '+info.price+' جنيه'+(secondName?'\nالمستلم الثاني: '+secondName:'')+'\n\nأريد إتمام الدفع واستلام النسخة/النسخ المرخصة.';
     return send(res,200,{orderId:id,product,productLabel:info.label,price:info.price,orderToken,paymentUrl:process.env.BOOK_PAYMENT_URL||'',whatsappUrl:'https://wa.me/'+WA+'?text='+encodeURIComponent(msg)});
   }
