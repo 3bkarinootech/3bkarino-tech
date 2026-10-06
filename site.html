@@ -159,6 +159,21 @@ h1,h2,h3,p{margin-top:0}.hero h1{font-size:clamp(46px,7vw,80px);line-height:1.04
 .record-actions select,.record-actions textarea{border:1px solid #cecec6;border-radius:9px;padding:9px;background:#fff}
 @media(max-width:760px){.records-stats{grid-template-columns:1fr 1fr}.record-grid,.record-actions{grid-template-columns:1fr}}
 
+
+.checkout-card{max-width:900px}
+.checkout-summary{background:var(--ink);color:#fff;border-radius:16px;padding:18px;margin-bottom:18px;border-right:6px solid var(--yellow)}
+.checkout-summary p{color:#d0d0cb}
+.checkout-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.checkout-note{background:#fff9d9;border:1px solid #eadb80;border-radius:12px;padding:12px 14px;font-size:12px;color:#5c531e;margin:12px 0}
+.payment-choice{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.payment-option{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff}
+.payment-option input{width:auto;margin-left:6px}
+.payment-option b{display:block}.payment-option small{color:#777}
+.order-result{border-top:1px solid var(--line);padding-top:18px}
+.payment-state{background:#f5f5ef;border:1px solid var(--line);border-radius:12px;padding:13px;margin:12px 0}
+.privacy-mini{font-size:11px;color:#777;line-height:1.6}
+@media(max-width:760px){.checkout-grid,.payment-choice{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -329,8 +344,27 @@ function bookCheckoutPage(){
   if(!['A','B','BUNDLE'].includes(product))product='A';
   var labels={A:'Version A — Strategic Edition',B:'Version B — Challenge Edition',BUNDLE:'A + B Bundle'};
   var prices={A:299,B:299,BUNDLE:500};
-  return pageHero('شراء AI Marketing Machine','اختار نسختك، سجّل بياناتك، وأنشئ الطلب. الدفع الإلكتروني هيتم تفعيله عند ربط بوابة الدفع.')+
-  '<section class="section"><div class="container"><div class="card checkout-card"><div class="checkout-summary"><span class="eyebrow" style="color:var(--yellow)">اختيارك</span><h3 style="margin:5px 0">'+labels[product]+'</h3><p style="margin:0">السعر: <b>'+prices[product]+' جنيه</b></p></div><form class="form" id="bookCheckout"><input id="bookProduct" type="hidden" value="'+product+'"><div class="field"><label>الاسم الكامل</label><input id="bookName" required autocomplete="name"></div><div class="field"><label>رقم الموبايل</label><input id="bookPhone" required autocomplete="tel"></div><div class="field full"><label>البريد الإلكتروني</label><input id="bookEmail" type="email" required autocomplete="email"></div>'+(product==='BUNDLE'?'<div class="field full"><label>اسم المستلم الثاني للنسخة المقابلة <span style="color:#888">(اختياري)</span></label><input id="bookSecondName" placeholder="لو هتهدي النسخة الثانية لصديق"></div>':'')+'<div class="field full"><label><input id="bookAgree" type="checkbox" required style="width:auto"> أوافق أن الترخيص شخصي وغير قابل للنقل أو إعادة البيع.</label></div><button class="btn primary field full" id="bookBuy" type="submit">إنشاء طلب الشراء — '+prices[product]+' ج</button></form><div class="order-result" id="orderResult"><span class="license-badge" id="orderVersion"></span><h3 id="orderTitle"></h3><p id="orderText"></p><div class="hero-actions"><a class="btn whatsapp" id="orderWa" target="_blank" rel="noopener">إكمال الطلب مؤقتًا عبر واتساب</a><a class="btn dark" id="orderPay" target="_blank" rel="noopener" style="display:none">الدفع الإلكتروني</a></div><p class="compare-note">عند تفعيل بوابة الدفع، المسار هيبقى دفع → تأكيد تلقائي → إصدار الترخيص والتحميل بدون تدخل يدوي.</p></div></div></div></section>';
+  var govs=['القاهرة','الجيزة','الإسكندرية','القليوبية','الشرقية','الدقهلية','الغربية','المنوفية','البحيرة','كفر الشيخ','دمياط','بورسعيد','الإسماعيلية','السويس','الفيوم','بني سويف','المنيا','أسيوط','سوهاج','قنا','الأقصر','أسوان','البحر الأحمر','الوادي الجديد','مطروح','شمال سيناء','جنوب سيناء'];
+  return pageHero('شراء AI Marketing Machine','اختار نسختك وسجّل بيانات الشراء. كل طلب بياخد رقم متابعة وبياناته بتتحفظ قبل خطوة الدفع.')+
+  '<section class="section"><div class="container"><div class="card checkout-card"><div class="checkout-summary"><span class="eyebrow" style="color:var(--yellow)">اختيارك</span><h3 style="margin:5px 0">'+labels[product]+'</h3><p style="margin:0">السعر النهائي: <b>'+prices[product]+' جنيه</b></p></div>'+
+  '<div class="checkout-note"><b>بيانات العميل مطلوبة لكل عملية شراء.</b> بنستخدمها لتسجيل الطلب، إصدار الترخيص، حماية النسخة، والتواصل المرتبط بالطلب فقط.</div>'+
+  '<form class="form" id="bookCheckout"><input id="bookProduct" type="hidden" value="'+product+'">'+
+  '<div class="field"><label>الاسم الكامل *</label><input id="bookName" required autocomplete="name" placeholder="الاسم كما تحب يظهر على الترخيص"></div>'+
+  '<div class="field"><label>رقم الموبايل *</label><input id="bookPhone" required autocomplete="tel" inputmode="tel" placeholder="01xxxxxxxxx"></div>'+
+  '<div class="field"><label>رقم واتساب *</label><input id="bookWhatsapp" required autocomplete="tel" inputmode="tel" placeholder="01xxxxxxxxx"></div>'+
+  '<div class="field"><label>البريد الإلكتروني *</label><input id="bookEmail" type="email" required autocomplete="email" placeholder="name@example.com"></div>'+
+  '<div class="field"><label>المحافظة *</label><select id="bookGovernorate" required><option value="">اختار المحافظة</option>'+govs.map(function(g){return '<option>'+g+'</option>'}).join('')+'</select></div>'+
+  '<div class="field"><label>المدينة / المنطقة *</label><input id="bookCity" required autocomplete="address-level2" placeholder="مثال: الهرم"></div>'+
+  '<div class="field full"><label>مجال العمل أو النشاط <span style="color:#888">(اختياري)</span></label><input id="bookActivity" placeholder="مثال: تسويق، تجارة إلكترونية، صاحب مشروع..."></div>'+
+  (product==='BUNDLE'?'<div class="field full"><div class="checkout-note" style="margin:0"><b>النسخة الثانية في الـBundle:</b> لو هتديها لشخص تاني، ضيف بياناته عشان الترخيص B يطلع باسمه.</div></div><div class="field"><label>اسم المستلم الثاني</label><input id="bookSecondName"></div><div class="field"><label>موبايل المستلم الثاني</label><input id="bookSecondPhone" inputmode="tel"></div><div class="field full"><label>إيميل المستلم الثاني</label><input id="bookSecondEmail" type="email"></div>':'')+
+  '<div class="field full"><label>طريقة الدفع *</label><div class="payment-choice">'+
+  '<label class="payment-option"><input type="radio" name="bookPayment" value="paymob" checked><b>Paymob</b><small>كارت / محفظة — للتأكيد والتسليم التلقائي بعد التفعيل</small></label>'+
+  '<label class="payment-option"><input type="radio" name="bookPayment" value="vodafone_cash"><b>Vodafone Cash</b><small>تحويل يدوي لحين توفير تحقق تلقائي</small></label>'+
+  '<label class="payment-option"><input type="radio" name="bookPayment" value="instapay"><b>InstaPay</b><small>تحويل يدوي لحين توفير تحقق تلقائي</small></label>'+
+  '</div></div>'+
+  '<div class="field full"><label><input id="bookAgree" type="checkbox" required style="width:auto"> أوافق على استخدام بياناتي لإتمام الطلب وإصدار الترخيص، وأوافق أن النسخة شخصية وغير قابلة لإعادة البيع.</label><div class="privacy-mini">لن نطلب رقم بطاقة بنكية أو كلمة مرور داخل الموقع. الدفع الإلكتروني يتم عبر بوابة الدفع بعد تفعيلها.</div></div>'+
+  '<button class="btn primary field full" id="bookBuy" type="submit">تسجيل الطلب والانتقال للدفع — '+prices[product]+' ج</button></form>'+
+  '<div class="order-result" id="orderResult"><span class="license-badge" id="orderVersion"></span><h3 id="orderTitle"></h3><p id="orderText"></p><div class="payment-state" id="paymentState"></div><div class="hero-actions"><a class="btn dark" id="orderPay" target="_blank" rel="noopener" style="display:none">الانتقال للدفع الآمن</a><a class="btn whatsapp" id="orderWa" target="_blank" rel="noopener" style="display:none">مساعدة عبر واتساب</a></div><p class="compare-note">بعد ربط Paymob بالكامل: نجاح الدفع → تأكيد تلقائي → إصدار License → إتاحة النسخة بدون تدخل يدوي.</p></div></div></div></section>';
 }
 function bookReaderPage(){
   return '<section class="section"><div class="container"><div class="locked-box card" id="readerLoading"><h1>جاري التحقق من الترخيص…</h1><p>لحظات ويتم فتح نسختك إذا كان الـLicense صالحًا.</p></div><div class="reader-shell" id="readerShell" style="display:none"><div class="reader-meta"><div><b id="readerName"></b><div id="readerEmail" style="font-size:11px;color:#aaa"></div></div><div><span class="license-badge" id="readerEdition"></span><div id="readerLicense" style="font-size:11px;margin-top:4px"></div></div></div><div id="readerChapters"></div></div></div></section>';
@@ -418,7 +452,7 @@ function initRecordsAdmin(){
     recordsStats.innerHTML='<div class="records-stat"><span>إجمالي Records</span><b>'+total+'</b></div><div class="records-stat"><span>جديد</span><b>'+newCount+'</b></div><div class="records-stat"><span>طلبات كتاب</span><b>'+orders+'</b></div><div class="records-stat"><span>مدفوع / تم البيع</span><b>'+paid+'</b></div>';
     if(!records.length){recordsList.innerHTML='<div class="card">لسه مفيش Records.</div>';return}
     recordsList.innerHTML=records.map(function(r){
-      var customer=r.name||'Lead من AI',contact=[r.phone,r.email].filter(Boolean).join(' • '),what=r.productLabel||r.service||r.product||'غير محدد',detail=r.goal||r.summary||'',amount=r.amount?String(r.amount)+' '+(r.currency||'EGP'):(r.priceRange||'');
+      var customer=r.name||'Lead من AI',contact=[r.phone,r.whatsapp,r.email].filter(Boolean).join(' • '),what=r.productLabel||r.service||r.product||'غير محدد',detail=r.goal||r.summary||'',amount=r.amount?String(r.amount)+' '+(r.currency||'EGP'):(r.priceRange||''),locationText=[r.governorate,r.city].filter(Boolean).join(' / '),paymentText=r.paymentMethod||'';
       return '<article class="record-card" data-id="'+val(r.id)+'"><div class="record-top"><div><span class="eyebrow">'+val(r.source||r.kind)+'</span><h3>'+val(customer)+'</h3><div class="record-meta">'+val(r.id)+' • '+val(new Date(r.createdAt||Date.now()).toLocaleString('ar-EG'))+'</div></div><span class="license-badge">'+val(r.status||'new')+'</span></div><div class="record-grid"><div class="record-box"><b>الطلب</b><br>'+val(what)+(amount?'<br><strong>'+val(amount)+'</strong>':'')+'</div><div class="record-box"><b>التواصل</b><br>'+val(contact||'غير متاح')+'</div></div>'+(detail?'<div class="record-box" style="margin-top:10px">'+val(detail).slice(0,900)+'</div>':'')+'<div class="record-actions"><select class="record-status">'+statusOptions(r.status)+'</select><textarea class="record-notes" rows="2" placeholder="ملاحظات داخلية">'+val(r.notes||'')+'</textarea><button class="btn dark sm record-save" type="button">حفظ</button></div></article>';
     }).join('');
     document.querySelectorAll('.record-card').forEach(function(card){card.querySelector('.record-save').onclick=function(){saveCard(card.dataset.id,card).catch(function(){alert('تعذر حفظ التعديل')})}});
@@ -436,17 +470,43 @@ function initRecordsAdmin(){
 }
 function initBookCheckout(){
   var f=document.getElementById('bookCheckout');if(!f)return;
-  f.onsubmit=async function(e){e.preventDefault();var btn=document.getElementById('bookBuy');btn.disabled=true;btn.textContent='جاري إنشاء الطلب…';
+  var phone=document.getElementById('bookPhone'),wa=document.getElementById('bookWhatsapp');
+  if(phone&&wa){phone.addEventListener('blur',function(){if(!wa.value.trim())wa.value=phone.value.trim()})}
+  f.onsubmit=async function(e){
+    e.preventDefault();
+    var btn=document.getElementById('bookBuy');btn.disabled=true;btn.textContent='جاري تسجيل الطلب…';
     try{
-      var product=bookProduct.value;
-      var second=document.getElementById('bookSecondName');
-      var payload={action:'create-order',name:bookName.value,email:bookEmail.value,phone:bookPhone.value,product:product,secondName:second?second.value:''};
+      var secondName=document.getElementById('bookSecondName'),secondEmail=document.getElementById('bookSecondEmail'),secondPhone=document.getElementById('bookSecondPhone');
+      var method=(document.querySelector('input[name="bookPayment"]:checked')||{}).value||'paymob';
+      var payload={
+        action:'create-order',product:bookProduct.value,paymentMethod:method,
+        name:bookName.value,email:bookEmail.value,phone:bookPhone.value,whatsapp:bookWhatsapp.value,
+        governorate:bookGovernorate.value,city:bookCity.value,country:'Egypt',activity:bookActivity.value,
+        secondName:secondName?secondName.value:'',secondEmail:secondEmail?secondEmail.value:'',secondPhone:secondPhone?secondPhone.value:''
+      };
       var r=await fetch('/api/book',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-      var d=await r.json();if(!r.ok)throw Error('order');
+      var d=await r.json();if(!r.ok)throw Error(d.error||'order');
       localStorage.setItem('3bk-book-order-token',d.orderToken);localStorage.setItem('3bk-book-order-id',d.orderId);
-      orderVersion.textContent=d.productLabel;orderTitle.textContent='رقم الطلب: '+d.orderId;orderText.textContent='تم تسجيل اختيارك: '+d.productLabel+' بسعر '+d.price+' جنيه. أكمل خطوة الدفع/التأكيد لإصدار الترخيص.';
-      orderWa.href=d.whatsappUrl;if(d.paymentUrl){orderPay.href=d.paymentUrl;orderPay.style.display='inline-flex'}orderResult.classList.add('show');orderResult.scrollIntoView({behavior:'smooth',block:'center'});
-    }catch(err){alert('تعذر إنشاء الطلب. جرّب مرة أخرى.')}finally{btn.disabled=false;btn.textContent='إنشاء طلب الشراء'}
+      orderVersion.textContent=d.productLabel;orderTitle.textContent='تم تسجيل طلبك — '+d.orderId;
+      orderText.textContent='اختيارك: '+d.productLabel+' | الإجمالي: '+d.price+' جنيه.';
+      var state=document.getElementById('paymentState'),pay=document.getElementById('orderPay'),help=document.getElementById('orderWa');
+      pay.style.display='none';help.style.display='none';
+      if(d.paymentMethod==='paymob'&&d.paymentReady&&d.paymentUrl){
+        state.innerHTML='<b>الخطوة التالية:</b> اضغط زر الدفع الآمن. بعد نجاح الدفع هنربط التأكيد بالتسليم التلقائي.';
+        pay.href=d.paymentUrl;pay.style.display='inline-flex';
+      }else if(d.manualPayment&&d.paymentReady&&d.manualPayment.destination){
+        state.innerHTML='<b>طريقة الدفع المختارة:</b> '+(d.paymentMethod==='vodafone_cash'?'Vodafone Cash':'InstaPay')+'<br><b>بيانات التحويل:</b> '+esc(d.manualPayment.destination)+'<br><small>التحويل اليدوي لا يمكن تأكيده تلقائيًا حاليًا.</small>';
+        help.href=d.whatsappUrl;help.style.display='inline-flex';help.textContent='إرسال رقم الطلب بعد التحويل';
+      }else{
+        state.innerHTML='<b>تم حفظ بياناتك ورقم الطلب بنجاح.</b><br>وسيلة الدفع المختارة لسه محتاجة إعداد على الموقع. مش محتاج تعيد إدخال بياناتك مرة تانية.';
+        help.href=d.whatsappUrl;help.style.display='inline-flex';help.textContent='مساعدة مؤقتة لإتمام الطلب';
+      }
+      orderResult.classList.add('show');orderResult.scrollIntoView({behavior:'smooth',block:'center'});
+    }catch(err){
+      alert('تعذر تسجيل الطلب. راجع البيانات وحاول مرة أخرى.');
+    }finally{
+      btn.disabled=false;btn.textContent='تسجيل الطلب والانتقال للدفع';
+    }
   }
 }
 function initBookReader(){
