@@ -6,6 +6,9 @@
   "functions": {
     "api/chat.js": {
       "maxDuration": 60
+    },
+    "api/leads.js": {
+      "maxDuration": 30
     }
   },
   "rewrites": [
