@@ -174,6 +174,16 @@ h1,h2,h3,p{margin-top:0}.hero h1{font-size:clamp(46px,7vw,80px);line-height:1.04
 .privacy-mini{font-size:11px;color:#777;line-height:1.6}
 @media(max-width:760px){.checkout-grid,.payment-choice{grid-template-columns:1fr}}
 
+
+.payment-result-card{max-width:760px;margin:auto;text-align:center}
+.payment-result-icon{width:76px;height:76px;border-radius:50%;display:grid;place-items:center;margin:0 auto 16px;font-size:34px;font-weight:900;background:var(--yellow);color:#111}
+.payment-result-card.pending .payment-result-icon{animation:pulsePay 1.2s ease-in-out infinite}
+.payment-result-card.failed .payment-result-icon{background:#ffd4d4;color:#7a2020}
+.payment-result-card.success .payment-result-icon{background:#d8f7df;color:#166a2f}
+.license-actions{display:grid;gap:10px;margin-top:18px}
+.license-action{display:flex;justify-content:space-between;align-items:center;gap:12px;border:1px solid var(--line);border-radius:13px;padding:12px 14px;text-align:right;background:#fff}
+@keyframes pulsePay{50%{transform:scale(1.07);opacity:.72}}
+
 </style>
 </head>
 <body>
@@ -366,6 +376,10 @@ function bookCheckoutPage(){
   '<button class="btn primary field full" id="bookBuy" type="submit">تسجيل الطلب والانتقال للدفع — '+prices[product]+' ج</button></form>'+
   '<div class="order-result" id="orderResult"><span class="license-badge" id="orderVersion"></span><h3 id="orderTitle"></h3><p id="orderText"></p><div class="payment-state" id="paymentState"></div><div class="hero-actions"><a class="btn dark" id="orderPay" target="_blank" rel="noopener" style="display:none">الانتقال للدفع الآمن</a><a class="btn whatsapp" id="orderWa" target="_blank" rel="noopener" style="display:none">مساعدة عبر واتساب</a></div><p class="compare-note">بعد ربط Paymob بالكامل: نجاح الدفع → تأكيد تلقائي → إصدار License → إتاحة النسخة بدون تدخل يدوي.</p></div></div></div></section>';
 }
+function bookPaymentResultPage(){
+  return pageHero('نتيجة الدفع','بنأكد حالة العملية من Paymob مباشرة قبل ما نفتح النسخة.')+
+  '<section class="section"><div class="container"><div class="card payment-result-card pending" id="paymentResultCard"><div class="payment-result-icon" id="paymentResultIcon">…</div><span class="eyebrow">PAYMOB / SECURE CHECK</span><h2 id="paymentResultTitle">جاري تأكيد الدفع…</h2><p id="paymentResultText">ماتقفلش الصفحة. التأكيد بيتم من السيرفر عن طريق Webhook آمن.</p><div id="paymentResultMeta" class="payment-state"></div><div id="paymentLicenses" class="license-actions"></div><div class="hero-actions" style="justify-content:center"><a class="btn outline" href="/book" data-link>العودة للكتاب</a></div></div></div></section>';
+}
 function bookReaderPage(){
   return '<section class="section"><div class="container"><div class="locked-box card" id="readerLoading"><h1>جاري التحقق من الترخيص…</h1><p>لحظات ويتم فتح نسختك إذا كان الـLicense صالحًا.</p></div><div class="reader-shell" id="readerShell" style="display:none"><div class="reader-meta"><div><b id="readerName"></b><div id="readerEmail" style="font-size:11px;color:#aaa"></div></div><div><span class="license-badge" id="readerEdition"></span><div id="readerLicense" style="font-size:11px;margin-top:4px"></div></div></div><div id="readerChapters"></div></div></div></section>';
 }
@@ -496,8 +510,9 @@ function initBookCheckout(){
       var state=document.getElementById('paymentState'),pay=document.getElementById('orderPay'),help=document.getElementById('orderWa');
       pay.style.display='none';help.style.display='none';
       if(d.paymentMethod==='paymob'&&d.paymentReady&&d.paymentUrl){
-        state.innerHTML='<b>الخطوة التالية:</b> اضغط زر الدفع الآمن. بعد نجاح الدفع هنربط التأكيد بالتسليم التلقائي.';
-        pay.href=d.paymentUrl;pay.style.display='inline-flex';
+        state.innerHTML='<b>تم تسجيل الطلب.</b><br>جاري تحويلك إلى صفحة Paymob الآمنة للدفع'+(d.paymentMode==='test'?' <strong>(Test Mode)</strong>':'')+'…';
+        pay.href=d.paymentUrl;pay.style.display='inline-flex';pay.textContent='فتح Paymob الآن';
+        setTimeout(function(){location.href=d.paymentUrl},900);
       }else if(d.manualPayment&&d.paymentReady&&d.manualPayment.destination){
         state.innerHTML='<b>طريقة الدفع المختارة:</b> '+(d.paymentMethod==='vodafone_cash'?'Vodafone Cash':'InstaPay')+'<br><b>بيانات التحويل:</b> '+esc(d.manualPayment.destination)+'<br><small>التحويل اليدوي لا يمكن تأكيده تلقائيًا حاليًا.</small>';
         help.href=d.whatsappUrl;help.style.display='inline-flex';help.textContent='إرسال رقم الطلب بعد التحويل';
@@ -512,6 +527,39 @@ function initBookCheckout(){
       btn.disabled=false;btn.textContent='تسجيل الطلب والانتقال للدفع';
     }
   }
+}
+function initBookPaymentResult(){
+  if(location.pathname!=='/book/payment-result')return;
+  var token=localStorage.getItem('3bk-book-order-token')||'';
+  var orderId=localStorage.getItem('3bk-book-order-id')||'';
+  var card=document.getElementById('paymentResultCard'),icon=document.getElementById('paymentResultIcon'),title=document.getElementById('paymentResultTitle'),txt=document.getElementById('paymentResultText'),meta=document.getElementById('paymentResultMeta'),licenses=document.getElementById('paymentLicenses');
+  if(!token){
+    card.className='card payment-result-card failed';icon.textContent='!';title.textContent='محتاجين نرجع لطلبك';txt.textContent='مفيش Order Token محفوظ على الجهاز ده. افتح نفس الجهاز والمتصفح اللي بدأت منه عملية الشراء.';meta.textContent=orderId?'رقم الطلب: '+orderId:'';
+    return;
+  }
+  var tries=0,maxTries=24;
+  async function check(){
+    tries++;
+    try{
+      var r=await fetch('/api/book',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'order-status',orderToken:token})});
+      var d=await r.json();if(!r.ok)throw Error('status');
+      meta.innerHTML='رقم الطلب: <b>'+esc(d.orderId)+'</b><br>الحالة: '+esc(d.paymentStatus||d.status)+(d.mode==='test'?'<br><strong>Test Mode — لا يتم خصم أموال حقيقية</strong>':'');
+      if((d.status==='paid'||d.status==='won')&&d.licenses&&d.licenses.length){
+        card.className='card payment-result-card success';icon.textContent='✓';title.textContent='تم تأكيد الدفع وإصدار نسختك';txt.textContent='الترخيص اتصدر تلقائيًا. افتح نسختك من الزر المناسب تحت.';
+        licenses.innerHTML=d.licenses.map(function(x){return '<a class="license-action" href="'+esc(x.readerUrl)+'"><span><b>Version '+esc(x.version)+'</b><br><small>'+esc(x.licenseId)+'</small></span><strong>فتح النسخة ←</strong></a>'}).join('');
+        return;
+      }
+      if(d.paymentStatus==='failed'){
+        card.className='card payment-result-card failed';icon.textContent='×';title.textContent='الدفع لم يكتمل';txt.textContent='لم يتم تأكيد العملية كمدفوعة. تقدر ترجع وتحاول مرة تانية.';return;
+      }
+      if(tries<maxTries)setTimeout(check,1500);
+      else{title.textContent='لسه بنستنى تأكيد Paymob';txt.textContent='العملية ممكن تكون محتاجة ثواني إضافية. اعمل تحديث للصفحة بعد قليل؛ مش هنعتبر الطلب مدفوع إلا بعد وصول التأكيد الآمن.'}
+    }catch(e){
+      if(tries<maxTries)setTimeout(check,1800);
+      else{card.className='card payment-result-card failed';icon.textContent='!';title.textContent='تعذر التأكد من حالة الدفع';txt.textContent='بيانات طلبك محفوظة. جرّب تحديث الصفحة بعد قليل.'}
+    }
+  }
+  check();
 }
 function initBookReader(){
   if(location.pathname!=='/book/read')return;
@@ -536,7 +584,7 @@ function initBookAdmin(){
   copyLicense.onclick=function(){navigator.clipboard.writeText(licenseUrl.value)}
 }
 function setTitle(path){
-  var map={'/':'3bkarino Tech | حلول تقنية أبسط وأسرع','/services':'الحلول | 3bkarino Tech','/pricing':'الأسعار | 3bkarino Tech','/portfolio':'أعمالنا | 3bkarino Tech','/blog':'المقالات | 3bkarino Tech','/book':'AI Marketing Machine | 3bkarino Tech','/book/checkout':'شراء الكتاب | 3bkarino Tech','/book/read':'نسختك المرخصة | 3bkarino Tech','/tools':'أدوات مجانية | 3bkarino Tech','/ai-consultant':'مستشار 60 ثانية | 3bkarino Tech','/contact':'ابدأ مشروعك | 3bkarino Tech','/privacy-policy':'الخصوصية | 3bkarino Tech','/admin/records':'Records Dashboard | 3bkarino Tech'};document.title=map[path]||'3bkarino Tech';
+  var map={'/':'3bkarino Tech | حلول تقنية أبسط وأسرع','/services':'الحلول | 3bkarino Tech','/pricing':'الأسعار | 3bkarino Tech','/portfolio':'أعمالنا | 3bkarino Tech','/blog':'المقالات | 3bkarino Tech','/book':'AI Marketing Machine | 3bkarino Tech','/book/checkout':'شراء الكتاب | 3bkarino Tech','/book/payment-result':'نتيجة الدفع | 3bkarino Tech','/book/read':'نسختك المرخصة | 3bkarino Tech','/tools':'أدوات مجانية | 3bkarino Tech','/ai-consultant':'مستشار 60 ثانية | 3bkarino Tech','/contact':'ابدأ مشروعك | 3bkarino Tech','/privacy-policy':'الخصوصية | 3bkarino Tech','/admin/records':'Records Dashboard | 3bkarino Tech'};document.title=map[path]||'3bkarino Tech';
 }
 function render(){
   if(activeTimer){clearInterval(activeTimer);activeTimer=null}
@@ -550,6 +598,7 @@ function render(){
   else if(p.indexOf('/blog/')===0)app.innerHTML=articlePage(p.split('/')[2]);
   else if(p==='/book')app.innerHTML=bookPage();
   else if(p==='/book/checkout')app.innerHTML=bookCheckoutPage();
+  else if(p==='/book/payment-result')app.innerHTML=bookPaymentResultPage();
   else if(p==='/book/read')app.innerHTML=bookReaderPage();
   else if(p==='/book/admin')app.innerHTML=bookAdminPage();
   else if(p==='/tools')app.innerHTML=toolsPage();
@@ -558,7 +607,7 @@ function render(){
   else if(p==='/privacy-policy')app.innerHTML=privacyPage();
   else if(p==='/admin/records')app.innerHTML=recordsAdminPage();
   else app.innerHTML=notFound();
-  initFaq();initCalc();initLead();initAI();initRecordsAdmin();initBookCheckout();initBookReader();initBookAdmin();
+  initFaq();initCalc();initLead();initAI();initRecordsAdmin();initBookCheckout();initBookPaymentResult();initBookReader();initBookAdmin();
 }
 render();
 })();
