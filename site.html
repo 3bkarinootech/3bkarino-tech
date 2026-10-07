@@ -1097,10 +1097,47 @@ function home(){
   '<section class="section"><div class="container home-bottom"><div><span class="eyebrow">OUR BOOK</span><h3>AI Marketing Machine</h3><div class="home-book-cover"><img src="/assets/book-cover-full.webp" alt="AI Marketing Machine"><div><p>كتاب عملي تتعلم منه التسويق بالذكاء الاصطناعي خطوة بخطوة: فهم العميل، العرض، المحتوى، الإعلانات، القياس والأتمتة.</p><b style="color:#31dcff">A أو B: 299 ج • الباندل: 500 ج</b></div></div><div class="hero-actions"><a class="btn outline sm" href="/book" data-link>اكتشف الكتاب</a></div></div><div><span class="eyebrow">AI CONSULTANT</span><h3>المستشار الذكي</h3><div class="home-ai-bot">◉</div><p>جاوب على شوية أسئلة سريعة، والمستشار يساعدك تحدد الخدمة الأقرب ويجهز ملخص للمتابعة على واتساب.</p><div class="hero-actions"><a class="btn outline sm" href="/ai-consultant" data-link>ابدأ المحادثة الآن</a></div></div><div><span class="eyebrow">LATEST ARTICLES</span><h3>أحدث المقالات</h3><div class="home-article-mini">'+articles.slice(0,3).map(function(a){return '<a href="/blog/'+a.slug+'" data-link><span>'+a.tag+' • '+a.read+'</span><b>'+a.title+'</b></a>'}).join('')+'</div><div class="hero-actions"><a class="btn outline sm" href="/blog" data-link>عرض الكل</a></div></div></div></section>'+
   '<section class="section soft"><div class="container social-section"><div><span class="eyebrow">FOLLOW 3BKARINO TECH</span><h2 style="margin:5px 0">تابع الجديد وتواصل معانا.</h2><p>محتوى AI وExcel وتسويق وتحديثات المنتجات والخدمات.</p></div>'+socialLinks()+'</div></section>';
 }
+var seoSolutions={
+  'inventory-sales':{
+    eyebrow:'ERP & OPERATIONS',
+    title:'نظام مخازن ومبيعات مخصص لطريقة شغلك',
+    desc:'نظام يساعد الشركات على متابعة المخزون والمبيعات والعملاء والموردين والتقارير من مكان واحد بدل الملفات والخطوات المتفرقة.',
+    problem:'لو الرصيد بيتراجع يدويًا، والمبيعات في مكان، والمخزن في مكان، والتقارير بتتجمع آخر اليوم أو آخر الشهر، بيزيد وقت المراجعة واحتمال الخطأ.',
+    features:[['إدارة المخزون','وارد ومنصرف وتحويلات وأرصدة حسب الصنف والمخزن.'],['المبيعات','طلبات وفواتير وحالة السداد وربطها بالمخزون.'],['العملاء والموردون','أرصدة وكشوف حساب ومتابعة الاستحقاقات.'],['الصلاحيات','تحديد ما يراه ويعدله كل مستخدم.'],['التقارير','تقارير تشغيلية وإدارية قابلة للتصدير.'],['التخصيص','يتبني حسب دورة العمل بدل فرض Workflow جاهز.']],
+    keywords:'نظام مخازن • برنامج مخازن ومبيعات • ERP • إدارة مخزون',
+    caseHref:'/portfolio/industrial-system'
+  },
+  'excel-dashboard':{
+    eyebrow:'EXCEL & BI',
+    title:'Excel Dashboard للشركات وتقارير الإدارة',
+    desc:'حوّل ملفات Excel المتفرقة إلى Dashboard واضحة تربط الأرقام بالمؤشرات والقرارات بدل التجميع اليدوي كل مرة.',
+    problem:'لما التقرير يحتاج نسخ ولصق وتجميع من أكتر من Sheet أو ملف، وقتك بيروح في تجهيز الرقم بدل تحليل معناه.',
+    features:[['Dashboards','مؤشرات ورسوم وملخصات للإدارة.'],['Automation','تقليل التحديث اليدوي والخطوات المتكررة.'],['AR & Aging','متابعة العملاء والاستحقاقات وأعمار الديون.'],['Sales Analysis','تحليل المبيعات حسب العميل والصنف والفترة.'],['Reconciliation','مطابقات وفروق واستثناءات للمراجعة.'],['قابلية التطوير','إضافة مصادر بيانات وتقارير جديدة تدريجيًا.']],
+    keywords:'Excel Dashboard • تقارير إدارية • AR Aging • Business Intelligence',
+    caseHref:'/portfolio/ar-control-aging'
+  },
+  'ai-automation':{
+    eyebrow:'AI & AUTOMATION',
+    title:'AI Automation للشركات والمبيعات',
+    desc:'حوّل المهام المتكررة إلى Workflow ذكي: تأهيل Leads، تلخيص الطلبات، اقتراح الخدمة المناسبة وتحويل العميل للمتابعة البشرية.',
+    problem:'وقت الفريق بيتستهلك في أسئلة وخطوات متكررة، والـLead ممكن يوصل ناقص أو يتأخر الرد عليه قبل ما يتحول لفرصة بيع حقيقية.',
+    features:[['Lead Qualification','أسئلة ذكية لفهم احتياج العميل.'],['Service Matching','اقتراح الخدمة أو الحل الأقرب.'],['Summaries','تلخيص المحادثة والطلب تلقائيًا.'],['WhatsApp Handoff','تحويل منظم للمتابعة البشرية.'],['Workflows','أتمتة خطوات داخلية متكررة.'],['Human Review','الإبقاء على المراجعة البشرية في النقاط الحساسة.']],
+    keywords:'AI Automation • Sales Automation • Lead Qualification • WhatsApp Automation',
+    caseHref:'/portfolio/ai-sales-flow'
+  }
+};
+function seoSolutionPage(slug){
+  var x=seoSolutions[slug];if(!x)return notFound();
+  return '<section class="case-hero"><div class="container case-hero-grid"><div><div class="crumb">3bkarino Tech / Solutions</div><span class="eyebrow">'+x.eyebrow+'</span><h1>'+x.title+'</h1><p>'+x.desc+'</p><div class="case-meta"><span>'+x.keywords.split(' • ').join('</span><span>')+'</span></div><div class="hero-actions"><a class="btn primary" href="/contact?solution='+encodeURIComponent(x.title)+'" data-link>اطلب عرض سعر</a><a class="btn outline" href="'+x.caseHref+'" data-link>شوف Case Study</a></div></div><div class="case-cover"><img src="/assets/brand-mark.svg" alt="3bkarino Tech"></div></div></section>'+
+  '<section class="section"><div class="container"><div class="case-block"><span class="eyebrow">THE PROBLEM</span><h2>المشكلة اللي بنحلها</h2><p>'+x.problem+'</p></div></div></section>'+
+  '<section class="section soft"><div class="container"><div class="section-head"><div><span class="eyebrow">WHAT YOU GET</span><h2>الوظائف الأساسية</h2></div><p>نبدأ بالنطاق الضروري ثم نوسع الحل حسب احتياج الشركة.</p></div><div class="feature-grid">'+x.features.map(function(f){return '<div class="feature-item"><b>'+f[0]+'</b><p>'+f[1]+'</p></div>'}).join('')+'</div></div></section>'+
+  '<section class="section"><div class="container cta"><div><span class="eyebrow">ابدأ صح</span><h2>ابعت طريقة شغلك الحالية والمشكلة الأساسية.</h2><p>هنحدد لك أنسب نقطة بداية ونطاق أول نسخة بدل تنفيذ وظائف مش محتاجها.</p></div><div class="hero-actions"><a class="btn dark" href="/contact?solution='+encodeURIComponent(x.title)+'" data-link>اطلب تقييم مبدئي</a><a class="btn light" href="/ai-consultant" data-link>اسأل المستشار الذكي</a></div></div></section>';
+}
 function servicesPage(){
   return pageHero('الخدمات','اختار حسب المشكلة والنتيجة اللي محتاجها، مش حسب اسم التقنية. كل خدمة موضح فيها الاستخدام المناسب وطريقة البداية.')+
   '<section class="section"><div class="container"><div class="section-head"><div><span class="eyebrow">6 مسارات واضحة</span><h2>من موقع بسيط لنظام كامل أو AI.</h2></div><p>تقدر تبدأ بحل صغير وتوسعه بعدين. الهدف إن أول نسخة تحل مشكلة فعلية بدل ما تحمل المشروع وظائف مش محتاجها.</p></div><div class="grid grid3">'+serviceCards()+'</div></div></section>'+
-  '<section class="section dark"><div class="container"><div class="section-head"><div><span class="eyebrow">اختار بسرعة</span><h2>لو مش عارف اسم الخدمة، ابدأ بالمشكلة.</h2></div><p>دي أمثلة سريعة تربط المشكلة بالخدمة الأقرب.</p></div><div class="grid grid4"><div class="step"><div class="n">01</div><h3>الناس مش فاهمة خدمتي</h3><p>ابدأ بموقع أو Landing Page ورسالة أوضح.</p></div><div class="step"><div class="n">02</div><h3>الشغل متبعثر</h3><p>ابدأ بنظام داخلي أو Excel Automation.</p></div><div class="step"><div class="n">03</div><h3>أسئلة العملاء بتتكرر</h3><p>ابدأ بمساعد AI وتأهيل Leads.</p></div><div class="step"><div class="n">04</div><h3>الإعلانات مش واضحة</h3><p>ابدأ بمراجعة العرض والمحتوى والقياس.</p></div></div><div class="hero-actions"><a class="btn primary" href="/ai-consultant" data-link>خلي المستشار يرشح لك</a><a class="btn light" href="/pricing" data-link>شوف الباقات</a></div></div></section>'+cta();
+  '<section class="section dark"><div class="container"><div class="section-head"><div><span class="eyebrow">اختار بسرعة</span><h2>لو مش عارف اسم الخدمة، ابدأ بالمشكلة.</h2></div><p>دي أمثلة سريعة تربط المشكلة بالخدمة الأقرب.</p></div><div class="grid grid4"><div class="step"><div class="n">01</div><h3>الناس مش فاهمة خدمتي</h3><p>ابدأ بموقع أو Landing Page ورسالة أوضح.</p></div><div class="step"><div class="n">02</div><h3>الشغل متبعثر</h3><p>ابدأ بنظام داخلي أو Excel Automation.</p></div><div class="step"><div class="n">03</div><h3>أسئلة العملاء بتتكرر</h3><p>ابدأ بمساعد AI وتأهيل Leads.</p></div><div class="step"><div class="n">04</div><h3>الإعلانات مش واضحة</h3><p>ابدأ بمراجعة العرض والمحتوى والقياس.</p></div></div><div class="hero-actions"><a class="btn primary" href="/ai-consultant" data-link>خلي المستشار يرشح لك</a><a class="btn light" href="/pricing" data-link>شوف الباقات</a></div></div></section>'+
+  '<section class="section"><div class="container"><div class="section-head"><div><span class="eyebrow">SOLUTIONS</span><h2>حلول حسب المشكلة اللي بتدور عليها.</h2></div><p>صفحات متخصصة توضح الحل والوظائف والأمثلة بدل الكلام العام.</p></div><div class="grid grid3"><a class="card hover" href="/solutions/inventory-sales" data-link><h3>نظام مخازن ومبيعات</h3><p>إدارة المخزون والمبيعات والعملاء والموردين والتقارير.</p><span class="link">اعرف التفاصيل ←</span></a><a class="card hover" href="/solutions/excel-dashboard" data-link><h3>Excel Dashboard</h3><p>لوحات متابعة وتقارير إدارية وAR Aging وتحليل بيانات.</p><span class="link">اعرف التفاصيل ←</span></a><a class="card hover" href="/solutions/ai-automation" data-link><h3>AI Automation</h3><p>تأهيل Leads وأتمتة خطوات المبيعات والمتابعة.</p><span class="link">اعرف التفاصيل ←</span></a></div></div></section>'+cta();
 }
 function pricingPage(){
   return pageHero('الباقات والأسعار','اعرف نطاق السعر المناسب قبل التواصل. السعر النهائي بيتثبت بعد تحديد الصفحات والوظائف والتكاملات والمدة.')+
@@ -1513,6 +1550,7 @@ function render(){
   document.querySelectorAll('.navlinks a').forEach(function(a){a.classList.toggle('active',a.getAttribute('href')===p)});
   if(p==='/')app.innerHTML=home();
   else if(p==='/services')app.innerHTML=servicesPage();
+  else if(p.indexOf('/solutions/')===0)app.innerHTML=seoSolutionPage(p.split('/')[2]);
   else if(p==='/pricing')app.innerHTML=pricingPage();
   else if(p==='/portfolio')app.innerHTML=portfolioPage();
   else if(p.indexOf('/portfolio/')===0)app.innerHTML=projectCasePage(p.split('/')[2]);
