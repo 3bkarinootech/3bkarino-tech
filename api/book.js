@@ -57,6 +57,7 @@ export default async function handler(req,res){
     const country=clean(body.country||'Egypt',80),activity=clean(body.activity,120);
     const secondName=clean(body.secondName,120),secondEmail=clean(body.secondEmail,180).toLowerCase(),secondPhone=clean(body.secondPhone,30);
     const product=String(body.product||'').toUpperCase(),info=productInfo(product),paymentMethod='paymob';
+    const a=body.attribution||{};
     if(name.length<2||!email.includes('@')||phone.length<8||whatsapp.length<8||!governorate||!city||!info)return send(res,400,{error:'INVALID_CUSTOMER_OR_PRODUCT'});
     if(product==='BUNDLE'&&secondName&&secondEmail&&!secondEmail.includes('@'))return send(res,400,{error:'INVALID_SECOND_RECIPIENT_EMAIL'});
     const id=orderId(),createdAt=Date.now(),siteOrigin=requestOrigin(req),customer={name,email,phone,whatsapp,governorate,city,country,activity};
@@ -64,7 +65,11 @@ export default async function handler(req,res){
     const orderToken=token({type:'order',id,...customer,product,price:info.price,paymentMethod,recipient,createdAt});
     const paymentReady=paymobConfig().configured;
     try{
-      await saveRecord({id,kind:'order',source:'book',status:'pending_payment',createdAt,siteOrigin,...customer,product,productLabel:info.label,amount:info.price,currency:'EGP',paymentMethod,paymentReady,recipient,consentAt:createdAt});
+      await saveRecord({id,kind:'order',source:'book',status:'pending_payment',createdAt,siteOrigin,...customer,product,productLabel:info.label,amount:info.price,currency:'EGP',paymentMethod,paymentReady,recipient,consentAt:createdAt,
+        page:clean(body.page,300),referrer:clean(body.referrer,500),
+        utm_source:clean(a.utm_source,120),utm_medium:clean(a.utm_medium,120),utm_campaign:clean(a.utm_campaign,180),
+        utm_content:clean(a.utm_content,180),utm_term:clean(a.utm_term,180),gclid:clean(a.gclid,220),fbclid:clean(a.fbclid,220),
+        landing_page:clean(a.landing_page,300),first_referrer:clean(a.first_referrer,500)});
     }catch(err){console.error('ORDER_RECORD_FAILED',err);return send(res,503,{error:'ORDER_STORAGE_UNAVAILABLE'})}
     let paymob=null,paymentError='';
     if(paymentReady){
