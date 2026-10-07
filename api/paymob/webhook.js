@@ -24,7 +24,7 @@ async function deliverEmails(record){
 
 export default async function handler(req,res){
   if(req.method!=='POST')return send(res,405,{error:'METHOD_NOT_ALLOWED'});
-  const url=new URL(req.url,'https://3bkarino-tech.vercel.app');
+  const url=new URL(req.url,'https://3bkarinotech.com');
   const receivedHmac=url.searchParams.get('hmac')||'';
   let body=req.body;try{if(typeof body==='string')body=JSON.parse(body)}catch{return send(res,400,{error:'BAD_JSON'})}
   const obj=body?.obj;
