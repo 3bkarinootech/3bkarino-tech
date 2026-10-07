@@ -40,12 +40,16 @@ export default async function handler(req,res){
   if(action==='create'){
     const name=clean(body.name,120),email=clean(body.email,180).toLowerCase(),phone=clean(body.phone,40);
     const source=clean(body.source||'contact',50),service=clean(body.service,160),goal=clean(body.goal,1600);
+    const a=body.attribution||{};
     if(name.length<2||phone.length<8||!email.includes('@')||!service)return send(res,400,{error:'INVALID_LEAD'});
     const record=await saveRecord({
       id:leadId(),kind:'lead',source,status:'new',createdAt:Date.now(),
       name,email,phone,service,plan:clean(body.plan,200),goal,
       budget:clean(body.budget,100),deadline:clean(body.deadline,100),
-      referrer:clean(body.referrer,500),page:clean(body.page,300)
+      referrer:clean(body.referrer,500),page:clean(body.page,300),
+      utm_source:clean(a.utm_source,120),utm_medium:clean(a.utm_medium,120),utm_campaign:clean(a.utm_campaign,180),
+      utm_content:clean(a.utm_content,180),utm_term:clean(a.utm_term,180),gclid:clean(a.gclid,220),fbclid:clean(a.fbclid,220),
+      landing_page:clean(a.landing_page,300),first_referrer:clean(a.first_referrer,500)
     });
     return send(res,200,{ok:true,id:record.id});
   }
