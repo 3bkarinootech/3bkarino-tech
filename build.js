@@ -13,7 +13,7 @@ fs.cpSync('assets','public/assets',{recursive:true,force:true});
 const routes=[
   'services','portfolio','pricing','blog','tools','contact','ai-consultant',
   'book','book/checkout','book/payment-result','book/read','book/admin','booking','privacy-policy','admin/records',
-  'blog/ai-marketing-revolution','blog/analytics-guide','blog/paid-ads-guide'
+  'blog/ai-marketing-revolution','blog/analytics-guide','blog/paid-ads-guide','blog/website-conversion-guide','blog/prompting-for-business','blog/automation-first-workflow'
 ];
 
 for(const route of routes){
