@@ -593,6 +593,22 @@ body:after{
   .section{padding:54px 0}
 }
 
+
+.brand-symbol-svg{width:100%;height:100%;display:block;filter:drop-shadow(0 0 10px rgba(6,182,212,.38))}
+.footer-brand-name b{color:var(--cyan);font-weight:950}.footer-brand-name span{color:#fff}
+.tech-visual{min-height:430px;display:flex;align-items:center;justify-content:center;padding:28px 24px 20px}
+.tech-visual .hero-meta{position:absolute;right:20px;left:20px;bottom:15px}
+.orb{position:absolute;border-radius:50%;filter:blur(34px);pointer-events:none}.orb-a{width:220px;height:220px;background:#087eff33;right:4%;top:2%}.orb-b{width:180px;height:180px;background:#06b6d42c;left:2%;bottom:7%}
+.laptop{width:min(78%,430px);position:relative;z-index:3;transform:perspective(1000px) rotateY(-6deg) rotateX(2deg)}
+.laptop-screen{aspect-ratio:16/10;border:3px solid #2e95ff;border-radius:15px;background:linear-gradient(145deg,#020b16,#071d3b 58%,#0a2d5b);box-shadow:0 0 0 1px #06b6d4aa,0 0 45px #006eff44,inset 0 0 45px #008cff14;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.laptop-screen:before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 15%,#0af2ff16 48%,transparent 70%);transform:translateX(-45%)}
+.screen-logo{width:74%;display:flex;flex-direction:column;align-items:center;gap:2px;position:relative;z-index:2}.screen-logo .brand-symbol-svg{height:84px}.screen-brand strong{display:block;text-align:center;font-size:30px;line-height:1;color:#fff;letter-spacing:-1px}.screen-brand i{font-style:normal;color:#18cfff}.screen-brand small{display:block;text-align:center;font-size:8px;letter-spacing:3px;color:#a9c8e9;margin-top:8px}
+.screen-grid{position:absolute;inset:0;background-image:linear-gradient(#1b8eff0b 1px,transparent 1px),linear-gradient(90deg,#1b8eff0b 1px,transparent 1px);background-size:25px 25px}
+.laptop-base{height:18px;width:112%;margin-right:-6%;background:linear-gradient(180deg,#9bdcff,#165cc2 45%,#071a37);clip-path:polygon(3% 0,97% 0,100% 70%,58% 100%,42% 100%,0 70%);box-shadow:0 12px 22px #0009}
+.float-node{position:absolute;z-index:5;min-width:135px;padding:10px 12px;border:1px solid #1aa9ff;border-radius:12px;background:linear-gradient(145deg,#0a3a74e8,#05162ce8);box-shadow:0 0 20px #007dff2e,inset 0 0 16px #08cfff0d;display:flex;align-items:center;gap:9px}
+.float-node b{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;background:#0b6fe0;color:#55e7ff;font-size:14px}.float-node span{font-size:12px;color:#edf8ff;font-weight:800}.n1{right:2%;top:15%}.n2{left:1%;top:18%}.n3{left:4%;bottom:24%}.n4{right:1%;bottom:28%}
+@media(max-width:760px){.tech-visual{min-height:380px}.laptop{width:76%}.float-node{min-width:112px;padding:8px}.float-node b{width:29px;height:29px}.float-node span{font-size:10px}.screen-brand strong{font-size:22px}.screen-logo .brand-symbol-svg{height:64px}}
+
 </style>
 </head>
 <body>
@@ -601,8 +617,8 @@ body:after{
 <header class="header">
   <div class="container nav">
     <a class="brand-lockup" href="/" data-link aria-label="3bkarino Tech - الرئيسية">
-      <span class="brand-image"><img src="/assets/logo-v2.png?v=12" onerror="this.onerror=null;this.src=&quot;/assets/logo.png?v=10&quot;" alt="شعار 3bkarino Tech"></span>
-      <span class="brand-copy"><strong>3bkarino Tech</strong><small>Code Smarter & Faster</small></span>
+      <span class="brand-image"><svg class="brand-symbol-svg" viewBox="0 0 190 72" aria-hidden="true"><defs><linearGradient id="g3bk" x1="0" x2="1"><stop stop-color="#2563EB"/><stop offset=".52" stop-color="#06B6D4"/><stop offset="1" stop-color="#2563EB"/></linearGradient></defs><path d="M11 36C11 13 34 8 57 15c15 5 27 17 38 21 11-4 23-16 38-21 23-7 46-2 46 21s-23 28-46 21c-15-5-27-17-38-21-11 4-23 16-38 21-23 7-46 2-46-21Z" fill="none" stroke="url(#g3bk)" stroke-width="7" stroke-linecap="round"/><path d="M82 22 65 36l17 14M108 22l17 14-17 14M100 18 90 54" fill="none" stroke="#38D8FF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M145 22v12m-8-8a14 14 0 1 0 16 0" fill="none" stroke="#38D8FF" stroke-width="5" stroke-linecap="round"/></svg></span>
+      <span class="brand-copy"><strong>3bkarino</strong><small>Code Smarter & Faster</small></span>
     </a>
     <button class="menu" id="menu" aria-label="فتح القائمة" aria-expanded="false">☰</button>
     <nav class="navlinks" id="navlinks" aria-label="القائمة الرئيسية">
@@ -622,8 +638,8 @@ body:after{
 <footer class="footer">
   <div class="container footer-grid">
     <div>
-      <div class="footer-logo"><img src="/assets/logo-v2.png?v=12" onerror="this.onerror=null;this.src=&quot;/assets/logo.png?v=10&quot;" alt="3bkarino Tech"></div>
-      <div class="footer-brand-name">3bkarino Tech</div>
+      <div class="footer-logo"><svg class="brand-symbol-svg" viewBox="0 0 190 72" aria-hidden="true"><defs><linearGradient id="g3bk" x1="0" x2="1"><stop stop-color="#2563EB"/><stop offset=".52" stop-color="#06B6D4"/><stop offset="1" stop-color="#2563EB"/></linearGradient></defs><path d="M11 36C11 13 34 8 57 15c15 5 27 17 38 21 11-4 23-16 38-21 23-7 46-2 46 21s-23 28-46 21c-15-5-27-17-38-21-11 4-23 16-38 21-23 7-46 2-46-21Z" fill="none" stroke="url(#g3bk)" stroke-width="7" stroke-linecap="round"/><path d="M82 22 65 36l17 14M108 22l17 14-17 14M100 18 90 54" fill="none" stroke="#38D8FF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M145 22v12m-8-8a14 14 0 1 0 16 0" fill="none" stroke="#38D8FF" stroke-width="5" stroke-linecap="round"/></svg></div>
+      <div class="footer-brand-name"><span>3bkarino</span> <b>Tech</b></div>
       <div class="footer-brand-tag">CODE SMARTER & FASTER</div>
       <p>مواقع، أنظمة، Excel وDashboards، ذكاء اصطناعي، أتمتة وتسويق — حلول عملية مبنية على احتياج واضح.</p>
     </div>
@@ -739,7 +755,7 @@ function faqBlock(){
 }
 
 function home(){
-  return '<section class="hero"><div class="container hero-grid"><div><div class="hero-brand">3bkarino Tech • Digital Solutions Studio</div><span class="kicker"><i></i> مواقع • أنظمة • Excel • AI • تسويق</span><h1>من الفكرة لحل رقمي<br><em>واضح وبيشتغل.</em></h1><p class="lead">لو محتاج موقع يجيب تواصل، نظام ينظم الشغل، Dashboard توضح أرقامك، أو AI يوفر وقتك — هتلاقي هنا الخدمة، نقطة البداية، أمثلة من شغل سابق وطريقة تبدأ من غير تعقيد.</p><div class="hero-actions"><a class="btn primary" href="/services" data-link>اكتشف الخدمات</a><a class="btn light" href="/ai-consultant" data-link>جرّب المستشار الذكي</a></div><div class="trustline"><span>أسعار مبدئية واضحة</span><span>موبايل أولًا</span><span>تنفيذ حسب الاحتياج</span><span>تواصل مباشر</span></div></div><div class="hero-panel"><div class="hero-logo"><img src="/assets/logo-v2.png?v=12" onerror="this.onerror=null;this.src=&quot;/assets/logo.png?v=10&quot;" alt="3bkarino Tech"></div><div class="hero-brand-name">3bkarino Tech</div><p class="hero-brand-tag">CODE SMARTER & FASTER</p><h3>الحل التقني لازم يخدم شغلك، مش يعقّده.</h3><p>بنبدأ بالمشكلة والنتيجة المطلوبة، وبعدها نختار التقنية المناسبة.</p><div class="hero-meta"><span>WEB • SYSTEMS • EXCEL • AI</span><span>DIGITAL SOLUTIONS</span></div></div></div></section>'+
+  return '<section class="hero"><div class="container hero-grid"><div><div class="hero-brand">3bkarino Tech • Digital Solutions Studio</div><span class="kicker"><i></i> مواقع • أنظمة • Excel • AI • تسويق</span><h1>من الفكرة لحل رقمي<br><em>واضح وبيشتغل.</em></h1><p class="lead">لو محتاج موقع يجيب تواصل، نظام ينظم الشغل، Dashboard توضح أرقامك، أو AI يوفر وقتك — هتلاقي هنا الخدمة، نقطة البداية، أمثلة من شغل سابق وطريقة تبدأ من غير تعقيد.</p><div class="hero-actions"><a class="btn primary" href="/services" data-link>اكتشف الخدمات</a><a class="btn light" href="/ai-consultant" data-link>جرّب المستشار الذكي</a></div><div class="trustline"><span>أسعار مبدئية واضحة</span><span>موبايل أولًا</span><span>تنفيذ حسب الاحتياج</span><span>تواصل مباشر</span></div></div><div class="hero-panel tech-visual"><div class="orb orb-a"></div><div class="orb orb-b"></div><div class="float-node n1"><b>&lt;/&gt;</b><span>مواقع احترافية</span></div><div class="float-node n2"><b>AI</b><span>أدوات ذكية</span></div><div class="float-node n3"><b>XL</b><span>لوحات بيانات</span></div><div class="float-node n4"><b>DB</b><span>أنظمة مخصصة</span></div><div class="laptop"><div class="laptop-screen"><div class="screen-logo"><svg class="brand-symbol-svg" viewBox="0 0 190 72" aria-hidden="true"><defs><linearGradient id="g3bk" x1="0" x2="1"><stop stop-color="#2563EB"/><stop offset=".52" stop-color="#06B6D4"/><stop offset="1" stop-color="#2563EB"/></linearGradient></defs><path d="M11 36C11 13 34 8 57 15c15 5 27 17 38 21 11-4 23-16 38-21 23-7 46-2 46 21s-23 28-46 21c-15-5-27-17-38-21-11 4-23 16-38 21-23 7-46 2-46-21Z" fill="none" stroke="url(#g3bk)" stroke-width="7" stroke-linecap="round"/><path d="M82 22 65 36l17 14M108 22l17 14-17 14M100 18 90 54" fill="none" stroke="#38D8FF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M145 22v12m-8-8a14 14 0 1 0 16 0" fill="none" stroke="#38D8FF" stroke-width="5" stroke-linecap="round"/></svg><div class="screen-brand"><strong>3bkarino <i>Tech</i></strong><small>CODE SMARTER &amp; FASTER</small></div></div><div class="screen-grid"></div></div><div class="laptop-base"></div></div><div class="hero-meta"><span>WEB • SYSTEMS • EXCEL • AI</span><span>SMART DIGITAL SOLUTIONS</span></div></div></div></section>'+
   '<div class="brand-strip"><div class="container"><span>مواقع وصفحات بيع</span><span>أنظمة تشغيل</span><span>Excel وDashboards</span><span>AI وAutomation</span><span>تسويق ومحتوى</span></div></div>'+
   '<section class="section" id="explore"><div class="container"><div class="section-head"><div><span class="eyebrow">كل حاجة في مكان واضح</span><h2>اختار القسم اللي يفيدك دلوقتي.</h2></div><p>الموقع مش مجرد صفحة تعريفية؛ تقدر تشوف الخدمات والأسعار والأعمال، تتعلم من المقالات والكتاب، تستخدم أدوات مجانية أو تخلي المستشار الذكي يساعدك تحدد طلبك.</p></div><div class="site-map-grid">'+exploreCards()+'</div></div></section>'+
   '<section class="section soft"><div class="container"><div class="section-head"><div><span class="eyebrow">الخدمات</span><h2>مش بنبيع تقنية؛ بنحل مشكلة واضحة.</h2></div><p>كل خدمة تحتها هتلاقي: بتعمل إيه، مناسبة لمين، وإزاي تبدأ. لو مش عارف تختار، استخدم المستشار الذكي.</p></div><div class="grid grid3">'+serviceCards()+'</div><div class="hero-actions" style="justify-content:center"><a class="btn dark" href="/services" data-link>شوف كل تفاصيل الخدمات</a></div></div></section>'+
