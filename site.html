@@ -440,7 +440,12 @@ function bookPaymentResultPage(){
   '<section class="section"><div class="container"><div class="card payment-result-card pending" id="paymentResultCard"><div class="payment-result-icon" id="paymentResultIcon">…</div><span class="eyebrow">PAYMOB / SECURE CHECK</span><h2 id="paymentResultTitle">جاري تأكيد الدفع…</h2><p id="paymentResultText">ماتقفلش الصفحة. التأكيد بيتم من السيرفر عن طريق Webhook آمن.</p><div id="paymentResultMeta" class="payment-state"></div><div id="paymentLicenses" class="license-actions"></div><div class="hero-actions" style="justify-content:center"><a class="btn outline" href="/book" data-link>العودة للكتاب</a></div></div></div></section>';
 }
 function bookReaderPage(){
-  return '<section class="section"><div class="container"><div class="locked-box card" id="readerLoading"><h1>جاري فتح نسختك…</h1><p>بنراجع رابط التفعيل أو جلسة القراءة الآمنة.</p></div><div class="reader-recover card" id="readerRecover" style="display:none"><h2>محتاج رابط دخول جديد؟</h2><p class="reader-email-note">اكتب رقم الطلب أو License ID مع إيميل الشراء. لو البيانات مطابقة هنرسل رابط تفعيل جديد صالح 24 ساعة.</p><form class="form" id="accessRecoverForm"><div class="field"><label>رقم الطلب أو License ID</label><input id="recoverOrder" required placeholder="3BK-BOOK-... أو 3BK-A-..."></div><div class="field"><label>إيميل الشراء</label><input id="recoverEmail" type="email" required></div><button class="btn dark field full">إرسال رابط دخول جديد</button></form><p id="recoverMsg"></p></div><div class="reader-shell" id="readerShell" style="display:none"><div class="reader-meta"><div><b id="readerName"></b><div id="readerEmail" style="font-size:11px;color:#aaa"></div></div><div><span class="license-badge" id="readerEdition"></span><div id="readerLicense" style="font-size:11px;margin-top:4px"></div><div class="reader-progress"><i id="readerProgress"></i></div></div></div><div class="reader-layout"><aside class="reader-toc" id="readerToc"></aside><div><div class="reader-cover-panel"><small id="readerBookEdition">FULL EDITION 2026</small><h1>AI Marketing Machine</h1><p>من الفكرة لأول حملة قابلة للقياس — دليل عملي لصاحب المشروع والمسوق.</p></div><div id="readerChapters"></div></div></div></div></div></section>';
+  return '<section class="section"><div class="container">'+
+  '<div class="locked-box card" id="readerLoading"><h1>جاري فتح نسختك…</h1><p>بنراجع رابط التفعيل والجهاز.</p></div>'+
+  '<div class="reader-recover card" id="readerOtp" style="display:none"><span class="eyebrow">EMAIL VERIFICATION</span><h2>أكد إن النسخة بتاعتك</h2><p class="reader-email-note">بعتنا كود مكوّن من 6 أرقام إلى <b id="otpTarget"></b>. الكود صالح 10 دقائق.</p><form class="form" id="otpForm"><div class="field full"><label>كود التحقق</label><input id="otpCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" placeholder="000000" required></div><button class="btn dark field full">تأكيد وفتح الكتاب</button></form><p id="otpMsg"></p></div>'+
+  '<div class="reader-recover card" id="readerRecover" style="display:none"><h2>محتاج رابط دخول جديد؟</h2><p class="reader-email-note">اكتب رقم الطلب أو License ID مع إيميل الشراء. هنرسل رابط تفعيل جديد صالح 24 ساعة، وبعد فتحه على جهاز جديد هتأكد بكود على بريد الشراء.</p><form class="form" id="accessRecoverForm"><div class="field"><label>رقم الطلب أو License ID</label><input id="recoverOrder" required placeholder="3BK-BOOK-... أو 3BK-A-..."></div><div class="field"><label>إيميل الشراء</label><input id="recoverEmail" type="email" required></div><button class="btn dark field full">إرسال رابط دخول جديد</button></form><p id="recoverMsg"></p></div>'+
+  '<div class="reader-shell" id="readerShell" style="display:none"><div class="reader-meta"><div><b id="readerName"></b><div id="readerEmail" style="font-size:11px;color:#aaa"></div></div><div><span class="license-badge" id="readerEdition"></span><div id="readerLicense" style="font-size:11px;margin-top:4px"></div><div class="reader-progress"><i id="readerProgress"></i></div></div></div><div class="reader-layout"><aside class="reader-toc" id="readerToc"></aside><div><div class="reader-cover-panel"><small id="readerBookEdition">FULL EDITION 2026</small><h1>AI Marketing Machine</h1><p>من الفكرة لأول حملة قابلة للقياس — دليل عملي لصاحب المشروع والمسوق.</p></div><div id="readerChapters"></div></div></div></div>'+
+  '</div></section>';
 }
 function bookAdminPage(){
   return pageHero('إصدار ترخيص الكتاب','صفحة تشغيل داخلية لتفعيل نسخة المشتري بعد تأكيد الدفع.')+
@@ -623,18 +628,45 @@ function initBookPaymentResult(){
 function initBookReader(){
   if(location.pathname!=='/book/read')return;
   document.addEventListener('contextmenu',function(e){if(e.target.closest('.reader-shell'))e.preventDefault()});
-  var qs=new URLSearchParams(location.search),access=qs.get('access')||'',legacy=qs.get('license')||'';
-  var stored=localStorage.getItem('3bk-reader-session')||'';
+  var qs=new URLSearchParams(location.search),access=qs.get('access')||'';
+  var deviceId=getDeviceId(),pendingAccess=access;
 
+  function getDeviceId(){
+    var k='3bk-reader-device',d=localStorage.getItem(k);
+    if(d)return d;
+    d=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():'dev-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2);
+    localStorage.setItem(k,d);return d;
+  }
+  function tokenPayload(t){
+    try{
+      var p=String(t||'').split('.')[0].replace(/-/g,'+').replace(/_/g,'/');
+      while(p.length%4)p+='=';
+      return JSON.parse(decodeURIComponent(Array.prototype.map.call(atob(p),function(c){return '%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)}).join('')));
+    }catch(e){return null}
+  }
+  function sessions(){
+    try{return JSON.parse(localStorage.getItem('3bk-reader-sessions')||'{}')||{}}catch(e){return {}}
+  }
+  function saveSession(licenseId,sessionToken){
+    var x=sessions();x[licenseId]=sessionToken;localStorage.setItem('3bk-reader-sessions',JSON.stringify(x));localStorage.setItem('3bk-reader-active-license',licenseId);
+  }
+  function dropSession(licenseId){
+    var x=sessions();delete x[licenseId];localStorage.setItem('3bk-reader-sessions',JSON.stringify(x));
+  }
+  function hideAll(){
+    readerLoading.style.display='none';readerOtp.style.display='none';readerRecover.style.display='none';readerShell.style.display='none';
+  }
   function showRecover(msg){
-    readerLoading.style.display='none';readerShell.style.display='none';readerRecover.style.display='block';
-    if(msg)recoverMsg.textContent=msg;
+    hideAll();readerRecover.style.display='block';if(msg)recoverMsg.textContent=msg;
+  }
+  function showOtp(masked){
+    hideAll();readerOtp.style.display='block';otpTarget.textContent=masked||'بريد الشراء';otpMsg.textContent='';otpCode.value='';setTimeout(function(){otpCode.focus()},100);
   }
   function pList(items){return '<ul>'+items.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>'}
   function renderBook(d){
-    if(d.sessionToken){localStorage.setItem('3bk-reader-session',d.sessionToken)}
-    if(access||legacy){history.replaceState({},'',location.pathname)}
-    readerLoading.style.display='none';readerRecover.style.display='none';readerShell.style.display='block';
+    saveSession(d.customer.licenseId,d.sessionToken);
+    history.replaceState({},'',location.pathname);
+    hideAll();readerShell.style.display='block';
     readerName.textContent='Licensed to: '+d.customer.name;readerEmail.textContent=d.customer.emailMasked;
     readerEdition.textContent='Version '+d.customer.version;readerLicense.textContent=d.customer.licenseId;
     readerBookEdition.textContent=(d.meta&&d.meta.edition)||'FULL EDITION 2026';
@@ -659,36 +691,59 @@ function initBookReader(){
     }
     addEventListener('scroll',updateProgress,{passive:true});updateProgress();
   }
-  async function getContent(sessionToken,licenseToken){
-    var payload={action:'content'};if(sessionToken)payload.sessionToken=sessionToken;if(licenseToken)payload.licenseToken=licenseToken;
-    var r=await fetch('/api/book',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-    var d=await r.json();if(!r.ok)throw Error(d.error||'reader');renderBook(d);
+  async function getContent(sessionToken,licenseId){
+    var r=await fetch('/api/book',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'content',sessionToken:sessionToken,deviceId:deviceId})});
+    var d=await r.json();if(!r.ok){if(licenseId)dropSession(licenseId);throw Error(d.error||'reader')}renderBook(d);
+  }
+  async function beginActivation(){
+    var r=await fetch('/api/book',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'begin-activation',accessToken:pendingAccess,deviceId:deviceId})});
+    var d=await r.json();
+    if(!r.ok)throw Error(d.error||'activate');
+    if(d.otpRequired){showOtp(d.emailMasked);return}
+    if(d.sessionToken){saveSession(d.customer.licenseId,d.sessionToken);await getContent(d.sessionToken,d.customer.licenseId);return}
+    throw Error('activate');
   }
   async function start(){
     try{
-      if(access){
-        var r=await fetch('/api/book',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'activate-access',accessToken:access})});
-        var a=await r.json();if(!r.ok)throw Error(a.error||'activate');
-        localStorage.setItem('3bk-reader-session',a.sessionToken);
-        await getContent(a.sessionToken,'');return;
+      var payload=access?tokenPayload(access):null;
+      if(access&&payload&&payload.licenseId){
+        var same=sessions()[payload.licenseId];
+        if(same){try{await getContent(same,payload.licenseId);return}catch(e){}}
+        await beginActivation();return;
       }
-      if(legacy){await getContent('',legacy);return}
-      if(stored){await getContent(stored,'');return}
-      showRecover('افتح رابط التفعيل اللي وصلك بعد الشراء، أو اطلب رابط جديد من هنا.');
+      var active=localStorage.getItem('3bk-reader-active-license')||'',stored=active?sessions()[active]:'';
+      if(stored){await getContent(stored,active);return}
+      showRecover('افتح رابط التفعيل اللي وصلك على بريد الشراء، أو اطلب رابط جديد من هنا.');
     }catch(err){
-      localStorage.removeItem('3bk-reader-session');
-      showRecover(err.message==='ACCESS_LINK_EXPIRED_OR_INVALID'?'رابط التفعيل انتهت صلاحيته. اطلب رابط جديد.':'تعذر فتح جلسة القراءة. اطلب رابط دخول جديد.');
+      var code=String(err.message||'');
+      if(code==='ACCESS_LINK_NEEDS_REFRESH'||code==='ACCESS_LINK_ALREADY_USED_OR_REPLACED'||code==='ACCESS_LINK_EXPIRED_OR_INVALID')showRecover('الرابط ده انتهى أو اتستخدم قبل كده. اطلب رابط دخول جديد من هنا.');
+      else if(code==='DEVICE_LIMIT_REACHED')showRecover('وصلت للحد الأقصى للأجهزة المسموح بها. تواصل مع الدعم لو محتاج تبدّل جهاز.');
+      else showRecover('تعذر فتح النسخة على الجهاز ده. اطلب رابط دخول جديد.');
     }
   }
+  var of=document.getElementById('otpForm');
+  if(of)of.onsubmit=async function(e){
+    e.preventDefault();otpMsg.textContent='جاري التحقق…';
+    try{
+      var r=await fetch('/api/book',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'complete-activation',accessToken:pendingAccess,deviceId:deviceId,otp:otpCode.value.trim()})});
+      var d=await r.json();
+      if(!r.ok){
+        if(d.error==='OTP_INVALID'){otpMsg.textContent='الكود غير صحيح. راجعه وحاول تاني.';return}
+        if(d.error==='OTP_EXPIRED'){otpMsg.textContent='الكود انتهت صلاحيته. اطلب رابط دخول جديد.';return}
+        throw Error(d.error||'otp');
+      }
+      saveSession(d.customer.licenseId,d.sessionToken);await getContent(d.sessionToken,d.customer.licenseId);
+    }catch(err){otpMsg.textContent='تعذر تأكيد الجهاز. اطلب رابط دخول جديد وحاول مرة تانية.'}
+  };
   var rf=document.getElementById('accessRecoverForm');
   if(rf)rf.onsubmit=async function(e){
     e.preventDefault();recoverMsg.textContent='جاري مراجعة البيانات…';
     try{
       var r=await fetch('/api/book',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'request-access',orderId:recoverOrder.value.trim(),email:recoverEmail.value.trim()})});
       var d=await r.json();
-      if(!r.ok&&d.error==='EMAIL_NOT_CONFIGURED'){recoverMsg.textContent='نظام إرسال البريد لسه محتاج تفعيل خدمة الإيميل على الموقع.';return}
+      if(!r.ok&&d.error==='EMAIL_NOT_CONFIGURED'){recoverMsg.textContent='نظام إرسال البريد غير متاح حاليًا.';return}
       if(!r.ok)throw Error('send');
-      recoverMsg.textContent=d.sent?'تم إرسال رابط دخول جديد إلى بريد الشراء ✅':'لو البيانات مطابقة، تم إرسال رابط دخول جديد إلى بريد الشراء.';
+      recoverMsg.textContent=d.sent?'تم إرسال رابط تفعيل جديد إلى بريد الشراء ✅':'لو البيانات مطابقة، تم إرسال رابط تفعيل جديد إلى بريد الشراء.';
     }catch{recoverMsg.textContent='تعذر إرسال الرابط حاليًا. حاول لاحقًا أو تواصل مع الدعم.'}
   };
   start();
