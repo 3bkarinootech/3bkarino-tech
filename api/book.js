@@ -125,7 +125,7 @@ export default async function handler(req,res){
       return send(res,200,{valid:true,otpRequired:false,sessionToken,customer:customerFromToken(access),meta:BOOK_META});
     }
 
-    if(existingDevices.length>=Number(ACCESS_POLICY.maxDevices||3))return send(res,403,{error:'DEVICE_LIMIT_REACHED'});
+    const replacingExistingDevice=existingDevices.length>=Number(ACCESS_POLICY.maxDevices||1);
 
     const now=Date.now();
     const pending=lic.pendingActivation;
@@ -134,7 +134,7 @@ export default async function handler(req,res){
     }
 
     const otp=makeOtp(),expiresAt=now+Number(ACCESS_POLICY.otpMinutes||10)*60*1000;
-    const pendingActivation={accessId:access.accessId,deviceHash:dh,otpHash:otpHash(record.id,lic.licenseId,dh,otp),expiresAt,sentAt:now,attempts:0};
+    const pendingActivation={accessId:access.accessId,deviceHash:dh,otpHash:otpHash(record.id,lic.licenseId,dh,otp),expiresAt,sentAt:now,attempts:0,replaceExisting:Boolean(replacingExistingDevice)};
     const licenses=(record.licenses||[]).map(x=>x.licenseId===lic.licenseId?{...x,pendingActivation}:x);
     await saveRecord({...record,licenses});
     const mail=await sendBookOtpEmail(record,lic,otp);
@@ -160,7 +160,7 @@ export default async function handler(req,res){
       await saveRecord({...record,licenses});
       return send(res,401,{error:'OTP_INVALID'});
     }
-    const devices=Array.from(new Set([...(Array.isArray(lic.devices)?lic.devices:[]),dh])).slice(-Number(ACCESS_POLICY.maxDevices||3));
+    const devices=ACCESS_POLICY.singleActiveDevice?[dh]:Array.from(new Set([...(Array.isArray(lic.devices)?lic.devices:[]),dh])).slice(-Number(ACCESS_POLICY.maxDevices||1));
     const activatedAt=Date.now();
     const licenses=(record.licenses||[]).map(x=>x.licenseId===lic.licenseId?{...x,devices,pendingActivation:null,currentAccessId:null,accessUsedAt:activatedAt,activatedAt:x.activatedAt||activatedAt}:x);
     await saveRecord({...record,licenses,lastReaderActivationAt:activatedAt});
