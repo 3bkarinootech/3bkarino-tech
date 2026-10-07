@@ -794,6 +794,78 @@ body{background:#061426;color:#eef7ff}
   .social-links{grid-template-columns:1fr!important}
 }
 
+
+/* === Portfolio / Case Study readability v2 === */
+body{color:#111827;background:#f6f8fb}
+.case-hero{background:linear-gradient(135deg,#061426 0%,#0a2340 55%,#0d2f56 100%)!important;color:#fff!important;padding:52px 0 38px!important}
+.case-hero .crumb{color:#b9ddf7!important;font-weight:800}
+.case-hero .eyebrow{color:#66d7ff!important;font-weight:900;letter-spacing:.8px}
+.case-hero h1{color:#fff!important;font-weight:950;line-height:1.12!important;text-shadow:0 2px 8px rgba(0,0,0,.18)}
+.case-hero p{color:#e8f3fb!important;font-size:18px!important;line-height:1.95!important;font-weight:600}
+.case-meta span{background:rgba(255,255,255,.12)!important;border:1px solid rgba(255,255,255,.22)!important;color:#fff!important;font-weight:800}
+.case-hero .btn.primary{background:#f4c430!important;border-color:#f4c430!important;color:#101820!important;font-weight:900}
+.case-hero .btn.outline{background:rgba(255,255,255,.04)!important;border-color:rgba(255,255,255,.38)!important;color:#fff!important;font-weight:900}
+
+.case-cover{background:#fff!important;border:1px solid #d8e3ec!important;box-shadow:0 18px 50px rgba(1,20,39,.12)!important}
+.case-cover img{object-fit:contain!important;background:#fff}
+
+.section{background:#f6f8fb}
+.section.soft{background:#eef5fb!important}
+.case-overview{gap:20px!important}
+.case-block{background:#fff!important;border:1px solid #d8e3ec!important;box-shadow:0 10px 28px rgba(15,23,42,.06)!important}
+.case-block .eyebrow,.section-head .eyebrow{color:#0daed8!important;font-weight:950}
+.case-block h2,.section-head h2{color:#0f172a!important;font-weight:950!important;opacity:1!important;text-shadow:none!important}
+.case-block p,.section-head p{color:#3f4d5f!important;font-weight:650!important;opacity:1!important}
+
+.feature-item{background:#fff!important;border:1px solid #d8e3ec!important;box-shadow:0 8px 24px rgba(15,23,42,.05)!important}
+.feature-item b{color:#0f172a!important;font-weight:950!important;opacity:1!important}
+.feature-item p{color:#425466!important;font-weight:650!important;opacity:1!important;line-height:1.9!important}
+
+.case-shot{background:#fff!important;border:1px solid #d8e3ec!important;box-shadow:0 8px 24px rgba(15,23,42,.05)!important}
+.case-shot img{background:#eef3f7!important;object-fit:contain!important}
+.case-shot figcaption{background:#f9fbfd!important;color:#334155!important;font-weight:800!important}
+.case-note{background:#fff8db!important;border:1px solid #efd36c!important;color:#5f4c00!important;padding:14px 16px!important;border-radius:14px!important;font-weight:750!important}
+
+.portfolio-filter{background:#fff!important;color:#0f172a!important;border-color:#d6e1eb!important}
+.portfolio-filter.active{background:#061426!important;color:#fff!important;border-color:#061426!important}
+.project-clickable,.card.project{background:#fff!important;border:1px solid #d8e3ec!important;box-shadow:0 10px 26px rgba(15,23,42,.055)!important}
+.project-clickable h3,.card.project h3{color:#0f172a!important;opacity:1!important;font-weight:950!important}
+.project-clickable p,.card.project p{color:#475569!important;opacity:1!important;font-weight:650!important}
+.project-result{color:#172033!important;background:#f3f8fc!important;border:1px solid #e4edf4!important}
+.project-scope{color:#087da2!important;font-weight:850!important}
+.project-clickable .link{color:#061426!important;font-weight:950!important}
+.portfolio-note{background:#fff8db!important;border:1px solid #efd36c!important;color:#5f4c00!important}
+
+.cta{background:linear-gradient(135deg,#061426 0%,#0b2747 100%)!important;color:#fff!important}
+.cta h2{color:#fff!important;opacity:1!important}
+.cta p{color:#dceaf5!important;opacity:1!important}
+.cta .eyebrow{color:#67d4ff!important}
+.cta .btn.dark{background:#f4c430!important;border-color:#f4c430!important;color:#101820!important}
+.cta .btn.light{background:transparent!important;color:#fff!important;border-color:rgba(255,255,255,.35)!important}
+
+@media(max-width:768px){
+  body{padding-bottom:112px!important}
+  .case-hero{padding:34px 0 28px!important}
+  .case-hero-grid{gap:22px!important}
+  .case-hero h1{font-size:38px!important;line-height:1.16!important;letter-spacing:-1px!important}
+  .case-hero p{font-size:16px!important;line-height:1.9!important}
+  .case-meta{gap:7px!important}
+  .case-meta span{font-size:11px!important;padding:7px 9px!important}
+  .case-cover{min-height:180px!important;border-width:2px!important}
+  .case-cover img{min-height:180px!important;max-height:250px!important}
+  .section{padding-top:48px!important;padding-bottom:48px!important}
+  .case-block{padding:22px 20px!important}
+  .case-block h2,.section-head h2{font-size:28px!important;line-height:1.45!important}
+  .case-block p,.section-head p,.feature-item p{font-size:16px!important;line-height:1.95!important}
+  .feature-item{padding:20px!important}
+  .feature-item b{font-size:18px!important;line-height:1.5!important}
+  .project-visual{height:190px!important}
+  .mobile-bar{background:rgba(6,20,38,.97)!important;backdrop-filter:blur(12px)!important;border-top:1px solid rgba(255,255,255,.1)!important;padding:10px 12px calc(10px + env(safe-area-inset-bottom))!important}
+  .mobile-bar .btn{min-height:52px!important;font-size:17px!important;font-weight:950!important;border-radius:14px!important}
+  .mobile-bar .btn.primary{background:#f4c430!important;color:#111827!important}
+  .mobile-bar .btn.whatsapp{background:#22c55e!important;color:#08110a!important}
+}
+
 </style>
 <script data-canonical-launch>(function(){var p=location.pathname||'/';var u='https://3bkarinotech.com'+p;var c=document.querySelector('link[rel="canonical"]');if(c)c.href=u;var o=document.querySelector('meta[property="og:url"]');if(o)o.content=u;})();</script>
 </head>
