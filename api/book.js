@@ -1,5 +1,5 @@
 import { saveRecord, readRecord } from '../lib/records.js';
-import { createBookIntention, paymobConfig } from '../lib/paymob.js';
+import { createBookIntention, paymobConfig, requestOrigin } from '../lib/paymob.js';
 import { BOOK_META, bookForVersion } from '../lib/book-content.js';
 import { ACCESS_POLICY, token, verifyToken, issueLicenses, createFreshAccess, createReaderSession } from '../lib/book-access.js';
 import { purchaseEmailConfigured, purchaseEmailProvider, sendPurchaseEmails, sendAccessRecoveryEmail } from '../lib/email.js';
@@ -59,12 +59,12 @@ export default async function handler(req,res){
     const product=String(body.product||'').toUpperCase(),info=productInfo(product),paymentMethod='paymob';
     if(name.length<2||!email.includes('@')||phone.length<8||whatsapp.length<8||!governorate||!city||!info)return send(res,400,{error:'INVALID_CUSTOMER_OR_PRODUCT'});
     if(product==='BUNDLE'&&secondName&&secondEmail&&!secondEmail.includes('@'))return send(res,400,{error:'INVALID_SECOND_RECIPIENT_EMAIL'});
-    const id=orderId(),createdAt=Date.now(),customer={name,email,phone,whatsapp,governorate,city,country,activity};
+    const id=orderId(),createdAt=Date.now(),siteOrigin=requestOrigin(req),customer={name,email,phone,whatsapp,governorate,city,country,activity};
     const recipient=product==='BUNDLE'&&secondName?{name:secondName,email:secondEmail,phone:secondPhone}:null;
     const orderToken=token({type:'order',id,...customer,product,price:info.price,paymentMethod,recipient,createdAt});
     const paymentReady=paymobConfig().configured;
     try{
-      await saveRecord({id,kind:'order',source:'book',status:'pending_payment',createdAt,...customer,product,productLabel:info.label,amount:info.price,currency:'EGP',paymentMethod,paymentReady,recipient,consentAt:createdAt});
+      await saveRecord({id,kind:'order',source:'book',status:'pending_payment',createdAt,siteOrigin,...customer,product,productLabel:info.label,amount:info.price,currency:'EGP',paymentMethod,paymentReady,recipient,consentAt:createdAt});
     }catch(err){console.error('ORDER_RECORD_FAILED',err);return send(res,503,{error:'ORDER_STORAGE_UNAVAILABLE'})}
     let paymob=null,paymentError='';
     if(paymentReady){
