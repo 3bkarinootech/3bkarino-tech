@@ -9,7 +9,7 @@ const baseHtml=fs.readFileSync('site.html','utf8');
 fs.cpSync('assets','public/assets',{recursive:true,force:true});
 
 const routes=[
-  '','services','portfolio','portfolio/industrial-system','portfolio/ai-sales-flow','portfolio/ar-control-aging','portfolio/ai-marketing-machine','portfolio/curvey-ecommerce','portfolio/3bkarino-platform','portfolio/warehouse-production-control','portfolio/electronic-invoice-reconciliation','portfolio/supplier-reconciliation','portfolio/sales-collection-dashboard','portfolio/quotation-system','portfolio/barcode-warehouse','portfolio/excel-erp','pricing','blog','tools','contact','ai-consultant',
+  '','services','solutions/inventory-sales','solutions/excel-dashboard','solutions/ai-automation','portfolio','portfolio/industrial-system','portfolio/ai-sales-flow','portfolio/ar-control-aging','portfolio/ai-marketing-machine','portfolio/curvey-ecommerce','portfolio/3bkarino-platform','portfolio/warehouse-production-control','portfolio/electronic-invoice-reconciliation','portfolio/supplier-reconciliation','portfolio/sales-collection-dashboard','portfolio/quotation-system','portfolio/barcode-warehouse','portfolio/excel-erp','pricing','blog','tools','contact','ai-consultant',
   'book','book/checkout','book/payment-result','book/read','book/admin','booking','privacy-policy','admin/records',
   'blog/ai-marketing-revolution','blog/analytics-guide','blog/paid-ads-guide','blog/website-conversion-guide','blog/prompting-for-business','blog/automation-first-workflow'
 ];
@@ -17,6 +17,9 @@ const routes=[
 const seo={
   '': ['3bkarino Tech | مواقع وأنظمة وExcel وAI وتسويق','3bkarino Tech يقدم تطوير مواقع وأنظمة مخصصة وExcel Dashboards وحلول AI وAutomation وتسويق رقمي للشركات والمشروعات في مصر.'],
   'services':['خدمات 3bkarino Tech | مواقع وأنظمة وAI وExcel وتسويق','خدمات تطوير المواقع والأنظمة وExcel Dashboards والذكاء الاصطناعي والأتمتة والتسويق الرقمي حسب احتياج مشروعك.'],
+  'solutions/inventory-sales':['نظام مخازن ومبيعات للشركات | 3bkarino Tech','نظام مخصص لإدارة المخزون والمبيعات والعملاء والموردين والصلاحيات والتقارير حسب دورة عمل شركتك.'],
+  'solutions/excel-dashboard':['Excel Dashboard للشركات | تقارير وAR Aging | 3bkarino Tech','تصميم Excel Dashboards وتقارير إدارية وAR Aging وتحليل مبيعات وأتمتة لتقليل التجميع اليدوي وتحسين القرار.'],
+  'solutions/ai-automation':['AI Automation للشركات والمبيعات | 3bkarino Tech','حلول AI Automation لتأهيل العملاء وتلخيص الطلبات واقتراح الخدمات وأتمتة خطوات المبيعات والمتابعة.'],
   'pricing':['باقات وأسعار 3bkarino Tech | حلول رقمية للشركات','تعرف على باقات البداية والنمو والحلول المخصصة لمواقع الشركات والأنظمة والـDashboards والـAI Automation.'],
   'portfolio':['أعمال 3bkarino Tech | مشاريع ERP وAI وE-commerce وBI','شاهد نماذج من أنظمة ERP والذكاء الاصطناعي والمتاجر الإلكترونية وAccounting BI التي نفذها 3bkarino Tech.'],
   'portfolio/industrial-system':['3bkarino Industrial System | ERP للمخازن والإنتاج والحسابات','Case Study لنظام ERP صناعي لإدارة المخازن والإنتاج والتكرير والمبيعات والمشتريات والحسابات والتقارير.'],
