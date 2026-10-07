@@ -262,6 +262,58 @@ h1,h2,h3,p{margin-top:0}.hero h1{font-size:clamp(46px,7vw,80px);line-height:1.04
 .reader-visual img{display:block;width:100%;height:auto}
 @media(max-width:640px){.reader-cover-panel{min-height:220px;padding:20px}.reader-cover-panel h1{font-size:34px}.reader-chapter{padding:18px}.reader-section h3{font-size:20px}.reader-visual{margin:14px 0 20px}}
 
+
+/* Site experience v2 */
+.brand-lockup{display:flex;align-items:center;gap:10px;flex:0 0 auto;min-width:230px}
+.brand-lockup .brand-image{width:78px;height:48px;background:#fff;border:1px solid #e7e7df;border-radius:10px;padding:5px;display:flex;align-items:center;justify-content:center}
+.brand-lockup .brand-image img{width:100%;height:100%;object-fit:contain}
+.brand-lockup .brand-copy{display:flex;flex-direction:column;line-height:1.05}
+.brand-lockup .brand-copy strong{font-size:19px;letter-spacing:-.4px;color:#101114}
+.brand-lockup .brand-copy small{font-size:9px;color:#777;letter-spacing:.8px;text-transform:uppercase;margin-top:5px}
+.navlinks{gap:19px;font-size:13px}
+.nav-actions{margin-inline-start:auto}
+.hero-brand{display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:900;color:#fff;margin-bottom:8px}
+.hero-brand:before{content:"";width:28px;height:4px;background:var(--yellow);border-radius:999px}
+.hero-panel .hero-brand-name{font-size:30px;font-weight:950;margin:14px 0 3px}
+.hero-panel .hero-brand-tag{font-size:12px;color:#777;margin:0}
+.site-map-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.site-map-card{background:#fff;border:1px solid var(--line);border-radius:17px;padding:18px;display:flex;gap:14px;align-items:flex-start;transition:.18s}
+.site-map-card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:#c9c9c0}
+.site-map-icon{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:#111214;color:var(--yellow);font-size:20px;flex:0 0 auto}
+.site-map-card b{display:block;font-size:16px}.site-map-card p{font-size:12px;color:#777;margin:3px 0 0}.site-map-card span:last-child{font-size:11px;color:var(--brown);font-weight:900;display:block;margin-top:8px}
+.service-fit{background:#f5f5ef;border:1px solid #e3e2da;border-radius:10px;padding:10px 11px;margin:14px 0;font-size:12px;color:#5d5f64}
+.service-fit b{color:#161616}
+.service-actions{display:flex;gap:8px;align-items:center;margin-top:14px;flex-wrap:wrap}
+.plan-fit{font-size:11px;font-weight:800;background:#fff7c7;border:1px solid #eadb80;border-radius:9px;padding:8px 10px;margin:10px 0}
+.project-result{margin-top:12px;padding:11px;border-radius:10px;background:#f3f3ed;border:1px solid #dfded6;font-size:12px;color:#57595d}
+.project.main .project-result{background:#ffffff0d;border-color:#ffffff1f;color:#ddd}
+.project-scope{font-size:10px;font-weight:900;color:#8b8d91;margin-top:8px}.project.main .project-scope{color:#9fa1a5}
+.featured-article{display:grid;grid-template-columns:1.15fr .85fr;gap:20px;align-items:stretch;background:#111214;color:#fff;border-radius:24px;padding:28px;margin-bottom:18px;overflow:hidden;position:relative}
+.featured-article:after{content:"AI";position:absolute;left:-20px;bottom:-55px;font-size:190px;line-height:1;font-weight:1000;color:#ffffff08}
+.featured-article h2{font-size:clamp(30px,5vw,48px);line-height:1.07;margin:8px 0 12px;position:relative;z-index:1}
+.featured-article p{color:#b8bbc0;position:relative;z-index:1}.featured-article .article-feature-side{background:#1b1c20;border:1px solid #35363b;border-radius:17px;padding:20px;position:relative;z-index:1}
+.article-meta{display:flex;gap:8px;flex-wrap:wrap;font-size:10px;color:#888;margin-bottom:9px}.dark .article-meta{color:#aaa}
+.article-card{display:flex;flex-direction:column;min-height:270px}.article-card .btn{margin-top:auto;align-self:flex-start}
+.consultant-promo{display:grid;grid-template-columns:1.05fr .95fr;gap:18px;background:#111214;color:#fff;border-radius:24px;padding:26px;border:1px solid #2c2d30}
+.consultant-promo p{color:#b6b8bd}.consultant-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.consultant-flow div{background:#1b1c20;border:1px solid #34353a;border-radius:12px;padding:12px}.consultant-flow b{display:block;color:var(--yellow);font-size:18px}.consultant-flow span{font-size:11px;color:#bbb}
+.social-section{background:#fff;border:1px solid var(--line);border-radius:22px;padding:24px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center}
+.social-section p{color:#777;margin-bottom:0}.social-links{display:flex;gap:9px;flex-wrap:wrap}
+.social-link{display:inline-flex!important;align-items:center!important;gap:8px!important;border:1px solid var(--line);background:#fff;color:#111!important;border-radius:999px;padding:9px 13px;margin:0!important;font-size:12px!important;font-weight:800}
+.social-link .social-icon{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#111214;color:var(--yellow);font-size:11px;font-weight:950}
+.footer{padding-top:56px}
+.footer-grid{grid-template-columns:1.5fr 1fr 1fr 1.15fr}
+.footer-brand-name{font-size:24px;font-weight:950;color:#fff;margin:8px 0 4px}.footer-brand-tag{font-size:11px;color:#777;margin-bottom:14px}
+.footer .footer-socials .social-link{background:#1a1b1f;border-color:#34353a;color:#e5e5e2!important;margin:6px 0!important;width:max-content}
+.footer .footer-socials .social-icon{background:var(--yellow);color:#111}
+.footer-heading{color:#fff;font-size:13px;margin-bottom:10px;display:block}
+.section-intro-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}.section-intro-pills span{display:inline-flex;border:1px solid #ffffff26;background:#ffffff08;color:#d5d6d8;border-radius:999px;padding:6px 9px;font-size:10px}
+.pricing-ranges{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}.pricing-range{background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px}.pricing-range b{display:block}.pricing-range strong{font-size:20px;display:block;margin-top:6px}
+.portfolio-note{background:#fff8cf;border:1px solid #eadb80;border-radius:14px;padding:14px;margin-top:18px;font-size:12px;color:#5a531f}
+@media(max-width:1100px){.brand-lockup{min-width:190px}.brand-lockup .brand-copy small{display:none}.navlinks{gap:14px}}
+@media(max-width:1000px){.brand-lockup{min-width:0}.navlinks{gap:8px}.site-map-grid{grid-template-columns:1fr 1fr}.featured-article,.consultant-promo{grid-template-columns:1fr}.consultant-flow{grid-template-columns:1fr 1fr}.pricing-ranges{grid-template-columns:1fr 1fr}.social-section{grid-template-columns:1fr}}
+@media(max-width:680px){.brand-lockup .brand-image{width:64px;height:42px}.brand-lockup .brand-copy strong{font-size:16px}.brand-lockup{gap:7px}.site-map-grid,.consultant-flow,.pricing-ranges{grid-template-columns:1fr}.social-links{display:grid;grid-template-columns:1fr 1fr}.social-link{justify-content:center!important}.featured-article{padding:20px}.hero h1{font-size:43px}.footer-grid{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -269,16 +321,20 @@ h1,h2,h3,p{margin-top:0}.hero h1{font-size:clamp(46px,7vw,80px);line-height:1.04
 <div class="brand-line"></div>
 <header class="header">
   <div class="container nav">
-    <a class="logo" href="/" data-link aria-label="3bkarino Tech"><img src="/assets/logo.webp?v=10" onerror="this.onerror=null;this.src=&quot;/assets/logo.png?v=10&quot;" alt="3bkarino Tech"></a>
+    <a class="brand-lockup" href="/" data-link aria-label="3bkarino Tech - الرئيسية">
+      <span class="brand-image"><img src="/assets/logo-v2.png?v=12" onerror="this.onerror=null;this.src=&quot;/assets/logo.png?v=10&quot;" alt="شعار 3bkarino Tech"></span>
+      <span class="brand-copy"><strong>3bkarino Tech</strong><small>Code Smarter & Faster</small></span>
+    </a>
     <button class="menu" id="menu" aria-label="فتح القائمة" aria-expanded="false">☰</button>
     <nav class="navlinks" id="navlinks" aria-label="القائمة الرئيسية">
-      <a href="/services" data-link>الحلول</a>
-      <a href="/pricing" data-link>الأسعار</a>
+      <a href="/services" data-link>الخدمات</a>
+      <a href="/pricing" data-link>الباقات</a>
       <a href="/portfolio" data-link>أعمالنا</a>
       <a href="/book" data-link>الكتاب</a>
       <a href="/blog" data-link>المقالات</a>
+      <a href="/tools" data-link>أدوات مجانية</a>
     </nav>
-    <div class="nav-actions"><a class="btn outline sm" href="/ai-consultant" data-link>مستشار 60 ثانية</a><a class="btn primary sm" href="/contact" data-link>ابدأ مشروعك</a></div>
+    <div class="nav-actions"><a class="btn outline sm" href="/ai-consultant" data-link>المستشار الذكي</a><a class="btn primary sm" href="/contact" data-link>ابدأ مشروعك</a></div>
   </div>
 </header>
 
@@ -287,11 +343,18 @@ h1,h2,h3,p{margin-top:0}.hero h1{font-size:clamp(46px,7vw,80px);line-height:1.04
 <footer class="footer">
   <div class="container footer-grid">
     <div>
-      <div class="footer-logo"><img src="/assets/logo.webp?v=10" onerror="this.onerror=null;this.src=&quot;/assets/logo.png?v=10&quot;" alt="3bkarino Tech"></div>
-      <p>حلول تقنية أبسط وأسهل: مواقع، أنظمة، Excel، AI وتسويق — حسب احتياجك الحقيقي.</p>
+      <div class="footer-logo"><img src="/assets/logo-v2.png?v=12" onerror="this.onerror=null;this.src=&quot;/assets/logo.png?v=10&quot;" alt="3bkarino Tech"></div>
+      <div class="footer-brand-name">3bkarino Tech</div>
+      <div class="footer-brand-tag">CODE SMARTER & FASTER</div>
+      <p>مواقع، أنظمة، Excel وDashboards، ذكاء اصطناعي، أتمتة وتسويق — حلول عملية مبنية على احتياج واضح.</p>
     </div>
-    <div><b style="color:#fff">ابدأ</b><a href="/services" data-link>الحلول</a><a href="/pricing" data-link>الأسعار</a><a href="/portfolio" data-link>أعمالنا</a><a href="/contact" data-link>اطلب عرض سعر</a></div>
-    <div><b style="color:#fff">استكشف</b><a href="/blog" data-link>المقالات</a><a href="/book" data-link>الكتاب الإلكتروني</a><a href="/tools" data-link>أدوات مجانية</a><a href="/ai-consultant" data-link>مستشار 60 ثانية</a><a href="/privacy-policy" data-link>الخصوصية وحماية البيانات</a></div>
+    <div><b class="footer-heading">الخدمات</b><a href="/services" data-link>كل الخدمات</a><a href="/pricing" data-link>الباقات والأسعار</a><a href="/portfolio" data-link>الأعمال السابقة</a><a href="/contact" data-link>اطلب عرض سعر</a></div>
+    <div><b class="footer-heading">اتعلم واستكشف</b><a href="/blog" data-link>المقالات</a><a href="/book" data-link>AI Marketing Machine</a><a href="/tools" data-link>أدوات مجانية</a><a href="/ai-consultant" data-link>المستشار الذكي</a><a href="/privacy-policy" data-link>الخصوصية</a></div>
+    <div><b class="footer-heading">تابع 3bkarino Tech</b><div class="footer-socials">
+      <a class="social-link" href="https://www.facebook.com/3bkarinooTech" target="_blank" rel="noopener"><span class="social-icon">f</span>Facebook</a>
+      <a class="social-link" href="https://www.instagram.com/3bkarino_tech" target="_blank" rel="noopener"><span class="social-icon">◎</span>Instagram</a>
+      <a class="social-link" href="https://wa.me/201120124338" target="_blank" rel="noopener"><span class="social-icon">WA</span>WhatsApp</a>
+    </div></div>
   </div>
 </footer>
 <div class="mobile-bar"><a class="btn primary sm" href="/contact" data-link>ابدأ مشروعك</a><a class="btn whatsapp sm" href="https://wa.me/201120124338" target="_blank" rel="noopener">واتساب</a></div>
