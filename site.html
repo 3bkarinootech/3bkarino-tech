@@ -574,6 +574,159 @@ body:after{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;back
 @media(max-width:1000px){.navlinks{background:#06172f!important}.footer-grid{grid-template-columns:1.4fr 1fr 1fr 1fr}}
 @media(max-width:680px){.page-hero{padding:52px 0 42px!important}.footer-grid{grid-template-columns:1fr}.tech-showcase{min-height:430px}.float-tech{min-width:118px;padding:10px}.float-tech b{font-size:11px}.float-tech span{font-size:9px}.tech-screen{width:68%}}
 
+
+/* ===== 3BKARINO TECH — NEON BRAND SYSTEM ===== */
+:root{
+  --navy:#0B1F3B;--navy2:#061426;--navy3:#08192f;
+  --blue:#2563EB;--cyan:#06B6D4;--gold:#F59E0B;
+  --charcoal:#1F2937;--light:#E5E7EB;--white:#FFFFFF;
+  --ink:#f7fbff;--ink2:#dcecff;--paper:#061426;--soft:#0a1d35;
+  --line:#12365f;--muted:#9fb5cf;--yellow:#F59E0B;--yellow2:#ffc84d;--brown:#66d9ff;
+  --radius:18px;--shadow:0 24px 70px rgba(0,0,0,.34)
+}
+body{background:#061426;color:#eef7ff}
+.brand-line{height:2px;background:linear-gradient(90deg,transparent,var(--cyan),var(--blue),transparent);box-shadow:0 0 18px var(--cyan)}
+.header{background:rgba(5,20,39,.92);border-bottom:1px solid #10365f;box-shadow:0 8px 35px rgba(0,0,0,.22)}
+.nav{min-height:76px}
+.brand-lockup{min-width:248px}
+.brand-image{background:transparent!important;border:0!important;width:92px!important;height:46px!important;padding:0!important}
+.brand-image img{filter:drop-shadow(0 0 10px rgba(6,182,212,.55))}
+.brand-copy strong,.footer-brand-name{color:#fff!important}
+.brand-copy strong em,.footer-brand-name em{color:#13c9ff!important;font-style:normal}
+.brand-copy small,.footer-brand-tag{color:#9db5d2!important;letter-spacing:2px}
+.navlinks{gap:22px}
+.navlinks a{color:#e8f2ff}
+.navlinks a:hover,.navlinks a.active{color:#35d9ff}
+.navlinks a:after{background:linear-gradient(90deg,var(--blue),var(--cyan));box-shadow:0 0 12px var(--cyan)}
+.menu{color:#fff}
+.btn{border-radius:11px}
+.btn.primary{background:linear-gradient(135deg,#ffd95a,var(--gold));border-color:#ffd95a;color:#071426;box-shadow:0 8px 24px rgba(245,158,11,.3)}
+.btn.primary:hover{background:linear-gradient(135deg,#ffe777,#ffb31f);box-shadow:0 10px 32px rgba(245,158,11,.42)}
+.btn.dark{background:linear-gradient(135deg,#0b2a50,#07182d);border-color:#117cc0;color:#fff}
+.btn.light{background:linear-gradient(135deg,#149bff,#04c5e9);color:#fff;border-color:#2ddcff}
+.btn.outline{border-color:#19a7d6;color:#eaf8ff;background:#071c34}
+.btn.outline:hover{border-color:#34e5ff;box-shadow:0 0 24px rgba(6,182,212,.18)}
+.hero{
+  min-height:610px;padding:56px 0 48px;
+  background:
+    radial-gradient(circle at 18% 38%,rgba(0,140,255,.24),transparent 27%),
+    radial-gradient(circle at 82% 35%,rgba(6,182,212,.12),transparent 25%),
+    linear-gradient(135deg,#031326 0%,#08264b 48%,#031326 100%);
+  border-bottom:1px solid #0d72a8
+}
+.hero:before{
+  background-image:
+    linear-gradient(#1b89d315 1px,transparent 1px),
+    linear-gradient(90deg,#1b89d315 1px,transparent 1px);
+  background-size:42px 42px;
+  mask-image:linear-gradient(to bottom,#000 15%,transparent 95%)
+}
+.hero:after{content:"";position:absolute;inset:auto -20% -80px -20%;height:210px;background:radial-gradient(ellipse at center,rgba(0,166,255,.2),transparent 68%);filter:blur(16px)}
+.hero-grid{grid-template-columns:1fr 1.05fr;gap:54px}
+.hero-brand{color:#c7dcf5;font-weight:800}
+.hero-brand:before{background:var(--gold)!important}
+.kicker{background:#062643;border-color:#0f6fa2;color:#c8eeff}
+.kicker i{background:#1ee0ff;box-shadow:0 0 16px #1ee0ff}
+.hero h1{font-size:clamp(48px,6.3vw,78px);text-shadow:0 2px 30px rgba(0,0,0,.28)}
+.hero h1 em{background:linear-gradient(90deg,#22d7ff,#2675ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .lead{color:#c7d7eb;font-size:18px}
+.trustline{color:#9fb6d1}
+.trustline span:before{color:#27d8ff}
+.tech-showcase{position:relative;min-height:470px;border:1px solid #0e7db4;border-radius:28px;background:linear-gradient(145deg,#061a31,#0a2b50);box-shadow:0 0 0 1px #0b3f68 inset,0 32px 90px rgba(0,0,0,.45),0 0 60px rgba(0,137,255,.13);overflow:hidden}
+.tech-showcase:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,rgba(0,187,255,.22),transparent 32%),linear-gradient(120deg,transparent 0 45%,rgba(0,141,255,.08) 46% 48%,transparent 49%);pointer-events:none}
+.tech-orbit{position:absolute;width:390px;height:390px;border:1px solid #14c8ff55;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%);box-shadow:0 0 60px #009cff22 inset}
+.tech-orbit:before,.tech-orbit:after{content:"";position:absolute;inset:42px;border:1px dashed #318fff44;border-radius:50%}.tech-orbit:after{inset:92px}
+.tech-screen{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) perspective(800px) rotateX(3deg);width:56%;min-height:225px;border:1px solid #1ac9ff;border-radius:14px;background:linear-gradient(145deg,#071427,#0c3159);box-shadow:0 0 35px #008cff66,0 25px 45px #0008;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.tech-logo-mark{width:112px;filter:drop-shadow(0 0 14px #00c8ff)}
+.tech-screen strong{font-size:32px;color:white;margin-top:8px}.tech-screen strong em{color:#21cfff;font-style:normal}.tech-screen small{letter-spacing:3px;color:#9cc6eb}
+.float-tech{position:absolute;min-width:155px;padding:15px 16px;border:1px solid #178fe1;border-radius:13px;background:linear-gradient(145deg,rgba(8,37,69,.94),rgba(7,24,45,.96));box-shadow:0 0 26px rgba(0,154,255,.32);backdrop-filter:blur(10px)}
+.float-tech i{font-style:normal;font-size:22px;color:#1bddff;font-weight:900;display:block}.float-tech b{display:block;color:white;font-size:14px}.float-tech span{font-size:11px;color:#9fb6d1}.ft1{top:28px;right:28px}.ft2{top:46px;left:28px}.ft3{bottom:28px;left:28px}.ft4{bottom:28px;right:28px}
+.brand-strip{background:#071d35;border-bottom:1px solid #0d5d90;color:#b9e8ff}
+.brand-strip .container{min-height:48px}
+.brand-strip span:before{color:#18d3ff}
+
+.section{padding:64px 0;background:#061426}
+.section.soft{background:linear-gradient(180deg,#081b31,#07172b)}
+.section.dark{background:linear-gradient(180deg,#051629,#071d35)}
+.section-head h2{color:#fff}
+.section-head p{color:#9fb4ce}.dark .section-head p{color:#9fb4ce}
+.eyebrow{color:#28d5ff}.dark .eyebrow{color:#28d5ff}
+.card{background:linear-gradient(145deg,#092747,#07192f);border-color:#0b5a8b;color:#fff;box-shadow:0 14px 38px rgba(0,0,0,.2)}
+.card.hover:hover{border-color:#1acbff;box-shadow:0 0 0 1px #13b8e9 inset,0 18px 46px rgba(0,0,0,.28),0 0 30px rgba(0,174,255,.16)}
+.card p,.service-card p,.plan p,.step p{color:#a9bed4}
+.service-card{border-top:1px solid #1487c2}
+.service-code{background:#0b315b;color:#24dcff;border:1px solid #0d7bad}
+.service-num{color:#315b80}
+.tag{border-color:#174f7c;color:#9cdcff;background:#08223f}
+.service-fit,.plan-fit{background:#071a30;border-color:#104f78;color:#9fb7cf}
+.service-fit b{color:#fff}
+.service-actions .btn.outline{background:#06192d}
+.price-grid{gap:18px}
+.plan{background:linear-gradient(160deg,#09284a,#06192f)}
+.plan.popular{border-color:var(--gold);box-shadow:0 0 30px rgba(245,158,11,.18)}
+.popular-badge{background:linear-gradient(135deg,#ffd75b,var(--gold));color:#08131f}
+.plan-name{color:#31d8ff}.plan.popular .plan-name{color:#ffd35a}
+.price{color:#fff}
+.list li{color:#c6d6e7;border-bottom-color:#164266}
+.list li:before{color:#1edaff}.plan.popular .list li:before{color:#ffd252}
+.compare-note{color:#8fa9c3}
+.process .step{background:linear-gradient(145deg,#0a294a,#07192f);color:#fff;border-top:1px solid #168ed1}
+.step .n{color:#2e86bf}
+.work-grid .project{background:linear-gradient(145deg,#0b2949,#07192f)}
+.project.main{background:linear-gradient(145deg,#0a3158,#06172c);border-color:#0c79b6}
+.project-result{background:#07182c;border-color:#174b74;color:#bcd3e9}.project.main .project-result{background:#082440;border-color:#165a88;color:#cfe5f7}
+.project-scope,.project.main .project-scope{color:#4fc9f0}
+.link{color:#29d8ff}
+.consultant-promo,.featured-article{background:linear-gradient(135deg,#07172b,#0a2a4c);border-color:#0b7fb7;box-shadow:0 0 35px rgba(0,167,255,.1)}
+.consultant-flow div,.article-feature-side{background:#07182d;border-color:#0f507a}
+.social-section{background:linear-gradient(145deg,#092747,#07192f);border-color:#0d638e}
+.social-section h2{color:#fff}.social-section p{color:#9fb5cb}
+.social-link{background:#07182d!important;border-color:#125a84!important;color:#e9f8ff!important}
+.social-icon{background:#0a3b69!important;color:#28dcff!important}
+.site-map-card{background:linear-gradient(145deg,#092747,#07192f);border-color:#0d5d8b;color:#fff}
+.site-map-card p{color:#9bb3cb}.site-map-card span:last-child{color:#2bdcff}
+.site-map-icon{background:#092e55;color:#31dcff;border:1px solid #0d80bb}
+.faq-item{border-color:#104b71!important;background:#071a30!important}.faq-q{color:#fff!important;background:transparent!important}.faq-a{color:#9fb5cb!important}
+.cta{background:linear-gradient(135deg,#0c3b68,#081b32)!important;border:1px solid #168dcb!important;color:#fff;box-shadow:0 20px 60px rgba(0,0,0,.28)}
+.page-hero{background:radial-gradient(circle at 15% 30%,rgba(0,149,255,.22),transparent 26%),linear-gradient(135deg,#031326,#0a2c51);color:#fff;border-bottom:1px solid #0e74a8}
+.page-hero .crumb{color:#37d8ff}.page-hero p{color:#b3c8de}
+.content.card{background:linear-gradient(145deg,#092747,#07192f);color:#eaf5ff}.content.card p{color:#bdd0e2}
+.article-card{background:linear-gradient(145deg,#092747,#07192f)}.article-meta{color:#5fdcff}
+.book-card{background:linear-gradient(145deg,#08294d,#06172b)!important;border-color:#0d6d9f!important}
+.book-card p{color:#b8cde1!important}
+.footer{background:#03101f;border-top:1px solid #0b6594;color:#dcecff}
+.footer p,.footer a{color:#8fa9c3}.footer a:hover{color:#32d8ff}
+.footer-logo img{filter:drop-shadow(0 0 10px rgba(6,182,212,.35))}
+.mobile-bar{background:#041326!important;border-top:1px solid #0c6b9a!important}
+.pricing-range{background:linear-gradient(145deg,#092747,#07192f);border-color:#0c5d89;color:#fff}
+.pricing-range span{color:#9fb5cb}
+.portfolio-note{background:#0b2a49;border-color:#0d709e;color:#b7d0e6}
+
+/* Home layout closer to the visual identity reference */
+.home-services{background:linear-gradient(180deg,#06182c,#08223d);border-top:1px solid #0b6c9e;border-bottom:1px solid #0b6c9e}
+.home-pricing{background:radial-gradient(circle at 85% 30%,rgba(0,133,255,.18),transparent 30%),linear-gradient(135deg,#031326,#082b4e)}
+.home-work{background:#f5f8fc;color:#071426}.home-work .section-head h2{color:#071426}.home-work .section-head p{color:#56677b}
+.home-work .project{background:#fff;color:#071426;border-color:#d9e4ef;box-shadow:0 10px 28px rgba(7,30,58,.08)}.home-work .project p{color:#607083}.home-work .project.main{background:#fff;color:#071426;border-color:#d9e4ef;min-height:300px}
+.home-bottom{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.home-bottom>div{background:linear-gradient(145deg,#092747,#06172c);border:1px solid #0d6999;border-radius:18px;padding:22px;min-height:340px;box-shadow:0 18px 45px rgba(0,0,0,.22)}
+.home-bottom h3{font-size:25px;color:#fff}.home-bottom p{color:#aac0d7}
+.home-book-cover{display:flex;gap:16px;align-items:center}.home-book-cover img{width:118px;border-radius:8px;box-shadow:0 14px 28px #0008}
+.home-ai-bot{width:116px;height:116px;margin:12px auto;border:2px solid #1bceff;border-radius:50%;display:grid;place-items:center;font-size:44px;background:radial-gradient(circle,#0f4d86,#06162b);box-shadow:0 0 32px rgba(0,201,255,.34)}
+.home-article-mini{display:grid;gap:10px}.home-article-mini a{display:block;background:#07182d;border:1px solid #114b72;border-radius:10px;padding:11px}.home-article-mini b{display:block;color:#fff;font-size:13px}.home-article-mini span{font-size:10px;color:#39d7ff}
+
+@media(max-width:1000px){
+  .hero-grid{grid-template-columns:1fr}.tech-showcase{min-height:420px}
+  .home-bottom{grid-template-columns:1fr}
+  .navlinks{background:#05172a!important;border-color:#0e5b86!important}
+}
+@media(max-width:680px){
+  .hero{padding-top:42px;min-height:auto}.hero h1{font-size:46px}.hero .lead{font-size:15px}
+  .tech-showcase{min-height:365px}.tech-screen{width:68%;min-height:190px}.tech-logo-mark{width:82px}.tech-screen strong{font-size:25px}
+  .float-tech{min-width:128px;padding:11px}.float-tech b{font-size:12px}.float-tech span{font-size:9px}
+  .ft1{top:18px;right:12px}.ft2{top:18px;left:12px}.ft3{bottom:18px;left:12px}.ft4{bottom:18px;right:12px}
+  .home-book-cover{align-items:flex-start}.home-book-cover img{width:92px}
+}
+
 </style>
 </head>
 <body>
@@ -721,18 +874,13 @@ function faqBlock(){
 }
 
 function home(){
-  return '<section class="hero"><div class="container hero-grid"><div><div class="hero-brand">3bkarino Tech • Digital Solutions Studio</div><span class="kicker"><i></i> مواقع • أنظمة • Excel • AI • تسويق</span><h1>من الفكرة لحل رقمي<br><em>واضح وبيشتغل.</em></h1><p class="lead">لو محتاج موقع يجيب تواصل، نظام ينظم الشغل، Dashboard توضح أرقامك، أو AI يوفر وقتك — هتلاقي هنا الخدمة، نقطة البداية، أمثلة من شغل سابق وطريقة تبدأ من غير تعقيد.</p><div class="hero-actions"><a class="btn primary" href="/services" data-link>اكتشف الخدمات</a><a class="btn light" href="/ai-consultant" data-link>جرّب المستشار الذكي</a></div><div class="trustline"><span>أسعار مبدئية واضحة</span><span>موبايل أولًا</span><span>تنفيذ حسب الاحتياج</span><span>تواصل مباشر</span></div></div><div class="tech-showcase"><div class="tech-orbit"></div><div class="tech-screen"><img class="tech-logo-mark" src="/assets/brand-mark.svg" alt=""><strong>3bkarino <em>Tech</em></strong><small>CODE SMARTER & FASTER</small></div><div class="float-tech ft1"><i>&lt;/&gt;</i><b>مواقع إلكترونية</b><span>سريعة ومتجاوبة</span></div><div class="float-tech ft2"><i>AI</i><b>ذكاء اصطناعي</b><span>أدوات وأتمتة</span></div><div class="float-tech ft3"><i>XL</i><b>لوحات بيانات</b><span>تقارير وقرارات</span></div><div class="float-tech ft4"><i>⚙</i><b>أنظمة مخصصة</b><span>حلول حسب احتياجك</span></div></div></div></section>'+
-  '<div class="brand-strip"><div class="container"><span>مواقع وصفحات بيع</span><span>أنظمة تشغيل</span><span>Excel وDashboards</span><span>AI وAutomation</span><span>تسويق ومحتوى</span></div></div>'+
-  '<section class="section" id="explore"><div class="container"><div class="section-head"><div><span class="eyebrow">كل حاجة في مكان واضح</span><h2>اختار القسم اللي يفيدك دلوقتي.</h2></div><p>الموقع مش مجرد صفحة تعريفية؛ تقدر تشوف الخدمات والأسعار والأعمال، تتعلم من المقالات والكتاب، تستخدم أدوات مجانية أو تخلي المستشار الذكي يساعدك تحدد طلبك.</p></div><div class="site-map-grid">'+exploreCards()+'</div></div></section>'+
-  '<section class="section soft"><div class="container"><div class="section-head"><div><span class="eyebrow">الخدمات</span><h2>مش بنبيع تقنية؛ بنحل مشكلة واضحة.</h2></div><p>كل خدمة تحتها هتلاقي: بتعمل إيه، مناسبة لمين، وإزاي تبدأ. لو مش عارف تختار، استخدم المستشار الذكي.</p></div><div class="grid grid3">'+serviceCards()+'</div><div class="hero-actions" style="justify-content:center"><a class="btn dark" href="/services" data-link>شوف كل تفاصيل الخدمات</a></div></div></section>'+
-  '<section class="section"><div class="container"><div class="section-head"><div><span class="eyebrow">الباقات والأسعار</span><h2>اعرف نقطة البداية قبل ما تتواصل.</h2></div><p>الأسعار استرشادية عشان تكون صورة واضحة. بعد فهم المطلوب بنثبت النطاق والسعر النهائي قبل التنفيذ.</p></div><div class="price-grid">'+planCards()+'</div><div class="hero-actions" style="justify-content:center"><a class="btn outline" href="/pricing" data-link>تفاصيل الباقات والأسعار</a></div></div></section>'+
-  '<section class="section dark"><div class="container"><div class="section-head"><div><span class="eyebrow">طريقة الشغل</span><h2>من “عندي فكرة” لنسخة شغالة في 4 خطوات.</h2></div><p>إنت توضح الهدف، وإحنا نحولّه لنطاق مفهوم قبل ما ندخل في التفاصيل التقنية.</p></div><div class="process"><div class="step"><div class="n">01</div><h3>نفهم</h3><p>نشاطك، المشكلة، المستخدم والنتيجة المطلوبة.</p></div><div class="step"><div class="n">02</div><h3>نحدد</h3><p>الحل، النطاق، السعر والمدة بصورة واضحة.</p></div><div class="step"><div class="n">03</div><h3>ننّفذ</h3><p>تصميم وتنفيذ واختبار على الموبايل والديسكتوب.</p></div><div class="step"><div class="n">04</div><h3>نسلّم ونطوّر</h3><p>نسخة شغالة وخطوات واضحة لأي تطوير بعدين.</p></div></div></div></section>'+
-  '<section class="section"><div class="container"><div class="section-head"><div><span class="eyebrow">أعمال سابقة</span><h2>شوف نوع المشاكل اللي بنحوّلها لحلول.</h2></div><a class="btn outline sm" href="/portfolio" data-link>كل الأعمال</a></div><div class="work-grid">'+projectCards()+'</div></div></section>'+
-  '<section class="section soft"><div class="container consultant-promo"><div><span class="eyebrow" style="color:var(--yellow)">المستشار الذكي</span><h2 style="font-size:clamp(32px,5vw,50px);margin:6px 0 12px">مش عارف تبدأ من أي خدمة؟ خلّيه يفهم طلبك في 60 ثانية.</h2><p>يسألك عن نشاطك والهدف والميزانية والموعد، وبعدها يجهز ملخص للخدمة الأقرب وسعر مبدئي ويفتح واتساب عشان تكمل مع شخص حقيقي.</p><div class="hero-actions"><a class="btn primary" href="/ai-consultant" data-link>ابدأ مع المستشار</a><a class="btn light" href="/contact" data-link>أكتب طلبك بنفسك</a></div></div><div class="consultant-flow"><div><b>1</b><span>قول نشاطك</span></div><div><b>2</b><span>حدد هدفك</span></div><div><b>3</b><span>خد ترشيح مبدئي</span></div><div><b>4</b><span>كمل على واتساب</span></div></div></div></section>'+
-  '<section class="section dark"><div class="container"><div class="section-head"><div><span class="eyebrow">تعلم وطبّق</span><h2>محتوى يفيدك حتى قبل ما تطلب خدمة.</h2></div><p>المقالات مجانية، والكتاب AI Marketing Machine منتج تعليمي مدفوع عملي للمبتدئ وصاحب المشروع.</p></div><div class="knowledge-grid"><div class="book-card"><div class="book-logo"><img src="/assets/brand-mark.svg" alt="3bkarino Tech"></div><span class="eyebrow">AI MARKETING MACHINE</span><h3>من “مش عارف أسوّق” لخطة تسويق كاملة.</h3><p>كتاب تفاعلي يعلمك فهم العميل، بناء العرض، المحتوى، الإعلانات، التحليل والأتمتة بالذكاء الاصطناعي.</p><div style="font-weight:900;margin:12px 0">Version A أو B: 299 ج • A+B: 500 ج</div><div class="hero-actions"><a class="btn primary" href="/book" data-link>شوف الكتاب</a><a class="btn dark" href="/book/checkout?product=A" data-link>شراء Version A</a></div></div><div class="article-stack">'+articleRows()+'<a class="btn light" href="/blog" data-link>استكشف كل المقالات</a></div></div></div></section>'+
-  '<section class="section"><div class="container social-section"><div><span class="eyebrow">تابع 3bkarino Tech</span><h2 style="margin:5px 0">محتوى وأفكار وتحديثات على السوشيال.</h2><p>تابع الصفحات الرسمية أو تواصل مباشرة على واتساب.</p></div>'+socialLinks()+'</div></section>'+
-  '<section class="section soft"><div class="container"><div class="section-head"><div><span class="eyebrow">أسئلة متكررة</span><h2>إجابات قبل ما تبدأ.</h2></div><p>لو سؤالك مش موجود، استخدم المستشار الذكي أو ابعت واتساب مباشرة.</p></div>'+faqBlock()+'</div></section>'+
-  cta();
+  return '<section class="hero"><div class="container hero-grid"><div><div class="hero-brand">مرحبًا بك في 3bkarino Tech</div><span class="kicker"><i></i> مواقع • أنظمة • Excel • AI • تسويق</span><h1>حلول رقمية <em>ذكية</em><br>لموقعك وشغلك وتسويقك.</h1><p class="lead">بنحوّل فكرتك لحل رقمي عملي: موقع احترافي، نظام مخصص، Dashboard واضحة، أدوات ذكاء اصطناعي وأتمتة، أو خطة تسويق تساعدك تنمو بشكل أسرع وأذكى.</p><div class="hero-actions"><a class="btn primary" href="/services" data-link>استعرض خدماتنا ←</a><a class="btn outline" href="/contact" data-link>اطلب عرض سعر</a></div><div class="trustline"><span>تنفيذ حسب الاحتياج</span><span>موبايل أولًا</span><span>حلول قابلة للتطوير</span><span>تواصل مباشر</span></div></div><div class="tech-showcase"><div class="tech-orbit"></div><div class="tech-screen"><img class="tech-logo-mark" src="/assets/brand-mark.svg" alt=""><strong>3bkarino <em>Tech</em></strong><small>CODE SMARTER & FASTER</small></div><div class="float-tech ft1"><i>&lt;/&gt;</i><b>المواقع الإلكترونية</b><span>سريعة ومتجاوبة</span></div><div class="float-tech ft2"><i>AI</i><b>الذكاء الاصطناعي</b><span>أدوات وأتمتة</span></div><div class="float-tech ft3"><i>XL</i><b>لوحات Excel</b><span>تقارير وقرارات</span></div><div class="float-tech ft4"><i>⚙</i><b>الأنظمة المخصصة</b><span>حلول حسب احتياجك</span></div></div></div></section>'+
+  '<div class="brand-strip"><div class="container"><span>Web Development</span><span>Business Systems</span><span>Excel Dashboards</span><span>AI Automation</span><span>Digital Marketing</span></div></div>'+
+  '<section class="section home-services"><div class="container"><div class="section-head"><div><span class="eyebrow">OUR SERVICES</span><h2>خدماتنا</h2></div><p>حلول رقمية متكاملة تساعدك تطوّر شغلك، تعرض خدماتك بشكل أقوى، وتقلل الخطوات اليدوية.</p></div><div class="grid grid3">'+serviceCards()+'</div><div class="hero-actions" style="justify-content:center"><a class="btn outline" href="/services" data-link>عرض جميع الخدمات ←</a></div></div></section>'+
+  '<section class="section home-pricing"><div class="container"><div class="section-head"><div><span class="eyebrow">OUR PACKAGES</span><h2>باقات تناسب مرحلة مشروعك.</h2></div><p>اختار نقطة البداية الأقرب لك، وبعد مراجعة المطلوب بنثبت النطاق والسعر النهائي قبل التنفيذ.</p></div><div class="price-grid">'+planCards()+'</div><div class="hero-actions" style="justify-content:center"><a class="btn outline" href="/pricing" data-link>عرض جميع الباقات ←</a></div></div></section>'+
+  '<section class="section home-work"><div class="container"><div class="section-head"><div><span class="eyebrow">OUR WORK</span><h2>أعمالنا السابقة</h2></div><p>مشاريع متنوعة من أنظمة تشغيل ومواقع وتجارب بيع وبراندات رقمية.</p></div><div class="work-grid">'+projectCards()+'</div><div class="hero-actions" style="justify-content:center"><a class="btn dark" href="/portfolio" data-link>عرض جميع الأعمال ←</a></div></div></section>'+
+  '<section class="section"><div class="container home-bottom"><div><span class="eyebrow">OUR BOOK</span><h3>AI Marketing Machine</h3><div class="home-book-cover"><img src="/assets/book-cover-full.webp" alt="AI Marketing Machine"><div><p>كتاب عملي تتعلم منه التسويق بالذكاء الاصطناعي خطوة بخطوة: فهم العميل، العرض، المحتوى، الإعلانات، القياس والأتمتة.</p><b style="color:#31dcff">A أو B: 299 ج • الباندل: 500 ج</b></div></div><div class="hero-actions"><a class="btn outline sm" href="/book" data-link>اكتشف الكتاب</a></div></div><div><span class="eyebrow">AI CONSULTANT</span><h3>المستشار الذكي</h3><div class="home-ai-bot">◉</div><p>جاوب على شوية أسئلة سريعة، والمستشار يساعدك تحدد الخدمة الأقرب ويجهز ملخص للمتابعة على واتساب.</p><div class="hero-actions"><a class="btn outline sm" href="/ai-consultant" data-link>ابدأ المحادثة الآن</a></div></div><div><span class="eyebrow">LATEST ARTICLES</span><h3>أحدث المقالات</h3><div class="home-article-mini">'+articles.slice(0,3).map(function(a){return '<a href="/blog/'+a.slug+'" data-link><span>'+a.tag+' • '+a.read+'</span><b>'+a.title+'</b></a>'}).join('')+'</div><div class="hero-actions"><a class="btn outline sm" href="/blog" data-link>عرض الكل</a></div></div></div></section>'+
+  '<section class="section soft"><div class="container social-section"><div><span class="eyebrow">FOLLOW 3BKARINO TECH</span><h2 style="margin:5px 0">تابع الجديد وتواصل معانا.</h2><p>محتوى AI وExcel وتسويق وتحديثات المنتجات والخدمات.</p></div>'+socialLinks()+'</div></section>';
 }
 function servicesPage(){
   return pageHero('الخدمات','اختار حسب المشكلة والنتيجة اللي محتاجها، مش حسب اسم التقنية. كل خدمة موضح فيها الاستخدام المناسب وطريقة البداية.')+
