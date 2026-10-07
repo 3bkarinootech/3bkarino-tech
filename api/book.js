@@ -194,10 +194,12 @@ export default async function handler(req,res){
     if(!record||!lic)return send(res,200,{accepted:true});
     if(!purchaseEmailConfigured())return send(res,503,{error:'EMAIL_NOT_CONFIGURED'});
     const fresh=createFreshAccess(lic,record.id,record);
-    const result=await sendAccessRecoveryEmail(record,lic,fresh);
-    if(!result.ok)return send(res,503,{error:'EMAIL_SEND_FAILED'});
     const updated=(record.licenses||[]).map(x=>x.licenseId===lic.licenseId?{...x,readerUrl:fresh.readerUrl,currentAccessId:fresh.accessId,activationExpiresAt:fresh.expiresAt,accessUsedAt:null,pendingActivation:null}:x);
-    await saveRecord({...record,licenses:updated,lastAccessEmailAt:Date.now(),emailStatus:'sent'});
+    const prepared=await saveRecord({...record,licenses:updated,lastAccessEmailAt:Date.now()});
+    const updatedLic=updated.find(x=>x.licenseId===lic.licenseId)||lic;
+    const result=await sendAccessRecoveryEmail(prepared,updatedLic,fresh);
+    if(!result.ok)return send(res,503,{error:'EMAIL_SEND_FAILED'});
+    await saveRecord({...prepared,emailStatus:'sent'});
     return send(res,200,{accepted:true,sent:true});
   }
 
