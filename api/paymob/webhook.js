@@ -46,7 +46,12 @@ export default async function handler(req,res){
   }
 
   if(record.paymentTransactionId&&String(record.paymentTransactionId)===String(obj.id)){
-    return send(res,200,{received:true,idempotent:true,paid:record.status==='paid'});
+    if(record.status==='paid'&&record.emailStatus!=='sent'){
+      const mail=await deliverEmails(record);
+      await saveRecord({...record,emailStatus:mail.status,emailDelivery:mail.details,emailAttemptedAt:Date.now()});
+      return send(res,200,{received:true,idempotent:true,paid:true,emailStatus:mail.status});
+    }
+    return send(res,200,{received:true,idempotent:true,paid:record.status==='paid',emailStatus:record.emailStatus||''});
   }
 
   const paid=obj.success===true&&obj.pending===false&&obj.is_refund!==true&&obj.is_void!==true&&obj.is_refunded!==true&&obj.is_voided!==true;
@@ -54,7 +59,14 @@ export default async function handler(req,res){
     if(record.status!=='paid')await saveRecord({...record,paymentStatus:'failed',lastPaymobTransactionId:String(obj.id||''),lastPaymentAt:Date.now()});
     return send(res,200,{received:true,paid:false});
   }
-  if(record.status==='paid')return send(res,200,{received:true,paid:true,alreadyFulfilled:true});
+  if(record.status==='paid'){
+    if(record.emailStatus!=='sent'){
+      const mail=await deliverEmails(record);
+      await saveRecord({...record,emailStatus:mail.status,emailDelivery:mail.details,emailAttemptedAt:Date.now()});
+      return send(res,200,{received:true,paid:true,alreadyFulfilled:true,emailStatus:mail.status});
+    }
+    return send(res,200,{received:true,paid:true,alreadyFulfilled:true,emailStatus:record.emailStatus||'sent'});
+  }
 
   const info=PRODUCTS[String(record.product||'').toUpperCase()];
   if(!info)return send(res,422,{error:'INVALID_PRODUCT'});
