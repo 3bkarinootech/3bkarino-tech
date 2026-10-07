@@ -2,7 +2,7 @@ import { saveRecord, readRecord } from '../lib/records.js';
 import { createBookIntention, paymobConfig } from '../lib/paymob.js';
 import { BOOK_META, bookForVersion } from '../lib/book-content.js';
 import { ACCESS_POLICY, token, verifyToken, issueLicenses, createFreshAccess, createReaderSession } from '../lib/book-access.js';
-import { purchaseEmailConfigured, purchaseEmailProvider, sendAccessRecoveryEmail } from '../lib/email.js';
+import { purchaseEmailConfigured, purchaseEmailProvider, sendPurchaseEmails, sendAccessRecoveryEmail } from '../lib/email.js';
 
 const ADMIN=process.env.BOOK_ADMIN_KEY||'';
 const WA='201120124338';
@@ -17,6 +17,27 @@ function maskEmail(email){const [u,d]=String(email||'').split('@');if(!d)return 
 function productInfo(v){return PRODUCTS[String(v||'').toUpperCase()]||null}
 function orderId(){return '3BK-BOOK-'+Date.now().toString(36).toUpperCase()}
 function customerFromToken(t){return {name:t.name,emailMasked:maskEmail(t.email),licenseId:t.licenseId,version:t.version,orderId:t.orderId}}
+
+async function retryPaidEmailDelivery(record){
+  if(!record||record.status!=='paid'||record.emailStatus==='sent'||!purchaseEmailConfigured())return record;
+  const last=Number(record.emailAttemptedAt||0);
+  if(last&&Date.now()-last<45000)return record;
+  try{
+    const result=await sendPurchaseEmails(record);
+    const customers=result.customers||[];
+    const allCustomerOk=customers.length>0&&customers.every(x=>x.result?.ok);
+    const status=result.admin?.ok&&allCustomerOk?'sent':'partial_or_failed';
+    const updated={...record,emailStatus:status,emailDelivery:{
+      adminOk:Boolean(result.admin?.ok),adminId:result.admin?.id||'',
+      customers:customers.map(x=>({email:x.email,ok:Boolean(x.result?.ok),id:x.result?.id||''}))
+    },emailAttemptedAt:Date.now()};
+    return await saveRecord(updated);
+  }catch(err){
+    console.error('ORDER_EMAIL_RETRY_FAILED',err?.message||err);
+    const updated={...record,emailStatus:'failed',emailAttemptedAt:Date.now()};
+    try{return await saveRecord(updated)}catch{return updated}
+  }
+}
 
 export default async function handler(req,res){
   if(req.method==='GET')return send(res,200,{
@@ -73,7 +94,8 @@ export default async function handler(req,res){
 
   if(action==='order-status'){
     const order=verifyToken(body.orderToken);if(!order||order.type!=='order')return send(res,401,{error:'INVALID_ORDER_TOKEN'});
-    const record=await readRecord(order.id);if(!record)return send(res,404,{error:'ORDER_NOT_FOUND'});
+    let record=await readRecord(order.id);if(!record)return send(res,404,{error:'ORDER_NOT_FOUND'});
+    if(record.status==='paid'&&record.emailStatus!=='sent')record=await retryPaidEmailDelivery(record);
     return send(res,200,{
       orderId:record.id,status:record.status||'pending_payment',paymentStatus:record.paymentStatus||record.status||'pending_payment',
       product:record.product,productLabel:record.productLabel,amount:record.amount,currency:record.currency||'EGP',
