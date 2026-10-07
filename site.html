@@ -893,6 +893,20 @@ body{color:#111827;background:#f6f8fb}
   .mobile-bar .btn.whatsapp{background:#22c55e!important;color:#08110a!important}
 }
 
+
+/* === Growth / Ads landing pages === */
+.book-ad-hero{background:linear-gradient(135deg,#061426,#0b2747);color:#fff;padding:62px 0;overflow:hidden}
+.book-ad-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:36px;align-items:center}
+.book-ad-hero h1{font-size:clamp(42px,6vw,70px);line-height:1.08;margin:12px 0 18px;color:#fff}
+.book-ad-hero p{font-size:19px;color:#d9e9f7;max-width:720px}
+.book-ad-cover{background:#fff;border-radius:24px;padding:14px;box-shadow:0 24px 60px rgba(0,0,0,.25);transform:rotate(-1deg)}
+.book-ad-cover img{width:100%;border-radius:14px}
+.book-proof{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.book-proof span{background:#ffffff10;border:1px solid #ffffff20;border-radius:999px;padding:7px 10px;font-size:12px;font-weight:800}
+.book-ad-note{display:block;margin-top:12px;color:#a9c7dd}
+.book-sticky-cta{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:95;width:min(680px,calc(100% - 28px));background:#061426;color:#fff;border:1px solid #ffffff18;border-radius:18px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 18px 50px rgba(0,0,0,.28)}
+.book-sticky-cta div{display:flex;flex-direction:column}.book-sticky-cta span{font-size:12px;color:#c8d9e8}
+@media(max-width:760px){.book-ad-grid{grid-template-columns:1fr}.book-ad-cover{max-width:330px;margin:auto}.book-ad-hero{padding:38px 0}.book-ad-hero h1{font-size:38px}.book-sticky-cta{bottom:82px}}
+
 </style>
 <script data-canonical-launch>(function(){var p=location.pathname||'/';var u='https://3bkarinotech.com'+p;var c=document.querySelector('link[rel="canonical"]');if(c)c.href=u;var o=document.querySelector('meta[property="og:url"]');if(o)o.content=u;})();</script>
 </head>
@@ -948,6 +962,31 @@ var navlinks=document.getElementById('navlinks');
 var menu=document.getElementById('menu');
 var WA='201120124338';
 var activeTimer=null;
+window.dataLayer=window.dataLayer||[];
+function getAttribution(){
+  var key='3bk-attribution',saved={};try{saved=JSON.parse(sessionStorage.getItem(key)||'{}')||{}}catch(e){}
+  var q=new URLSearchParams(location.search),fresh={
+    utm_source:q.get('utm_source')||'',utm_medium:q.get('utm_medium')||'',utm_campaign:q.get('utm_campaign')||'',
+    utm_content:q.get('utm_content')||'',utm_term:q.get('utm_term')||'',gclid:q.get('gclid')||'',fbclid:q.get('fbclid')||'',
+    landing_page:saved.landing_page||location.pathname,first_referrer:saved.first_referrer||document.referrer||''
+  };
+  Object.keys(fresh).forEach(function(k){if(!fresh[k]&&saved[k])fresh[k]=saved[k]});
+  try{sessionStorage.setItem(key,JSON.stringify(fresh))}catch(e){}
+  return fresh;
+}
+function trackEvent(name,extra){
+  var a=getAttribution(),event=Object.assign({event:name,page_path:location.pathname,page_title:document.title},a,extra||{});
+  window.dataLayer.push(event);
+  try{window.dispatchEvent(new CustomEvent('3bk:track',{detail:event}))}catch(e){}
+}
+getAttribution();
+document.addEventListener('click',function(e){
+  var a=e.target.closest('a,button');if(!a)return;
+  var label=(a.getAttribute('data-track')||'').trim();
+  if(label)trackEvent(label,{cta_text:(a.textContent||'').trim().slice(0,120),cta_href:a.href||''});
+  if(a.tagName==='A'&&/^https:\/\/wa\.me\//.test(a.href||''))trackEvent('whatsapp_click',{cta_text:(a.textContent||'').trim().slice(0,120)});
+});
+
 
 menu.onclick=function(){var open=navlinks.classList.toggle('open');menu.setAttribute('aria-expanded',String(open))};
 document.addEventListener('click',function(e){
@@ -1116,6 +1155,24 @@ var seoSolutions={
     keywords:'Excel Dashboard • تقارير إدارية • AR Aging • Business Intelligence',
     caseHref:'/portfolio/ar-control-aging'
   },
+  'web-development':{
+    eyebrow:'WEB DEVELOPMENT',
+    title:'تصميم مواقع شركات وصفحات بيع تركز على التحويل',
+    desc:'موقع سريع ومتجاوب يشرح خدمتك بوضوح ويوصل الزائر للخطوة المهمة: طلب عرض سعر، واتساب، حجز أو شراء.',
+    problem:'وجود موقع شكله كويس مش كفاية لو الزائر مش فاهم العرض، مش لاقي CTA واضح، أو بيخرج قبل ما يتواصل.',
+    features:[['رسالة واضحة','ترتيب الصفحة حول المشكلة والعرض والنتيجة.'],['Mobile First','تجربة قوية على الموبايل قبل الديسكتوب.'],['Lead Capture','نماذج وWhatsApp وCTA قابلة للقياس.'],['Landing Pages','صفحات مستقلة لكل خدمة أو حملة.'],['SEO Ready','هيكل وعناوين وMeta وStructured Data قابلة للفهرسة.'],['Analytics Ready','UTM وEvents جاهزة للربط مع منصات الإعلانات.']],
+    keywords:'تصميم مواقع شركات • Landing Page • Web Development • مواقع للشركات في مصر',
+    caseHref:'/portfolio/3bkarino-platform'
+  },
+  'marketing-growth':{
+    eyebrow:'DIGITAL MARKETING',
+    title:'تسويق رقمي مبني على العرض والأرقام مش مجرد نشر',
+    desc:'نرتب الرسالة والمحتوى والإعلان والقياس في Workflow واحد عشان تعرف إيه اللي بيجيب Leads ومبيعات فعلية.',
+    problem:'الحملات بتفشل أحيانًا مش بسبب الإعلان نفسه، لكن بسبب عرض غير واضح أو Landing Page ضعيفة أو قياس ناقص.',
+    features:[['Offer Review','مراجعة العرض والسعر والرسالة.'],['Content Angles','زوايا محتوى وإعلانات مرتبطة بالمشكلة.'],['Campaign Structure','تقسيم الحملات حسب الهدف والجمهور.'],['Landing Alignment','توافق الإعلان مع صفحة الهبوط.'],['Tracking','UTM وأحداث Conversion واضحة.'],['Optimization','قرارات تحسين مبنية على CPL/CPA/ROAS.']],
+    keywords:'تسويق رقمي • إعلانات ممولة • Meta Ads • Google Ads',
+    caseHref:'/portfolio/ai-marketing-machine'
+  },
   'ai-automation':{
     eyebrow:'AI & AUTOMATION',
     title:'AI Automation للشركات والمبيعات',
@@ -1128,16 +1185,18 @@ var seoSolutions={
 };
 function seoSolutionPage(slug){
   var x=seoSolutions[slug];if(!x)return notFound();
-  return '<section class="case-hero"><div class="container case-hero-grid"><div><div class="crumb">3bkarino Tech / Solutions</div><span class="eyebrow">'+x.eyebrow+'</span><h1>'+x.title+'</h1><p>'+x.desc+'</p><div class="case-meta"><span>'+x.keywords.split(' • ').join('</span><span>')+'</span></div><div class="hero-actions"><a class="btn primary" href="/contact?solution='+encodeURIComponent(x.title)+'" data-link>اطلب عرض سعر</a><a class="btn outline" href="'+x.caseHref+'" data-link>شوف Case Study</a></div></div><div class="case-cover"><img src="/assets/brand-mark.svg" alt="3bkarino Tech"></div></div></section>'+
+  return '<section class="case-hero"><div class="container case-hero-grid"><div><div class="crumb">3bkarino Tech / Solutions</div><span class="eyebrow">'+x.eyebrow+'</span><h1>'+x.title+'</h1><p>'+x.desc+'</p><div class="case-meta"><span>'+x.keywords.split(' • ').join('</span><span>')+'</span></div><div class="hero-actions"><a class="btn primary" href="/contact?solution='+encodeURIComponent(x.title)+'" data-link data-track="service_cta_click">اطلب عرض سعر</a><a class="btn outline" href="'+x.caseHref+'" data-link data-track="solution_case_study_click">شوف Case Study</a></div></div><div class="case-cover"><img src="/assets/brand-mark.svg" alt="3bkarino Tech"></div></div></section>'+
   '<section class="section"><div class="container"><div class="case-block"><span class="eyebrow">THE PROBLEM</span><h2>المشكلة اللي بنحلها</h2><p>'+x.problem+'</p></div></div></section>'+
   '<section class="section soft"><div class="container"><div class="section-head"><div><span class="eyebrow">WHAT YOU GET</span><h2>الوظائف الأساسية</h2></div><p>نبدأ بالنطاق الضروري ثم نوسع الحل حسب احتياج الشركة.</p></div><div class="feature-grid">'+x.features.map(function(f){return '<div class="feature-item"><b>'+f[0]+'</b><p>'+f[1]+'</p></div>'}).join('')+'</div></div></section>'+
-  '<section class="section"><div class="container cta"><div><span class="eyebrow">ابدأ صح</span><h2>ابعت طريقة شغلك الحالية والمشكلة الأساسية.</h2><p>هنحدد لك أنسب نقطة بداية ونطاق أول نسخة بدل تنفيذ وظائف مش محتاجها.</p></div><div class="hero-actions"><a class="btn dark" href="/contact?solution='+encodeURIComponent(x.title)+'" data-link>اطلب تقييم مبدئي</a><a class="btn light" href="/ai-consultant" data-link>اسأل المستشار الذكي</a></div></div></section>';
+  '<section class="section"><div class="container"><div class="section-head"><div><span class="eyebrow">HOW WE START</span><h2>من المشكلة لأول نسخة قابلة للاستخدام.</h2></div><p>الهدف إن أول نسخة تحل احتياج حقيقي وتكون قابلة للتطوير بدل مشروع ضخم من أول يوم.</p></div><div class="grid grid3"><div class="card"><h3>1. نفهم الدورة الحالية</h3><p>بنراجع الخطوات والبيانات والنتيجة المطلوبة.</p></div><div class="card"><h3>2. نحدد MVP</h3><p>نختار الوظائف الضرورية ونرتب الأولويات والتكلفة.</p></div><div class="card"><h3>3. تنفيذ وقياس</h3><p>نطلق نسخة أولى، نراجع الاستخدام، وبعدها نطور.</p></div></div></div></section>'+
+  '<section class="section dark"><div class="container"><div class="section-head"><div><span class="eyebrow">WHY 3BKARINO TECH</span><h2>حل مخصص بدل إجبار شغلك على قالب جاهز.</h2></div><p>نربط التقنية بالعملية الفعلية: المستخدمين، البيانات، التقارير، نقاط القرار، والـCTA أو الـWorkflow المطلوب.</p></div><div class="hero-actions"><a class="btn primary" href="'+x.caseHref+'" data-link data-track="solution_case_study_click">شوف مشروع مشابه</a><a class="btn light" href="/portfolio" data-link>كل الأعمال</a></div></div></section>'+
+  '<section class="section"><div class="container cta"><div><span class="eyebrow">ابدأ صح</span><h2>ابعت طريقة شغلك الحالية والمشكلة الأساسية.</h2><p>هنحدد لك أنسب نقطة بداية ونطاق أول نسخة بدل تنفيذ وظائف مش محتاجها.</p></div><div class="hero-actions"><a class="btn dark" href="/contact?solution='+encodeURIComponent(x.title)+'" data-link data-track="service_cta_click">اطلب تقييم مبدئي</a><a class="btn light" href="/ai-consultant" data-link data-track="ai_consultant_click">اسأل المستشار الذكي</a></div></div></section>';
 }
 function servicesPage(){
   return pageHero('الخدمات','اختار حسب المشكلة والنتيجة اللي محتاجها، مش حسب اسم التقنية. كل خدمة موضح فيها الاستخدام المناسب وطريقة البداية.')+
   '<section class="section"><div class="container"><div class="section-head"><div><span class="eyebrow">6 مسارات واضحة</span><h2>من موقع بسيط لنظام كامل أو AI.</h2></div><p>تقدر تبدأ بحل صغير وتوسعه بعدين. الهدف إن أول نسخة تحل مشكلة فعلية بدل ما تحمل المشروع وظائف مش محتاجها.</p></div><div class="grid grid3">'+serviceCards()+'</div></div></section>'+
   '<section class="section dark"><div class="container"><div class="section-head"><div><span class="eyebrow">اختار بسرعة</span><h2>لو مش عارف اسم الخدمة، ابدأ بالمشكلة.</h2></div><p>دي أمثلة سريعة تربط المشكلة بالخدمة الأقرب.</p></div><div class="grid grid4"><div class="step"><div class="n">01</div><h3>الناس مش فاهمة خدمتي</h3><p>ابدأ بموقع أو Landing Page ورسالة أوضح.</p></div><div class="step"><div class="n">02</div><h3>الشغل متبعثر</h3><p>ابدأ بنظام داخلي أو Excel Automation.</p></div><div class="step"><div class="n">03</div><h3>أسئلة العملاء بتتكرر</h3><p>ابدأ بمساعد AI وتأهيل Leads.</p></div><div class="step"><div class="n">04</div><h3>الإعلانات مش واضحة</h3><p>ابدأ بمراجعة العرض والمحتوى والقياس.</p></div></div><div class="hero-actions"><a class="btn primary" href="/ai-consultant" data-link>خلي المستشار يرشح لك</a><a class="btn light" href="/pricing" data-link>شوف الباقات</a></div></div></section>'+
-  '<section class="section"><div class="container"><div class="section-head"><div><span class="eyebrow">SOLUTIONS</span><h2>حلول حسب المشكلة اللي بتدور عليها.</h2></div><p>صفحات متخصصة توضح الحل والوظائف والأمثلة بدل الكلام العام.</p></div><div class="grid grid3"><a class="card hover" href="/solutions/inventory-sales" data-link><h3>نظام مخازن ومبيعات</h3><p>إدارة المخزون والمبيعات والعملاء والموردين والتقارير.</p><span class="link">اعرف التفاصيل ←</span></a><a class="card hover" href="/solutions/excel-dashboard" data-link><h3>Excel Dashboard</h3><p>لوحات متابعة وتقارير إدارية وAR Aging وتحليل بيانات.</p><span class="link">اعرف التفاصيل ←</span></a><a class="card hover" href="/solutions/ai-automation" data-link><h3>AI Automation</h3><p>تأهيل Leads وأتمتة خطوات المبيعات والمتابعة.</p><span class="link">اعرف التفاصيل ←</span></a></div></div></section>'+cta();
+  '<section class="section"><div class="container"><div class="section-head"><div><span class="eyebrow">SOLUTIONS</span><h2>حلول حسب المشكلة اللي بتدور عليها.</h2></div><p>صفحات متخصصة توضح الحل والوظائف والأمثلة بدل الكلام العام.</p></div><div class="grid grid3"><a class="card hover" href="/solutions/web-development" data-link><h3>مواقع وصفحات بيع</h3><p>مواقع شركات وLanding Pages تركز على التحويل والـLeads.</p><span class="link">اعرف التفاصيل ←</span></a><a class="card hover" href="/solutions/inventory-sales" data-link><h3>نظام مخازن ومبيعات</h3><p>إدارة المخزون والمبيعات والعملاء والموردين والتقارير.</p><span class="link">اعرف التفاصيل ←</span></a><a class="card hover" href="/solutions/excel-dashboard" data-link><h3>Excel Dashboard</h3><p>لوحات متابعة وتقارير إدارية وAR Aging وتحليل بيانات.</p><span class="link">اعرف التفاصيل ←</span></a><a class="card hover" href="/solutions/ai-automation" data-link><h3>AI Automation</h3><p>تأهيل Leads وأتمتة خطوات المبيعات والمتابعة.</p><span class="link">اعرف التفاصيل ←</span></a><a class="card hover" href="/solutions/marketing-growth" data-link><h3>تسويق وإعلانات</h3><p>عرض ومحتوى وإعلانات وTracking مبني على الأرقام.</p><span class="link">اعرف التفاصيل ←</span></a></div></div></section>'+cta();
 }
 function pricingPage(){
   return pageHero('الباقات والأسعار','اعرف نطاق السعر المناسب قبل التواصل. السعر النهائي بيتثبت بعد تحديد الصفحات والوظائف والتكاملات والمدة.')+
@@ -1169,14 +1228,17 @@ function articlePage(slug){
   '<section class="section"><article class="container content card"><div class="article-meta"><span>'+a.tag+'</span><span>•</span><span>'+a.read+'</span></div>'+a.body.map(function(x){return '<h2>'+x[0]+'</h2><p>'+x[1]+'</p>'}).join('')+'<div style="margin-top:28px;padding:15px;border-right:5px solid var(--yellow);background:#f0f0e9"><b>طبّق دلوقتي:</b> اختار فكرة واحدة من المقال، طبّقها على مشروعك، وسجل النتيجة بدل ما تغيّر حاجات كتير مرة واحدة.</div><div class="hero-actions"><a class="btn dark" href="/blog" data-link>كل المقالات</a><a class="btn outline" href="/ai-consultant" data-link>اسأل المستشار الذكي</a></div></article></section>'+cta();
 }
 function bookPage(){
-  return pageHero('AI Marketing Machine — Full Edition','دليل عملي لصاحب المشروع والمسوق: من فهم العميل وبناء العرض، لصناعة المحتوى والإعلانات والقياس والأتمتة بالذكاء الاصطناعي.')+
+  trackEvent('book_view',{product:'AI Marketing Machine'});
+  return '<section class="book-ad-hero"><div class="container book-ad-grid"><div><span class="eyebrow">AI MARKETING MACHINE • 2026</span><h1>بدل Prompts مبعثرة… ابنِ نظام تسويق كامل بالـAI.</h1><p>دليل عربي عملي لصاحب المشروع والمسوق: افهم العميل، ابنِ العرض، خطط المحتوى، شغّل الإعلانات، اقرأ الأرقام، وأتمت المتابعة خطوة بخطوة.</p><div class="book-proof"><span>✓ تطبيقات عملية</span><span>✓ Prompts جاهزة</span><span>✓ خطة 30 يوم</span><span>✓ نسخة محمية باسم المشتري</span></div><div class="hero-actions"><a class="btn primary" href="#buy" data-track="book_buy_cta">اختار نسختك — من 299 ج</a><a class="btn outline" href="#preview" data-track="book_preview_click">شوف تجربة الكتاب</a></div><small class="book-ad-note">مش كتاب عن أدوات AI فقط؛ هو Workflow تسويق تطبقه على مشروعك.</small></div><div class="book-ad-cover"><img src="/assets/book-cover-full.webp" alt="AI Marketing Machine"></div></div></section>'+
+  '<section class="section soft"><div class="container"><div class="section-head"><div><span class="eyebrow">مناسب لمين؟</span><h2>لو التسويق عندك متفرق بين أفكار وأدوات… الكتاب بيربطهم في نظام واحد.</h2></div></div><div class="grid grid3"><div class="card"><h3>صاحب مشروع</h3><p>عايز يفهم العميل والعرض والمحتوى والإعلان بدون الاعتماد الكامل على حد تاني.</p></div><div class="card"><h3>مسوق أو Content Creator</h3><p>عايز يستخدم AI بشكل منظم بدل إعادة اختراع الـPrompt كل مرة.</p></div><div class="card"><h3>فريلانسر أو Agency</h3><p>عايز Workflow أسرع للأبحاث والمحتوى والإعلانات والتقارير.</p></div></div></div></section>'+
+  pageHero('AI Marketing Machine — Full Edition','من فهم العميل وبناء العرض، لصناعة المحتوى والإعلانات والقياس والأتمتة بالذكاء الاصطناعي.')+
   '<section class="section"><div class="container book-sales-hero"><div class="book-cover-img" aria-label="غلاف كتاب AI Marketing Machine"><div class="book-cover-art"><div class="book-cover-top"><img class="book-cover-logo" src="/assets/logo-v2.png" alt="3bkarino Tech"><span class="book-cover-edition">FULL EDITION<br>2026</span></div><div class="book-cover-main"><small>3BKARINO TECH PRESENTS</small><h3>AI<br>MARKETING<br><span>MACHINE</span></h3><p>دليل عملي تتعلم بيه تسوّق لمنتجاتك وخدماتك بالذكاء الاصطناعي — من فهم العميل لحد القياس والأتمتة.</p><div class="book-cover-network" aria-hidden="true"><svg viewBox="0 0 560 150" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M36 94C108 30 154 128 220 68C284 10 340 132 414 62C452 28 492 36 530 18" stroke="#13C9FF" stroke-width="3" opacity=".75"/><path d="M48 124C118 78 176 142 246 96C320 48 372 130 522 86" stroke="#F4D638" stroke-width="2" opacity=".55"/><circle cx="36" cy="94" r="8" fill="#13C9FF"/><circle cx="220" cy="68" r="8" fill="#F4D638"/><circle cx="414" cy="62" r="8" fill="#8C6CFF"/><circle cx="530" cy="18" r="8" fill="#13C9FF"/><circle cx="48" cy="124" r="5" fill="#F4D638"/><circle cx="246" cy="96" r="5" fill="#13C9FF"/><circle cx="522" cy="86" r="5" fill="#F4D638"/></svg></div></div><div class="book-cover-bottom"><b>Research → Content → Ads → Analytics → Automation</b><span>AI MARKETING SYSTEM • PRACTICAL PROMPTS • A/B CHALLENGES • 30-DAY PLAN</span></div></div></div><div class="book-sales-copy"><span class="eyebrow">FULL EDITION 2026</span><h2>مش كتاب عن أدوات AI. ده نظام تتعلم بيه تعمل تسويق أحسن لمشروعك.</h2><p style="font-size:18px;color:#666">لو عندك منتج أو خدمة ومش عارف تبدأ التسويق منين، الكتاب هيمشي معاك خطوة خطوة: مين عميلك؟ إيه اللي يخليه يشتري؟ تقول له إيه؟ تعمل محتوى وإعلان إزاي؟ وإزاي تعرف بالأرقام إنك ماشي صح؟ والـAI هيساعدك في كل خطوة.</p><div class="book-stat-grid"><div class="book-stat"><b>130–160</b><span>صفحة مستهدفة عند الإخراج</span></div><div class="book-stat"><b>ابدأ هنا + 18</b><span>رحلة تعليم عملية + Toolkit</span></div><div class="book-stat"><b>30 يوم</b><span>خطة تنفيذ في نهاية الكتاب</span></div></div><div class="hero-actions"><a class="btn primary" href="#buy">اختار نسختك</a><a class="btn outline" href="#preview">شوف التجربة</a></div><p class="compare-note">A وB نفس المادة العلمية بالكامل. الاختلاف فقط في الـChallenges والتطبيقات المتبادلة؛ أي نسخة منفردة كتاب كامل ومفيد بذاته.</p></div></div></section>'+
   '<section class="section soft"><div class="container"><div class="section-head"><div><span class="eyebrow">النتيجة اللي هنوصلك لها</span><h2>تخلص الكتاب ومعاك Marketing System، مش ملاحظات.</h2></div><p>كل فصل: “ببساطة” → خطوة جديدة في مشروع الـ350 جنيه → شرح → مثال → Prompt جاهز للنسخ → مثال Input/Output → نفّذ دلوقتي → ملف ملموس تخرج به من الفصل.</p></div><div class="benefit-grid"><div class="benefit-card"><b>افهم العميل</b><p>تطلع من كلام العملاء بمشاكل ورغبات واعتراضات حقيقية بدل التخمين.</p></div><div class="benefit-card"><b>ابنِ العرض والرسالة</b><p>توضح القيمة وتكتب كلام بيع مفهوم بدون اعتماد دائم على الخصم.</p></div><div class="benefit-card"><b>اعمل محتوى وإعلان</b><p>تخطط محتوى واختبارات إعلان مرتبطة بهدف واضح وميزانية محسوبة.</p></div><div class="benefit-card"><b>اقرأ الأرقام وطوّر</b><p>تفهم تكلفة الطلب والربحية وتعرف تصلح الإعلان ولا الصفحة ولا العرض.</p></div></div></div></section>'+
   '<section class="section" id="preview"><div class="container"><div class="section-head"><div><span class="eyebrow">UNIQUE READING EXPERIENCE</span><h2>الكتاب بيتقرأ كأنه Workshop شخصية.</h2></div><p>كل Chapter له مهمة حقيقية. مش هتعدي للفصل التالي وإنت بس “فهمت الفكرة”؛ هتطلع بحاجة مكتوبة لمشروعك.</p></div><div class="preview-grid"><article class="preview-page"><span class="mini-brand">الأساس</span><h3>من التحول الرقمي<br>لـAI Marketing</h3><p>ليه الشغل اتغير، وإزاي تستخدم AI لتقليل الوقت بدون تسليم القرار للآلة.</p><div class="preview-code">ACTION — اختار مشروعًا واحدًا تطبق عليه الكتاب كله.</div><span class="page-no">01</span></article><article class="preview-page light"><span class="mini-brand">البناء</span><h3>Customer → Offer<br>→ Content → Ads</h3><p>كل خطوة بتبني على اللي قبلها. مفيش Prompt سحري يعالج أساس تسويقي ضعيف.</p><div class="preview-code">PROMPT + مثال + تطبيق عملي</div><span class="page-no">02</span></article><article class="preview-page"><span class="mini-brand">التشغيل</span><h3>نظام التسويق<br>خلال 30 يوم</h3><p>في النهاية تجمع Brand Brief وInsights وContent Matrix وAd Log وDashboard في نظام واحد.</p><div class="preview-code">تحدي A/B — نفس العلم، تطبيقان مختلفان.</div><span class="page-no">03</span></article></div></div></section>'+
   '<section class="section soft"><div class="container"><div class="section-head"><div><span class="eyebrow">ROADMAP</span><h2>رحلة التعلم داخل الكتاب.</h2></div><p>18 فصل من الصفر للتنفيذ: التحول الرقمي، التسويق، العميل، العرض، AI، Prompting، المحتوى، Copywriting، الفيديو، Social، Ads، Funnel، WhatsApp، Analytics، Automation، Marketing OS، خطة 30 يوم وToolkit.</p></div><div class="benefit-grid"><div class="benefit-card"><b>1 — الأساس</b><p>التحول الرقمي + أساسيات التسويق + فهم العميل + العرض.</p></div><div class="benefit-card"><b>2 — صناعة الرسالة والمحتوى</b><p>استخدام AI + كتابة الأوامر + المحتوى + الكتابة التسويقية + الفيديو.</p></div><div class="benefit-card"><b>3 — النمو والبيع</b><p>السوشيال + الإعلانات + صفحة البيع + واتساب والمتابعة.</p></div><div class="benefit-card"><b>4 — القياس والتطوير</b><p>التحليل + الأتمتة + نظام التسويق + خطة 30 يوم.</p></div></div></div></section>'+
-  '<section class="section" id="buy"><div class="container"><div class="section-head"><div><span class="eyebrow">اختار تجربتك</span><h2>نسخة واحدة كاملة للتعلم — والـBundle للتحديات المتبادلة.</h2></div></div><div class="product-grid"><article class="product-card"><span class="eyebrow">VERSION A</span><h3>Strategic Edition</h3><div class="price-tag">299 <small>جنيه</small></div><p>Full Edition كامل + Challenges نسخة A.</p><a class="btn dark" href="/book/checkout?product=A" data-link>اختار A</a></article><article class="product-card"><span class="eyebrow">VERSION B</span><h3>Challenge Edition</h3><div class="price-tag">299 <small>جنيه</small></div><p>نفس Full Edition كامل + Challenges نسخة B.</p><a class="btn dark" href="/book/checkout?product=B" data-link>اختار B</a></article><article class="product-card featured"><span class="save">وفر 98 جنيه</span><h3>A + B Bundle</h3><div class="price-tag">500 <small>جنيه</small></div><p>النسختان؛ ليك أو ليك ولشريك يشاركك التحديات.</p><a class="btn primary" href="/book/checkout?product=BUNDLE" data-link>هات A + B</a></article></div></div></section>'+
+  '<section class="section" id="buy"><div class="container"><div class="section-head"><div><span class="eyebrow">اختار تجربتك</span><h2>نسخة واحدة كاملة للتعلم — والـBundle للتحديات المتبادلة.</h2></div></div><div class="product-grid"><article class="product-card"><span class="eyebrow">VERSION A</span><h3>Strategic Edition</h3><div class="price-tag">299 <small>جنيه</small></div><p>Full Edition كامل + Challenges نسخة A.</p><a class="btn dark" href="/book/checkout?product=A" data-link data-track="book_checkout_start">اختار A</a></article><article class="product-card"><span class="eyebrow">VERSION B</span><h3>Challenge Edition</h3><div class="price-tag">299 <small>جنيه</small></div><p>نفس Full Edition كامل + Challenges نسخة B.</p><a class="btn dark" href="/book/checkout?product=B" data-link data-track="book_checkout_start">اختار B</a></article><article class="product-card featured"><span class="save">وفر 98 جنيه</span><h3>A + B Bundle</h3><div class="price-tag">500 <small>جنيه</small></div><p>النسختان؛ ليك أو ليك ولشريك يشاركك التحديات.</p><a class="btn primary" href="/book/checkout?product=BUNDLE" data-link data-track="book_checkout_start">هات A + B</a></article></div></div></section>'+
   '<section class="section"><div class="container community-box"><div><span class="eyebrow" style="color:var(--yellow)">COMMUNITY</span><h2 style="margin:3px 0">التجربة مصممة عشان تتكلم عنها.</h2><p>Challenges A/B تخلق سببًا طبيعيًا للتفاعل بين القراء، من غير ما نخلي أي معلومة أساسية ناقصة من نسخة منفردة.</p></div><span class="license-badge">A ↔ B</span></div></section>'+
-  '<section class="section soft"><div class="container"><div class="section-head"><div><span class="eyebrow">الوصول والحماية</span><h2>مش هنرسل PDF عادي قابل للتداول.</h2></div><p>بعد الدفع: License شخصي + رابط تفعيل صالح 24 ساعة + OTP على بريد المشتري + جهاز/متصفح نشط واحد + Watermark باسم المشتري. ولو نقلت لجهاز جديد، التفعيل الجديد يوقف الجلسة القديمة.</p></div></div></section>'+cta();
+  '<section class="section soft"><div class="container"><div class="section-head"><div><span class="eyebrow">الوصول والحماية</span><h2>مش هنرسل PDF عادي قابل للتداول.</h2></div><p>بعد الدفع: License شخصي + رابط تفعيل صالح 24 ساعة + OTP على بريد المشتري + جهاز/متصفح نشط واحد + Watermark باسم المشتري. ولو نقلت لجهاز جديد، التفعيل الجديد يوقف الجلسة القديمة.</p></div></div></section><div class="book-sticky-cta"><div><b>AI Marketing Machine</b><span>ابدأ من 299 جنيه</span></div><a class="btn primary sm" href="#buy" data-track="book_sticky_buy">اختار نسختك</a></div>'+cta();
 }
 function bookCheckoutPage(){
   var product=(new URLSearchParams(location.search).get('product')||'A').toUpperCase();
@@ -1253,7 +1315,8 @@ function initLead(){
     var btn=document.getElementById('leadSubmit'),payload={
       action:'create',source:'contact',name:nm.value,phone:ph.value,email:em.value,
       service:tp.value,plan:pl.value,goal:ms.value,budget:bg.value,deadline:dl.value,
-      page:location.pathname+location.search,referrer:document.referrer
+      page:location.pathname+location.search,referrer:document.referrer,
+      attribution:getAttribution()
     };
     var leadId='';
     btn.disabled=true;btn.textContent='جاري تسجيل الطلب…';
@@ -1334,11 +1397,13 @@ function initBookCheckout(){
         action:'create-order',product:bookProduct.value,paymentMethod:method,
         name:bookName.value,email:bookEmail.value,phone:bookPhone.value,whatsapp:bookWhatsapp.value,
         governorate:bookGovernorate.value,city:bookCity.value,country:'Egypt',activity:bookActivity.value,
-        secondName:secondName?secondName.value:'',secondEmail:secondEmail?secondEmail.value:'',secondPhone:secondPhone?secondPhone.value:''
+        secondName:secondName?secondName.value:'',secondEmail:secondEmail?secondEmail.value:'',secondPhone:secondPhone?secondPhone.value:'',
+        attribution:getAttribution(),page:location.pathname+location.search,referrer:document.referrer
       };
+      trackEvent('book_purchase_intent',{product:payload.product});
       var r=await fetch('/api/book',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
       var d=await r.json();if(!r.ok)throw Error(d.error||'order');
-      localStorage.setItem('3bk-book-order-token',d.orderToken);localStorage.setItem('3bk-book-order-id',d.orderId);
+      localStorage.setItem('3bk-book-order-token',d.orderToken);localStorage.setItem('3bk-book-order-id',d.orderId);trackEvent('book_order_created',{product:d.product,value:d.price,currency:'EGP',order_id:d.orderId});
       orderVersion.textContent=d.productLabel;orderTitle.textContent='تم تسجيل طلبك — '+d.orderId;
       orderText.textContent='اختيارك: '+d.productLabel+' | الإجمالي: '+d.price+' جنيه.';
       var state=document.getElementById('paymentState'),pay=document.getElementById('orderPay'),help=document.getElementById('orderWa');
