@@ -24,6 +24,10 @@
       "destination": "/index.html"
     },
     {
+      "source": "/portfolio/:slug",
+      "destination": "/index.html"
+    },
+    {
       "source": "/pricing",
       "destination": "/index.html"
     },
@@ -78,7 +82,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self';"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://s.wordpress.com; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self';"
         }
       ]
     }
