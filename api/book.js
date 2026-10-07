@@ -140,7 +140,7 @@ export default async function handler(req,res){
     const lic=(record.licenses||[]).find(x=>String(x.email||record.email).toLowerCase()===email);
     if(!lic)return send(res,200,{accepted:true});
     if(!purchaseEmailConfigured())return send(res,503,{error:'EMAIL_NOT_CONFIGURED'});
-    const fresh=createFreshAccess(lic,record.id);
+    const fresh=createFreshAccess(lic,record.id,record);
     const result=await sendAccessRecoveryEmail(record,lic,fresh);
     if(!result.ok)return send(res,503,{error:'EMAIL_SEND_FAILED'});
     const updated=(record.licenses||[]).map(x=>x.licenseId===lic.licenseId?{...x,readerUrl:fresh.readerUrl,activationExpiresAt:fresh.expiresAt}:x);
