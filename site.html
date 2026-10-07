@@ -407,7 +407,7 @@ var articles=[
   {slug:'automation-first-workflow',tag:'AUTOMATION',read:'6 دقائق',title:'أول Automation تعملها في شغلك: اختار حاجة تتكرر مش حاجة حساسة',desc:'إزاي تختار Workflow توفر وقت وتفضل تحت سيطرتك بدل Agent يعمل قرارات مهمة لوحده.',body:[['اختار التكرار','ابدأ بخطوة لها مدخلات ومخرجات واضحة وتتكرر كل أسبوع.'],['حط Review','خلي فيه نقطة مراجعة بشرية قبل إرسال أو تنفيذ قرار حساس.'],['قيس القيمة','قارن الوقت والخطأ قبل وبعد عشان تعرف هل الأتمتة تستاهل ولا مجرد شكل تقني.']]}
 ];
 
-function esc(s){function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function serviceCards(){
   return services.map(function(x,i){
     return '<article class="card service-card hover"><div class="service-top"><span class="service-code">'+x[0]+'</span><span class="service-num">'+String(i+1).padStart(2,'0')+'</span></div><h3>'+x[1]+'</h3><p>'+x[2]+'</p><div>'+x[3].map(function(t){return '<span class="tag">'+t+'</span>'}).join('')+'</div><div class="service-fit"><b>مناسب لو:</b> '+x[4]+'</div><div class="service-actions"><a class="btn dark sm" href="/contact?plan='+encodeURIComponent(x[1])+'" data-link>ابدأ الخدمة</a><a class="btn outline sm" href="/pricing" data-link>شوف الباقات</a></div></article>';
