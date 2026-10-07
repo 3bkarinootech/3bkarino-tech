@@ -380,49 +380,67 @@ document.addEventListener('click',function(e){
 addEventListener('popstate',function(){render();scrollTo(0,0)});
 
 var services=[
-  ['WEB','موقع أو Landing Page','موقع شركة، خدمة، براند أو صفحة بيع توصل الزائر للطلب بسرعة.',['موبايل أولًا','واتساب','سرعة']],
-  ['SYS','نظام ينظم الشغل','نظام داخلي للمخازن أو التشغيل أو الصلاحيات أو التقارير حسب طريقة شغلك.',['صلاحيات','تقارير','تشغيل']],
-  ['XLS','Excel وDashboards','تقارير ولوحات متابعة وأتمتة تقلل الشغل اليدوي وتوضح الأرقام.',['Excel','Dashboard','Automation']],
-  ['AI','AI وAutomation','مساعد ذكي أو أتمتة لمهمة متكررة أو تأهيل عملاء قبل ما يوصلوا لفريقك.',['AI','Automation','Handoff']],
-  ['MKT','تسويق ومحتوى','خطة محتوى ورسائل بيع وحملات مرتبطة بهدف واضح ومقياس نتيجة.',['محتوى','إعلانات','خطة']],
-  ['UX','تحسين تجربة المستخدم','لو عندك موقع أو نظام لكن المستخدم بيتوه أو بيحتاج خطوات كتير.',['سهولة','سرعة','تحويل']]
+  ['WEB','مواقع وصفحات بيع','موقع شركة أو خدمة أو براند أو Landing Page يشرح القيمة ويوصل الزائر للطلب بسرعة.',['موبايل أولًا','سرعة','واتساب ونماذج'],'مناسب لو محتاج حضور احترافي أو صفحة تحول الزائر لتواصل/طلب.'],
+  ['SYS','أنظمة تشغيل وإدارة','نظام داخلي للمخازن أو المبيعات أو التشغيل أو الصلاحيات والتقارير حسب طريقة شغلك.',['صلاحيات','قواعد بيانات','تقارير'],'مناسب لو الشغل متوزع بين ملفات ورسائل ومحتاج يبقى في نظام واحد.'],
+  ['XLS','Excel وDashboards','تقارير ولوحات متابعة وأتمتة تقلل الشغل اليدوي وتوضح الأرقام للإدارة.',['Excel','Dashboard','Automation'],'مناسب لو عندك بيانات كتير لكن القرار لسه محتاج تجميع يدوي.'],
+  ['AI','ذكاء اصطناعي وأتمتة','مساعد ذكي أو Workflow لمهمة متكررة: تأهيل Leads، تلخيص، اقتراحات، أو تحويل للشخص المناسب.',['AI','Automation','Handoff'],'مناسب لو في أسئلة أو خطوات بتتكرر وعايز توفر وقت من غير ما تلغي المراجعة البشرية.'],
+  ['MKT','تسويق ومحتوى','خطة محتوى ورسائل بيع واختبارات إعلانات مرتبطة بهدف وأرقام واضحة.',['محتوى','إعلانات','تحليل'],'مناسب لو بتنشر أو تعلن لكن مش واضح إيه اللي بيجيب Leads ومبيعات فعلية.'],
+  ['UX','تحسين تجربة المستخدم','مراجعة موقع أو نظام قائم وتقليل الخطوات والغموض عشان المستخدم يوصل للهدف أسرع.',['سهولة','تحويل','موبايل'],'مناسب لو عندك منتج شغال لكن المستخدم بيتوه أو بيسأل كتير عشان يكمل.']
 ];
 var plans=[
-  ['بداية','2,500 – 6,000 ج','لصفحة بيع، موقع بسيط أو Dashboard',['حل أساسي وسريع','متجاوب مع الموبايل','واتساب أو نموذج تواصل','تسليم حسب النطاق'],false],
-  ['نمو','6,500 – 12,000 ج','لشركة أو براند محتاج حضور أقوى',['موقع متعدد الصفحات','صفحات خدمات واضحة','SEO وAnalytics أساسي','نماذج تواصل وواتساب'],true],
-  ['حل مخصص','من 12,000 ج','لنظام داخلي أو مشروع أكبر',['مستخدمين وصلاحيات','قواعد بيانات','تقارير ولوحات متابعة','Workflow حسب شغلك'],false]
+  ['بداية','2,500 – 6,000 ج','أول نسخة احترافية تحل احتياج واحد واضح',['Landing Page أو موقع بسيط','Excel / Dashboard أساسي','تصميم متجاوب مع الموبايل','واتساب أو نموذج تواصل','مراجعة وتسليم حسب النطاق'],false,'مناسب لفرد، مشروع صغير، خدمة جديدة أو اختبار فكرة.'],
+  ['نمو','6,500 – 12,000 ج','حضور أو نظام أقوى لمشروع بدأ يكبر',['موقع متعدد الصفحات أو Dashboard متقدم','صفحات خدمات ورسائل أوضح','Analytics / SEO أساسي حسب المشروع','نماذج وعمليات تواصل منظمة','تحسين تجربة الاستخدام'],true,'مناسب لشركة أو براند عنده شغل قائم وعايز تنظيم وتحويل أفضل.'],
+  ['حل مخصص','من 12,000 ج','للأنظمة والـAI والمشروعات اللي محتاجة منطق خاص',['مستخدمين وصلاحيات','قواعد بيانات','تقارير ولوحات متابعة','تكاملات وWorkflow','مراحل تنفيذ واختبار'],false,'مناسب للعمليات الداخلية أو منتج رقمي أو مشروع فيه أكثر من مستخدم وتكامل.']
 ];
 var projects=[
-  ['المصرية الماليزية — نظام صناعي','نظام لإدارة المخازن والتشغيل والتكرير والمبيعات والمشتريات والحسابات والتقارير.','نظام / تشغيل'],
-  ['Curvey Lingerie','تجربة بيع أوضح للبراند مع مسار أسرع من عرض المنتج للتواصل والطلب.','E-commerce / UX'],
-  ['Lyvora','تأسيس تجربة براند للإكسسوارات والنظارات من الهوية لعرض المنتجات والتسويق.','Brand / Launch']
+  ['المصرية الماليزية — نظام صناعي','نظام لإدارة المخازن والتشغيل والتكرير والمبيعات والمشتريات والحسابات والتقارير.','نظام / تشغيل','النتيجة: تجميع دورة التشغيل والرصيد والتقارير في مكان واحد بدل الاعتماد على خطوات متفرقة.','مخازن • إنتاج • مبيعات • مشتريات • حسابات • تقارير'],
+  ['Curvey Lingerie','تطوير تجربة بيع للبراند من عرض المنتجات لمسار طلب أوضح وربط التواصل بالشراء.','E-commerce / UX','النتيجة: رحلة أوضح من مشاهدة المنتج إلى التواصل والطلب، مع تركيز قوي على الموبايل.','متجر • تجربة مستخدم • Checkout • WhatsApp'],
+  ['Lyvora','تأسيس تجربة براند للإكسسوارات والنظارات من الهوية لعرض المنتجات والتسويق.','Brand / Launch','النتيجة: تحويل فكرة البراند لخطة عرض وهوية ومسار إطلاق قابل للتطوير.','هوية • عرض منتجات • تسويق • إطلاق'],
+  ['3bkarino Tech — AI Sales Flow','موقع خدمات مع مستشار ذكي يفهم احتياج العميل ويجهز Handoff للمتابعة على واتساب.','AI / Web','النتيجة: تقليل الحيرة عند أول زيارة وتحويل الطلب غير الواضح لملخص قابل للمتابعة.','Website • AI Qualifier • Lead Flow • WhatsApp']
 ];
 var articles=[
-  {slug:'ai-marketing-revolution',tag:'AI MARKETING',title:'إزاي تستخدم AI في التسويق من غير ما المحتوى يبقى آلي ومكرر؟',desc:'Framework عملي للبحث والأفكار والسكريبتات والقياس.',body:[['ابدأ بالـBrief','حدد الهدف والجمهور والعرض ونبرة البراند قبل أي Prompt.'],['خلي AI مساعد','استخدمه لتسريع البحث والمسودات، وبعدها أضف خبرتك وصوت البراند.'],['اختبر النتيجة','غيّر متغير واحد كل مرة وراقب النتيجة التجارية.']]},
-  {slug:'analytics-guide',tag:'EXCEL & ANALYTICS',title:'Dashboard صح: الأرقام اللي تساعدك تاخد قرار بدل زحمة الشاشة',desc:'إيه اللي يظهر في الملخص وإيه يفضل في التفاصيل؟',body:[['ابدأ بالسؤال','كل Dashboard ناجح بيجاوب سؤال إداري واضح.'],['اعمل 3 مستويات','KPI سريع، اتجاه زمني، ثم تفاصيل عند الحاجة.'],['ركز على الاستثناءات','أظهر المتأخر والخطر والانحراف عن الطبيعي بدل كل الأرقام.']]},
-  {slug:'paid-ads-guide',tag:'PAID ADS',title:'خطة اختبار إعلانات بميزانية صغيرة من غير ما تحرق الفلوس',desc:'اختبار منظم للجمهور والعرض والكرياتيف قبل التوسع.',body:[['اختبر العرض','لو العرض ضعيف تغيير الجمهور وحده مش كفاية.'],['متغير واحد','غيّر حاجة واحدة في كل اختبار عشان تعرف سبب النتيجة.'],['وسع تدريجيًا','زود ميزانية الرابح على مراحل وراقب CPA وConversion.']]}
+  {slug:'ai-marketing-revolution',tag:'AI & MARKETING',read:'6 دقائق',title:'إزاي تستخدم AI في التسويق من غير ما المحتوى يبقى آلي ومكرر؟',desc:'طريقة عملية تخلي الذكاء الاصطناعي يساعدك في البحث والأفكار والمسودات من غير ما يسرق صوت البراند.',body:[['ابدأ بالـBrief','حدد الهدف والجمهور والعرض ونبرة البراند قبل أي Prompt. لو المدخلات عامة، الناتج هيبقى عام.'],['خلي AI مساعد','استخدمه لتلخيص البحث، اقتراح زوايا، وتجهيز مسودة أولى. القرار والصياغة النهائية يفضلوا عندك.'],['اختبر النتيجة','غيّر متغير واحد في الرسالة أو الـCreative وراقب أثره على الرسائل والطلبات مش الإعجابات فقط.']]},
+  {slug:'analytics-guide',tag:'EXCEL & ANALYTICS',read:'5 دقائق',title:'Dashboard صح: الأرقام اللي تساعدك تاخد قرار بدل زحمة الشاشة',desc:'إيه اللي يظهر في الملخص وإيه يفضل في التفاصيل، وإزاي تربط كل KPI بقرار.',body:[['ابدأ بالسؤال','كل Dashboard ناجح بيجاوب سؤال إداري واضح: مين متأخر؟ إيه اللي بيزيد؟ فين الاستثناء؟'],['اعمل 3 مستويات','KPI سريع، اتجاه زمني، ثم تفاصيل عند الحاجة بدل حشر كل الجدول في شاشة واحدة.'],['ركز على الاستثناءات','أظهر المتأخر والخطر والانحراف عن الطبيعي، لأن دي الحاجات اللي محتاجة تدخل.']]},
+  {slug:'paid-ads-guide',tag:'PAID ADS',read:'7 دقائق',title:'خطة اختبار إعلانات بميزانية صغيرة من غير ما تحرق الفلوس',desc:'إزاي تختبر العرض والكرياتيف والجمهور وتقرأ CPA وROAS قبل ما توسع الميزانية.',body:[['اختبر العرض','لو العرض ضعيف تغيير الجمهور وحده مش كفاية. ابدأ بسبب واضح يخلي العميل يهتم.'],['متغير واحد','غيّر Hook أو Creative أو Audience واحد في كل اختبار عشان تعرف سبب النتيجة.'],['وسع تدريجيًا','زود ميزانية الرابح على مراحل وراقب CPA والربحية مش الإيراد فقط.']]},
+  {slug:'website-conversion-guide',tag:'WEBSITE & UX',read:'5 دقائق',title:'ليه الزائر يدخل موقعك ويمشي؟ 7 نقاط راجعها قبل ما تزود الإعلانات',desc:'مراجعة بسيطة للرسالة، السرعة، الثقة والـCTA قبل ما تدفع فلوس أكتر على الزيارات.',body:[['أول شاشة لازم تفهم','في ثواني الزائر لازم يعرف إنت بتقدم إيه ولمين وإيه الخطوة التالية.'],['طابق الإعلان بالصفحة','لو الإعلان وعد بحاجة، أول جزء في الصفحة لازم يكمل نفس الوعد.'],['قلل الاحتكاك','اختصر الحقول والخطوات ووضح السعر أو طريقة التسعير والسياسة قبل ما العميل يسأل.']]},
+  {slug:'prompting-for-business',tag:'AI PROMPTS',read:'6 دقائق',title:'Prompt عملي للشغل: 6 أجزاء تخلي النتيجة أقرب للي محتاجه',desc:'بدل “اعمل لي خطة”، استخدم سياق وهدف وحدود وشكل Output ومراجعة واضحة.',body:[['السياق','قول للأداة المشروع والجمهور والمرحلة الحالية بدل ما تبدأ من صفر.'],['المهمة والحدود','حدد المطلوب والطول والممنوع، خصوصًا الأرقام والادعاءات اللي ماينفعش تتخترع.'],['راجع الناتج','اطلب تقييمًا بمعايير ثابتة ثم عدّل أضعف نقطة بدل إعادة كل شيء.']]},
+  {slug:'automation-first-workflow',tag:'AUTOMATION',read:'6 دقائق',title:'أول Automation تعملها في شغلك: اختار حاجة تتكرر مش حاجة حساسة',desc:'إزاي تختار Workflow توفر وقت وتفضل تحت سيطرتك بدل Agent يعمل قرارات مهمة لوحده.',body:[['اختار التكرار','ابدأ بخطوة لها مدخلات ومخرجات واضحة وتتكرر كل أسبوع.'],['حط Review','خلي فيه نقطة مراجعة بشرية قبل إرسال أو تنفيذ قرار حساس.'],['قيس القيمة','قارن الوقت والخطأ قبل وبعد عشان تعرف هل الأتمتة تستاهل ولا مجرد شكل تقني.']]}
 ];
 
-function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function esc(s){function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function serviceCards(){
-  return services.map(function(s,i){
-    return '<article class="card service-card hover"><div class="service-top"><span class="service-code">'+s[0]+'</span><span class="service-num">0'+(i+1)+'</span></div><h3>'+s[1]+'</h3><p>'+s[2]+'</p>'+s[3].map(function(t){return '<span class="tag">'+t+'</span>'}).join('')+'</article>';
+  return services.map(function(x,i){
+    return '<article class="card service-card hover"><div class="service-top"><span class="service-code">'+x[0]+'</span><span class="service-num">'+String(i+1).padStart(2,'0')+'</span></div><h3>'+x[1]+'</h3><p>'+x[2]+'</p><div>'+x[3].map(function(t){return '<span class="tag">'+t+'</span>'}).join('')+'</div><div class="service-fit"><b>مناسب لو:</b> '+x[4]+'</div><div class="service-actions"><a class="btn dark sm" href="/contact?plan='+encodeURIComponent(x[1])+'" data-link>ابدأ الخدمة</a><a class="btn outline sm" href="/pricing" data-link>شوف الباقات</a></div></article>';
   }).join('');
 }
 function planCards(){
   return plans.map(function(p){
-    return '<article class="card plan hover '+(p[4]?'popular':'')+'">'+(p[4]?'<span class="popular-badge">الأكثر طلبًا</span>':'')+'<span class="plan-name">'+p[0]+'</span><div class="price">'+p[1]+'</div><p>'+p[2]+'</p><ul class="list">'+p[3].map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul><a class="btn '+(p[4]?'primary':'dark')+'" style="width:100%;margin-top:17px" href="/contact?plan='+encodeURIComponent(p[0])+'" data-link>ابدأ الطلب</a></article>';
+    return '<article class="card plan hover '+(p[4]?'popular':'')+'">'+(p[4]?'<span class="popular-badge">الأكثر طلبًا</span>':'')+'<span class="plan-name">'+p[0]+'</span><div class="price">'+p[1]+'</div><p>'+p[2]+'</p><div class="plan-fit">'+p[5]+'</div><ul class="list">'+p[3].map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul><a class="btn '+(p[4]?'primary':'dark')+'" style="width:100%;margin-top:17px" href="/contact?plan='+encodeURIComponent(p[0])+'" data-link>اطلب الباقة</a></article>';
   }).join('');
 }
 function projectCards(){
   return projects.map(function(p,i){
-    return '<article class="card project hover '+(i===0?'main':'')+'"><span class="'+(i===0?'eyebrow':'eyebrow')+'">'+p[2]+'</span><h3>'+p[0]+'</h3><p>'+p[1]+'</p><a class="link" href="/contact?project='+encodeURIComponent(p[0])+'" data-link>محتاج مشروع مشابه؟ ابدأ هنا ←</a></article>';
+    return '<article class="card project hover '+(i===0?'main':'')+'"><span class="eyebrow">'+p[2]+'</span><h3>'+p[0]+'</h3><p>'+p[1]+'</p><div class="project-result">'+p[3]+'</div><div class="project-scope">'+p[4]+'</div><a class="link" href="/contact?project='+encodeURIComponent(p[0])+'" data-link>محتاج مشروع مشابه؟ ابدأ هنا ←</a></article>';
   }).join('');
 }
 function articleRows(){
-  return articles.map(function(a){
-    return '<a class="article-row" href="/blog/'+a.slug+'" data-link><div><small>'+a.tag+'</small><h3>'+a.title+'</h3><p>'+a.desc+'</p></div><strong>←</strong></a>';
+  return articles.slice(0,3).map(function(a){
+    return '<a class="article-row" href="/blog/'+a.slug+'" data-link><div><small>'+a.tag+' • '+a.read+'</small><h3>'+a.title+'</h3><p>'+a.desc+'</p></div><strong>←</strong></a>';
   }).join('');
+}
+function socialLinks(){
+  return '<div class="social-links"><a class="social-link" href="https://www.facebook.com/3bkarinooTech" target="_blank" rel="noopener"><span class="social-icon">f</span>Facebook</a><a class="social-link" href="https://www.instagram.com/3bkarino_tech" target="_blank" rel="noopener"><span class="social-icon">◎</span>Instagram</a><a class="social-link" href="https://wa.me/201120124338" target="_blank" rel="noopener"><span class="social-icon">WA</span>WhatsApp</a></div>';
+}
+function exploreCards(){
+  var items=[
+    ['🧩','الخدمات','اعرف كل خدمة بتحل إيه ومناسبة لمين.','/services'],
+    ['💳','الباقات والأسعار','شوف نقطة البداية وما اللي يدخل في كل مستوى.','/pricing'],
+    ['🗂️','الأعمال السابقة','شوف أمثلة لمواقع وأنظمة وبراندات وحلول AI.','/portfolio'],
+    ['📘','AI Marketing Machine','كتاب عملي تتعلم منه التسويق بالذكاء الاصطناعي.','/book'],
+    ['✍️','المقالات','محتوى عملي في AI وExcel والتسويق وتجربة المستخدم.','/blog'],
+    ['🧮','أدوات مجانية','حاسبات وأدوات تساعدك تفهم أرقامك قبل القرار.','/tools']
+  ];
+  return items.map(function(x){return '<a class="site-map-card" href="'+x[3]+'" data-link><span class="site-map-icon">'+x[0]+'</span><span><b>'+x[1]+'</b><p>'+x[2]+'</p><span>افتح القسم ←</span></span></a>'}).join('');
 }
 function pageHero(title,desc){
   return '<section class="page-hero"><div class="container"><div class="crumb">3bkarino Tech / '+title+'</div><h1>'+title+'</h1><p>'+desc+'</p></div></section>';
