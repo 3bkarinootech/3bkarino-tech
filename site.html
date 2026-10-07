@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111214">
-<meta name="description" content="3bkarino Tech يساعدك تعمل موقع، نظام، Excel Dashboard أو AI Automation بشكل واضح وسهل، مع أسعار مبدئية وتواصل مباشر.">
+<meta name="description" content="3bkarino Tech يقدم مواقع وأنظمة وExcel Dashboards وحلول AI وAutomation وتسويق، مع باقات واضحة وأعمال سابقة وكتاب ومقالات ومستشار ذكي.">
 <meta name="robots" content="index,follow">
-<meta property="og:title" content="3bkarino Tech | حلول تقنية أبسط وأسرع">
-<meta property="og:description" content="مواقع، أنظمة، Excel، AI وتسويق — حلول عملية موجهة لاحتياجك.">
+<meta property="og:title" content="3bkarino Tech | مواقع وأنظمة وExcel وAI">
+<meta property="og:description" content="اكتشف خدمات 3bkarino Tech والباقات والأعمال السابقة والمقالات وAI Marketing Machine والمستشار الذكي.">
 <meta property="og:type" content="website">
-<title>3bkarino Tech | حلول تقنية أبسط وأسرع</title>
+<title>3bkarino Tech | مواقع وأنظمة وExcel وAI</title>
 <link rel="icon" type="image/png" href="/assets/logo.png?v=10">
 <style>
 :root{
@@ -496,7 +496,8 @@ function blogPage(){
 }
 function articlePage(slug){
   var a=articles.find(function(x){return x.slug===slug});if(!a)return notFound();
-  return pageHero(a.title,a.desc)+'<section class="section"><article class="container content card"><span class="eyebrow">'+a.tag+'</span>'+a.body.map(function(x){return '<h2>'+x[0]+'</h2><p>'+x[1]+'</p>'}).join('')+'<div style="margin-top:28px;padding:15px;border-right:5px solid var(--yellow);background:#f0f0e9">الخلاصة: ابدأ بهدف واضح، اختبر خطوة واحدة، وقِس النتيجة التجارية.</div></article></section>'+cta();
+  return pageHero(a.title,a.desc)+
+  '<section class="section"><article class="container content card"><div class="article-meta"><span>'+a.tag+'</span><span>•</span><span>'+a.read+'</span></div>'+a.body.map(function(x){return '<h2>'+x[0]+'</h2><p>'+x[1]+'</p>'}).join('')+'<div style="margin-top:28px;padding:15px;border-right:5px solid var(--yellow);background:#f0f0e9"><b>طبّق دلوقتي:</b> اختار فكرة واحدة من المقال، طبّقها على مشروعك، وسجل النتيجة بدل ما تغيّر حاجات كتير مرة واحدة.</div><div class="hero-actions"><a class="btn dark" href="/blog" data-link>كل المقالات</a><a class="btn outline" href="/ai-consultant" data-link>اسأل المستشار الذكي</a></div></article></section>'+cta();
 }
 function bookPage(){
   return pageHero('AI Marketing Machine — Full Edition','دليل عملي لصاحب المشروع والمسوق: من فهم العميل وبناء العرض، لصناعة المحتوى والإعلانات والقياس والأتمتة بالذكاء الاصطناعي.')+
