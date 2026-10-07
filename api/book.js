@@ -1,8 +1,8 @@
 import { saveRecord, readRecord, listRecords } from '../lib/records.js';
 import { createBookIntention, paymobConfig, requestOrigin } from '../lib/paymob.js';
 import { BOOK_META, bookForVersion } from '../lib/book-content.js';
-import { ACCESS_POLICY, token, verifyToken, issueLicenses, createFreshAccess, createReaderSession } from '../lib/book-access.js';
-import { purchaseEmailConfigured, purchaseEmailProvider, sendPurchaseEmails, sendAccessRecoveryEmail } from '../lib/email.js';
+import { ACCESS_POLICY, token, verifyToken, issueLicenses, createFreshAccess, createReaderSession, deviceHash, makeOtp, otpHash, otpMatches } from '../lib/book-access.js';
+import { purchaseEmailConfigured, purchaseEmailProvider, sendPurchaseEmails, sendAccessRecoveryEmail, sendBookOtpEmail } from '../lib/email.js';
 
 const ADMIN=process.env.BOOK_ADMIN_KEY||'';
 const WA='201120124338';
@@ -105,29 +105,76 @@ export default async function handler(req,res){
     });
   }
 
-  if(action==='activate-access'){
+  if(action==='begin-activation'){
     const access=verifyToken(body.accessToken);
     if(!access||access.type!=='book-access')return send(res,401,{error:'ACCESS_LINK_EXPIRED_OR_INVALID'});
+    if(!access.accessId)return send(res,401,{error:'ACCESS_LINK_NEEDS_REFRESH'});
+    const dh=deviceHash(body.deviceId);if(!dh)return send(res,400,{error:'DEVICE_ID_REQUIRED'});
     const record=await readRecord(access.orderId);if(!record||record.status!=='paid')return send(res,403,{error:'ORDER_NOT_PAID'});
     const lic=(record.licenses||[]).find(x=>x.licenseId===access.licenseId&&x.version===access.version);
     if(!lic)return send(res,403,{error:'LICENSE_NOT_FOUND'});
-    const sessionToken=createReaderSession(access);
-    await saveRecord({...record,lastReaderActivationAt:Date.now()});
+    if(!lic.currentAccessId||lic.currentAccessId!==access.accessId)return send(res,401,{error:'ACCESS_LINK_ALREADY_USED_OR_REPLACED'});
+    if(Number(lic.activationExpiresAt||0)&&Date.now()>Number(lic.activationExpiresAt))return send(res,401,{error:'ACCESS_LINK_EXPIRED_OR_INVALID'});
+
+    const existingDevices=Array.isArray(lic.devices)?lic.devices:[];
+    if(existingDevices.includes(dh)){
+      const sessionToken=createReaderSession(access,dh);
+      return send(res,200,{valid:true,otpRequired:false,sessionToken,customer:customerFromToken(access),meta:BOOK_META});
+    }
+
+    if(existingDevices.length>=Number(ACCESS_POLICY.maxDevices||3))return send(res,403,{error:'DEVICE_LIMIT_REACHED'});
+
+    const now=Date.now();
+    const pending=lic.pendingActivation;
+    if(pending&&pending.deviceHash===dh&&pending.accessId===access.accessId&&Number(pending.expiresAt||0)>now&&now-Number(pending.sentAt||0)<60000){
+      return send(res,200,{valid:false,otpRequired:true,emailMasked:maskEmail(lic.email||record.email),otpExpiresIn:Math.max(1,Math.ceil((Number(pending.expiresAt)-now)/1000))});
+    }
+
+    const otp=makeOtp(),expiresAt=now+Number(ACCESS_POLICY.otpMinutes||10)*60*1000;
+    const pendingActivation={accessId:access.accessId,deviceHash:dh,otpHash:otpHash(record.id,lic.licenseId,dh,otp),expiresAt,sentAt:now,attempts:0};
+    const licenses=(record.licenses||[]).map(x=>x.licenseId===lic.licenseId?{...x,pendingActivation}:x);
+    await saveRecord({...record,licenses});
+    const mail=await sendBookOtpEmail(record,lic,otp);
+    if(!mail.ok)return send(res,503,{error:'OTP_EMAIL_FAILED'});
+    return send(res,200,{valid:false,otpRequired:true,emailMasked:maskEmail(lic.email||record.email),otpExpiresIn:Number(ACCESS_POLICY.otpMinutes||10)*60});
+  }
+
+  if(action==='complete-activation'){
+    const access=verifyToken(body.accessToken);
+    if(!access||access.type!=='book-access'||!access.accessId)return send(res,401,{error:'ACCESS_LINK_EXPIRED_OR_INVALID'});
+    const dh=deviceHash(body.deviceId),otp=clean(body.otp,12);
+    if(!dh||!/^[0-9]{6}$/.test(otp))return send(res,400,{error:'INVALID_OTP'});
+    const record=await readRecord(access.orderId);if(!record||record.status!=='paid')return send(res,403,{error:'ORDER_NOT_PAID'});
+    const lic=(record.licenses||[]).find(x=>x.licenseId===access.licenseId&&x.version===access.version);
+    if(!lic)return send(res,403,{error:'LICENSE_NOT_FOUND'});
+    if(!lic.currentAccessId||lic.currentAccessId!==access.accessId)return send(res,401,{error:'ACCESS_LINK_ALREADY_USED_OR_REPLACED'});
+    const pending=lic.pendingActivation;
+    if(!pending||pending.accessId!==access.accessId||pending.deviceHash!==dh)return send(res,401,{error:'OTP_NOT_REQUESTED'});
+    if(Date.now()>Number(pending.expiresAt||0))return send(res,401,{error:'OTP_EXPIRED'});
+    if(Number(pending.attempts||0)>=5)return send(res,429,{error:'OTP_ATTEMPTS_EXCEEDED'});
+    if(!otpMatches(pending.otpHash,record.id,lic.licenseId,dh,otp)){
+      const licenses=(record.licenses||[]).map(x=>x.licenseId===lic.licenseId?{...x,pendingActivation:{...pending,attempts:Number(pending.attempts||0)+1}}:x);
+      await saveRecord({...record,licenses});
+      return send(res,401,{error:'OTP_INVALID'});
+    }
+    const devices=Array.from(new Set([...(Array.isArray(lic.devices)?lic.devices:[]),dh])).slice(-Number(ACCESS_POLICY.maxDevices||3));
+    const activatedAt=Date.now();
+    const licenses=(record.licenses||[]).map(x=>x.licenseId===lic.licenseId?{...x,devices,pendingActivation:null,currentAccessId:null,accessUsedAt:activatedAt,activatedAt:x.activatedAt||activatedAt}:x);
+    await saveRecord({...record,licenses,lastReaderActivationAt:activatedAt});
+    const sessionToken=createReaderSession(access,dh);
     return send(res,200,{valid:true,sessionToken,customer:customerFromToken(access),meta:BOOK_META});
   }
 
   if(action==='validate'||action==='content'){
-    let session=verifyToken(body.sessionToken);
-    if(!session&&body.licenseToken){
-      const legacy=verifyToken(body.licenseToken);
-      if(legacy?.type==='license')session={...legacy,type:'reader-session'};
-    }
-    if(!session||session.type!=='reader-session')return send(res,401,{error:'READER_SESSION_EXPIRED'});
+    const session=verifyToken(body.sessionToken);
+    if(!session||session.type!=='reader-session'||!session.deviceHash)return send(res,401,{error:'READER_SESSION_EXPIRED'});
+    const dh=deviceHash(body.deviceId);if(!dh||dh!==session.deviceHash)return send(res,401,{error:'DEVICE_MISMATCH'});
     const record=await readRecord(session.orderId);if(!record||record.status!=='paid')return send(res,403,{error:'ORDER_NOT_PAID'});
-    const valid=(record.licenses||[]).some(x=>x.licenseId===session.licenseId&&x.version===session.version);
-    if(!valid)return send(res,403,{error:'LICENSE_NOT_FOUND'});
+    const lic=(record.licenses||[]).find(x=>x.licenseId===session.licenseId&&x.version===session.version);
+    if(!lic)return send(res,403,{error:'LICENSE_NOT_FOUND'});
+    if(!(Array.isArray(lic.devices)&&lic.devices.includes(dh)))return send(res,403,{error:'DEVICE_NOT_AUTHORIZED'});
     const customer=customerFromToken(session);
-    const rotated=createReaderSession(session);
+    const rotated=createReaderSession(session,dh);
     if(action==='validate')return send(res,200,{valid:true,customer,sessionToken:rotated,meta:BOOK_META});
     return send(res,200,{valid:true,customer,sessionToken:rotated,meta:BOOK_META,chapters:bookForVersion(session.version)});
   }
@@ -149,7 +196,7 @@ export default async function handler(req,res){
     const fresh=createFreshAccess(lic,record.id,record);
     const result=await sendAccessRecoveryEmail(record,lic,fresh);
     if(!result.ok)return send(res,503,{error:'EMAIL_SEND_FAILED'});
-    const updated=(record.licenses||[]).map(x=>x.licenseId===lic.licenseId?{...x,readerUrl:fresh.readerUrl,activationExpiresAt:fresh.expiresAt}:x);
+    const updated=(record.licenses||[]).map(x=>x.licenseId===lic.licenseId?{...x,readerUrl:fresh.readerUrl,currentAccessId:fresh.accessId,activationExpiresAt:fresh.expiresAt,accessUsedAt:null,pendingActivation:null}:x);
     await saveRecord({...record,licenses:updated,lastAccessEmailAt:Date.now(),emailStatus:'sent'});
     return send(res,200,{accepted:true,sent:true});
   }
