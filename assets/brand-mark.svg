@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 86" role="img" aria-label="3bkarino Tech mark">
+<defs>
+  <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#2563EB"/>
+    <stop offset=".48" stop-color="#06B6D4"/>
+    <stop offset="1" stop-color="#2563EB"/>
+  </linearGradient>
+  <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+    <feGaussianBlur stdDeviation="3" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+</defs>
+<g fill="none" stroke="url(#g)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)">
+  <path d="M11 43C17 15 53 10 91 28c11 5 16 12 19 15-3 3-8 10-19 15C53 76 17 71 11 43Z"/>
+  <path d="M209 43c-6-28-42-33-80-15-11 5-16 12-19 15 3 3 8 10 19 15 38 18 74 13 80-15Z"/>
+  <path d="M92 30c10-4 26-4 36 0"/>
+</g>
+<g stroke="#06B6D4" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M51 33 39 43l12 10M72 33l12 10-12 10M64 29 58 57"/>
+</g>
+<g stroke="#06B6D4" stroke-width="5" fill="none" stroke-linecap="round">
+  <path d="M158 28v17"/>
+  <path d="M145 35a18 18 0 1 0 26 0"/>
+</g>
+</svg>
