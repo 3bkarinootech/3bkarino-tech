@@ -1,4 +1,4 @@
-import { saveRecord, readRecord } from '../lib/records.js';
+import { saveRecord, readRecord, listRecords } from '../lib/records.js';
 import { createBookIntention, paymobConfig, requestOrigin } from '../lib/paymob.js';
 import { BOOK_META, bookForVersion } from '../lib/book-content.js';
 import { ACCESS_POLICY, token, verifyToken, issueLicenses, createFreshAccess, createReaderSession } from '../lib/book-access.js';
@@ -133,19 +133,25 @@ export default async function handler(req,res){
   }
 
   if(action==='request-access'){
-    const orderIdInput=clean(body.orderId,120),email=clean(body.email,180).toLowerCase();
-    if(!orderIdInput||!email.includes('@'))return send(res,400,{error:'ORDER_AND_EMAIL_REQUIRED'});
-    const record=await readRecord(orderIdInput);
-    if(!record||record.status!=='paid')return send(res,200,{accepted:true});
-    const lic=(record.licenses||[]).find(x=>String(x.email||record.email).toLowerCase()===email);
-    if(!lic)return send(res,200,{accepted:true});
+    const lookup=clean(body.orderId,120),email=clean(body.email,180).toLowerCase();
+    if(!lookup||!email.includes('@'))return send(res,400,{error:'ORDER_OR_LICENSE_AND_EMAIL_REQUIRED'});
+    let record=await readRecord(lookup);
+    let lic=null;
+    if(record&&record.status==='paid'){
+      lic=(record.licenses||[]).find(x=>String(x.email||record.email).toLowerCase()===email);
+    }else{
+      const rows=await listRecords(200);
+      record=rows.find(r=>r.status==='paid'&&(r.licenses||[]).some(x=>x.licenseId===lookup&&String(x.email||r.email).toLowerCase()===email))||null;
+      if(record)lic=(record.licenses||[]).find(x=>x.licenseId===lookup&&String(x.email||record.email).toLowerCase()===email)||null;
+    }
+    if(!record||!lic)return send(res,200,{accepted:true});
     if(!purchaseEmailConfigured())return send(res,503,{error:'EMAIL_NOT_CONFIGURED'});
     const fresh=createFreshAccess(lic,record.id,record);
     const result=await sendAccessRecoveryEmail(record,lic,fresh);
     if(!result.ok)return send(res,503,{error:'EMAIL_SEND_FAILED'});
     const updated=(record.licenses||[]).map(x=>x.licenseId===lic.licenseId?{...x,readerUrl:fresh.readerUrl,activationExpiresAt:fresh.expiresAt}:x);
-    await saveRecord({...record,licenses:updated,lastAccessEmailAt:Date.now()});
-    return send(res,200,{accepted:true});
+    await saveRecord({...record,licenses:updated,lastAccessEmailAt:Date.now(),emailStatus:'sent'});
+    return send(res,200,{accepted:true,sent:true});
   }
 
   return send(res,400,{error:'UNKNOWN_ACTION'});
