@@ -118,6 +118,9 @@ export default async function handler(req,res){
 
     const existingDevices=Array.isArray(lic.devices)?lic.devices:[];
     if(existingDevices.includes(dh)){
+      const usedAt=Date.now();
+      const licenses=(record.licenses||[]).map(x=>x.licenseId===lic.licenseId?{...x,currentAccessId:null,accessUsedAt:usedAt,pendingActivation:null}:x);
+      await saveRecord({...record,licenses,lastReaderActivationAt:usedAt});
       const sessionToken=createReaderSession(access,dh);
       return send(res,200,{valid:true,otpRequired:false,sessionToken,customer:customerFromToken(access),meta:BOOK_META});
     }
