@@ -59,6 +59,9 @@ for(const route of routes){
   fs.mkdirSync(dir,{recursive:true});
   fs.writeFileSync(path.join(dir,'index.html'),renderRoute(route));
 }
+const leadDashDir=path.join('public','admin','leads');
+fs.mkdirSync(leadDashDir,{recursive:true});
+fs.copyFileSync('lead-dashboard.html',path.join(leadDashDir,'index.html'));
 fs.writeFileSync('public/404.html',baseHtml);
 
 const publicRoutes=routes.filter(r=>!r.startsWith('admin/')&&!r.startsWith('book/admin')&&!r.startsWith('book/read')&&!r.startsWith('book/payment-result')&&!r.startsWith('book/checkout'));
