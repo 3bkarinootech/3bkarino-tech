@@ -58,7 +58,7 @@ export default async function handler(req,res){
     if(!adminOk(req,body))return send(res,403,{error:'ADMIN_REQUIRED'});
     const id=clean(body.id,120),old=await readRecord(id);
     if(!old)return send(res,404,{error:'NOT_FOUND'});
-    const allowed=['new','contacted','qualified','pending_payment','paid','won','lost'];
+    const allowed=['new','ai_qualifying','handoff','contacted','qualified','negotiating','pending_payment','paid','won','lost'];
     const status=allowed.includes(body.status)?body.status:old.status;
     const updated=await saveRecord({...old,status,notes:clean(body.notes??old.notes,1800)});
     return send(res,200,{ok:true,record:updated});
