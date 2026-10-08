@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>3bkarino Tech | AI Sales Inbox</title>
+<style>
+:root{--bg:#071526;--panel:#0d2037;--line:#203a57;--txt:#f7fbff;--muted:#9fb1c4;--yellow:#f4d638;--green:#25d366;--red:#ff7676}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#061426,#091b30);color:var(--txt);font-family:Segoe UI,Tahoma,Arial,sans-serif}.wrap{width:min(1200px,calc(100% - 24px));margin:30px auto}.top{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}.brand{font-weight:900;font-size:24px}.brand b{color:var(--yellow)}.login,.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px}.login{max-width:560px;margin:80px auto}.row{display:flex;gap:8px;flex-wrap:wrap}input,select,textarea{background:#08182a;color:#fff;border:1px solid var(--line);border-radius:10px;padding:11px;width:100%}button,.btn{border:0;border-radius:10px;padding:11px 15px;background:var(--yellow);font-weight:900;color:#151515;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}.btn.dark{background:#122c48;color:#fff;border:1px solid var(--line)}.btn.wa{background:var(--green)}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0}.stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:15px}.stat span{color:var(--muted);font-size:11px}.stat b{display:block;font-size:28px;margin-top:4px}.toolbar{display:grid;grid-template-columns:1fr 190px 130px;gap:8px;margin:12px 0}.list{display:grid;gap:12px}.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}.card.hot{border-color:#e5ca34;box-shadow:0 0 0 1px #e5ca34 inset}.head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.pill{font-size:10px;border-radius:999px;padding:5px 9px;background:#112f4f;color:#cfe4f8}.pill.hot{background:#554a10;color:#fff1a3}.meta{color:var(--muted);font-size:11px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.box{background:#08182a;border:1px solid #193552;border-radius:11px;padding:11px;font-size:12px}.transcript{max-height:230px;overflow:auto;background:#06111f;border-radius:12px;padding:10px;margin:10px 0}.msg{padding:8px 10px;border-radius:10px;margin:6px 0;max-width:90%;font-size:12px}.customer{background:#183454;margin-left:auto}.assistant{background:#2b2812;border:1px solid #5d5421}.actions{display:grid;grid-template-columns:190px 1fr auto;gap:8px}.err{color:#ffabab;font-size:12px}.empty{text-align:center;color:var(--muted);padding:40px}
+@media(max-width:760px){.stats{grid-template-columns:1fr 1fr}.toolbar,.grid,.actions{grid-template-columns:1fr}.wrap{margin-top:14px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="login" class="login">
+    <div class="brand"><b>3bkarino</b> Tech — AI Sales Inbox</div>
+    <p style="color:var(--muted)">لوحة العملاء من WhatsApp / Facebook / Instagram. مفتاح الإدارة لا يتم حفظه خارج جهازك.</p>
+    <div class="row"><input id="key" type="password" placeholder="Admin Key"><button id="open">فتح اللوحة</button></div>
+    <div id="loginErr" class="err"></div>
+  </div>
+  <div id="app" style="display:none">
+    <div class="top"><div><div class="brand"><b>3bkarino</b> Tech — AI Sales Inbox</div><div class="meta">اتدخل فقط في الـHot Leads ومرحلة الاتفاق النهائي</div></div><button class="btn dark" id="refresh">تحديث</button></div>
+    <div class="stats" id="stats"></div>
+    <div class="toolbar"><input id="q" placeholder="بحث بالاسم / الخدمة / الرسالة"><select id="filter"><option value="">كل الحالات</option><option value="handoff">جاهز لتدخل محمود</option><option value="ai_qualifying">AI بيؤهل العميل</option><option value="negotiating">تفاوض</option><option value="won">تم البيع</option><option value="lost">لم يتم</option></select><button id="apply">تطبيق</button></div>
+    <div class="list" id="list"></div>
+  </div>
+</div>
+<script>
+const $=s=>document.querySelector(s), keyEl=$('#key'), app=$('#app'), login=$('#login'), list=$('#list'),stats=$('#stats');
+let records=[];
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function waLink(r){const p=String(r.phone||r.senderId||'').replace(/\D/g,'');return p?'https://wa.me/'+p:''}
+function statusLabel(s){return ({new:'جديد',ai_qualifying:'AI بيؤهل',handoff:'جاهز لتدخل محمود',negotiating:'تفاوض',won:'تم البيع',lost:'لم يتم'})[s]||s||'جديد'}
+function opts(s){return ['ai_qualifying','handoff','negotiating','won','lost'].map(x=>'<option '+(x===s?'selected':'')+' value="'+x+'">'+statusLabel(x)+'</option>').join('')}
+function render(){
+  const q=$('#q').value.trim().toLowerCase(),f=$('#filter').value;
+  const rows=records.filter(r=>r.kind==='lead').filter(r=>!f||r.status===f).filter(r=>!q||JSON.stringify(r).toLowerCase().includes(q));
+  const hot=records.filter(r=>r.status==='handoff'||r.handoffNeeded).length,qual=records.filter(r=>r.status==='ai_qualifying').length,won=records.filter(r=>r.status==='won').length;
+  stats.innerHTML='<div class="stat"><span>كل العملاء</span><b>'+records.filter(r=>r.kind==='lead').length+'</b></div><div class="stat"><span>AI بيؤهل</span><b>'+qual+'</b></div><div class="stat"><span>محتاج تدخلك</span><b>'+hot+'</b></div><div class="stat"><span>تم البيع</span><b>'+won+'</b></div>';
+  if(!rows.length){list.innerHTML='<div class="panel empty">مفيش عملاء مطابقين.</div>';return}
+  list.innerHTML=rows.map(r=>{
+    const hot=r.status==='handoff'||r.handoffNeeded, t=Array.isArray(r.transcript)?r.transcript:[];
+    const tr=t.map(m=>'<div class="msg '+(m.role==='customer'?'customer':'assistant')+'"><b>'+(m.role==='customer'?'العميل':'AI')+':</b> '+esc(m.text)+'</div>').join('');
+    const wa=waLink(r);
+    return '<article class="card '+(hot?'hot':'')+'" data-id="'+esc(r.id)+'"><div class="head"><div><div class="meta">'+esc((r.channel||r.source||'lead').toUpperCase())+' • '+esc(new Date(r.lastMessageAt||r.createdAt||Date.now()).toLocaleString('ar-EG'))+'</div><h3 style="margin:4px 0">'+esc(r.name||'Lead')+'</h3><div class="meta">'+esc(r.service||'الخدمة لسه غير محددة')+'</div></div><span class="pill '+(hot?'hot':'')+'">'+esc(statusLabel(r.status))+'</span></div>'+
+    '<div class="grid"><div class="box"><b>آخر رسالة</b><br>'+esc(r.lastMessage||r.goal||'—')+'</div><div class="box"><b>سبب التحويل</b><br>'+esc(r.handoffReason||'لسه في مرحلة التأهيل')+'</div></div>'+
+    (tr?'<div class="transcript">'+tr+'</div>':'')+
+    '<div class="actions"><select class="status">'+opts(r.status)+'</select><textarea class="notes" rows="2" placeholder="ملاحظاتك الداخلية">'+esc(r.notes||'')+'</textarea><div style="display:grid;gap:6px"><button class="save">حفظ</button>'+(wa?'<a class="btn wa" target="_blank" rel="noopener" href="'+wa+'">فتح WhatsApp</a>':'')+'</div></div></article>';
+  }).join('');
+}
+async function load(){
+  const r=await fetch('/api/leads',{headers:{'x-admin-key':keyEl.value}});
+  const d=await r.json();if(!r.ok)throw Error(d.error||'auth');records=d.records||[];sessionStorage.setItem('3bk-records-key',keyEl.value);render();
+}
+$('#open').onclick=async()=>{try{await load();login.style.display='none';app.style.display='block'}catch(e){$('#loginErr').textContent='مفتاح الإدارة غير صحيح أو الخدمة غير متاحة.'}};
+$('#refresh').onclick=()=>load().catch(()=>{});
+$('#apply').onclick=render;$('#q').oninput=render;$('#filter').onchange=render;
+list.onclick=async e=>{const b=e.target.closest('.save');if(!b)return;const c=b.closest('.card'),id=c.dataset.id,status=c.querySelector('.status').value,notes=c.querySelector('.notes').value;b.disabled=true;try{const r=await fetch('/api/leads',{method:'POST',headers:{'Content-Type':'application/json','x-admin-key':keyEl.value},body:JSON.stringify({action:'update',id,status,notes})});if(!r.ok)throw Error();b.textContent='تم ✓';await load()}catch{b.textContent='فشل'}finally{setTimeout(()=>{b.textContent='حفظ';b.disabled=false},1000)}};
+keyEl.value=sessionStorage.getItem('3bk-records-key')||'';if(keyEl.value)$('#open').click();
+</script>
+</body></html>
