@@ -1,3 +1,5 @@
+import { next } from '@vercel/functions';
+
 // Private admin area: deny by default unless credentials are configured.
 // This runs before static content is served.
 export const config = { matcher: ['/admin/overview', '/admin/overview/:path*'] };
@@ -22,5 +24,5 @@ export default async function middleware(request) {
     headers.set('WWW-Authenticate', 'Basic realm="3bkarino Private Admin", charset="UTF-8"');
     return new Response('Authentication required.', { status: 401, headers });
   }
-  return undefined;
+  return next();
 }
