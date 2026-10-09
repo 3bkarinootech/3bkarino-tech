@@ -107,6 +107,9 @@ const leadDashDir=path.join('public','admin','leads');
 fs.mkdirSync(leadDashDir,{recursive:true});
 fs.copyFileSync('lead-dashboard.html',path.join(leadDashDir,'index.html'));
 fs.writeFileSync('public/404.html',baseHtml.replace('</head>',trackingScripts+'\n</head>'));
+const commandDir=path.join('public','admin','overview');
+fs.mkdirSync(commandDir,{recursive:true});
+fs.copyFileSync('command-center.html',path.join(commandDir,'index.html'));
 
 const publicRoutes=routes.filter(r=>!r.startsWith('admin/')&&!r.startsWith('book/admin')&&!r.startsWith('book/read')&&!r.startsWith('book/payment-result')&&!r.startsWith('book/checkout'));
 const sitemap='<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+
