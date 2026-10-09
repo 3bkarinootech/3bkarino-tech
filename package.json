@@ -9,6 +9,7 @@
   "dependencies": {
     "ai": "7.0.127",
     "@vercel/blob": "2.6.1",
-    "nodemailer": "7.0.6"
+    "nodemailer": "7.0.6",
+    "@vercel/functions": "^3.0.0"
   }
 }
