@@ -37,6 +37,50 @@ const seo={
   'contact':['ابدأ مشروعك مع 3bkarino Tech | اطلب عرض سعر','تواصل مع 3bkarino Tech لطلب عرض سعر لموقع أو نظام أو Dashboard أو AI Automation أو خدمة تسويق رقمي.']
 };
 
+
+// Analytics: public, non-sensitive navigation and conversion events only.
+const trackingScripts = `
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HT48BJYEV2"></script>
+<script>
+window.dataLayer=window.dataLayer||[];
+function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());
+gtag('config','G-HT48BJYEV2');
+(function(c,l,a,r,i,t,y){
+  c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+  t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+  y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window,document,"clarity","script","yv688lh4n5");
+(function(){
+  var previous=location.pathname;
+  function trackPage(){
+    var p=location.pathname;
+    if(p!==previous){
+      previous=p;
+      if(typeof gtag==='function')gtag('event','page_view',{page_location:location.href,page_title:document.title});
+    }
+  }
+  window.addEventListener('popstate',function(){setTimeout(trackPage,0)});
+  document.addEventListener('click',function(e){
+    var a=e.target.closest('a,button');
+    if(!a)return;
+    var href=a.getAttribute('href')||'';
+    var path=location.pathname;
+    if(path.indexOf('/admin')===0||path.indexOf('/book/read')===0)return;
+    var eventName='';
+    if(/^https?:\\/\\/(wa.me|api.whatsapp.com)/i.test(href))eventName='whatsapp_click';
+    else if(href.indexOf('/portfolio/')===0)eventName='portfolio_project_click';
+    else if(href.indexOf('/book')===0)eventName='book_interest_click';
+    else if(href.indexOf('/contact')===0||href.indexOf('/booking')===0)eventName='contact_click';
+    if(eventName&&typeof gtag==='function')gtag('event',eventName,{source_page:path});
+    setTimeout(trackPage,0);
+  },true);
+  var push=history.pushState,replace=history.replaceState;
+  history.pushState=function(){var result=push.apply(this,arguments);setTimeout(trackPage,0);return result};
+  history.replaceState=function(){var result=replace.apply(this,arguments);setTimeout(trackPage,0);return result};
+})();
+</script>`;
+
 function escAttr(x){return String(x).replace(/&/g,'&amp;').replace(/"/g,'&quot;')}
 function renderRoute(route){
   const canonical='https://3bkarinotech.com/'+(route?route:'');
@@ -51,7 +95,7 @@ function renderRoute(route){
     .replace(/<link rel="canonical" href="[^"]*">/,'<link rel="canonical" href="'+canonical+'">')
     .replace(/<meta name="twitter:title" content="[^"]*">/,'<meta name="twitter:title" content="'+escAttr(meta[0])+'">')
     .replace(/<meta name="twitter:description" content="[^"]*">/,'<meta name="twitter:description" content="'+escAttr(meta[1])+'">');
-  return html;
+  return html.replace('</head>',trackingScripts+'\n</head>');
 }
 
 for(const route of routes){
@@ -62,7 +106,7 @@ for(const route of routes){
 const leadDashDir=path.join('public','admin','leads');
 fs.mkdirSync(leadDashDir,{recursive:true});
 fs.copyFileSync('lead-dashboard.html',path.join(leadDashDir,'index.html'));
-fs.writeFileSync('public/404.html',baseHtml);
+fs.writeFileSync('public/404.html',baseHtml.replace('</head>',trackingScripts+'\n</head>'));
 
 const publicRoutes=routes.filter(r=>!r.startsWith('admin/')&&!r.startsWith('book/admin')&&!r.startsWith('book/read')&&!r.startsWith('book/payment-result')&&!r.startsWith('book/checkout'));
 const sitemap='<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+
