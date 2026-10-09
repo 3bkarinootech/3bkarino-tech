@@ -4,7 +4,7 @@
 </style></head><body><main><header><div class="brand"><b>3bkarino</b> Tech <small> / Command Center</small></div><a class="btn secondary" href="/">الموقع الرئيسي ↗</a></header>
 <h1>مركز إدارة عبقرينو تك</h1><p class="muted">كل أدوات متابعة الموقع والتسويق والعملاء والمبيعات في مكان واحد. لا يتم عرض بيانات غير متصلة على أنها أرقام حقيقية.</p>
 <div class="banner"><b>حالة ربط البيانات</b><p class="note">Google Analytics وClarity تم إضافة أكوادهم للموقع. عرض الإحصائيات المجمعة هنا يحتاج ربط واجهات API بصلاحيات آمنة. استخدم الروابط المباشرة للتقارير الحقيقية حاليًا.</p></div>
-<h2>الزيارات وسلوك المستخدمين</h2><div class="grid">
+<h2>مؤشرات الزوار الفعلية — آخر 7 أيام</h2><div class="grid" id="liveMetrics"><section class="card"><h3>حالة الربط</h3><p>جارِ فحص اتصال Google Analytics…</p></section></div><div id="gaTables"></div><h2>الزيارات وسلوك المستخدمين</h2><div class="grid">
 <section class="card"><span class="status">تقرير مباشر خارجي</span><h3>📈 Google Analytics 4</h3><p>الزوار الآن، مصادر الزيارات، الصفحات الأكثر زيارة، والأحداث مثل ضغطات واتساب.</p><a class="btn" target="_blank" rel="noopener noreferrer" href="https://analytics.google.com/">عرض تقارير الزوار ↗</a></section>
 <section class="card"><span class="status">تقرير مباشر خارجي</span><h3>🎥 Microsoft Clarity</h3><p>تسجيلات الجلسات، خرائط الضغط والتمرير، واكتشاف مشكلات تجربة المستخدم.</p><a class="btn" target="_blank" rel="noopener noreferrer" href="https://clarity.microsoft.com/">عرض تسجيلات الزوار ↗</a></section>
 <section class="card"><span class="status">في انتظار ربط API</span><h3>📊 المؤشرات الموحدة</h3><div class="metric">—</div><p>زوار اليوم، العملاء المحتملون، معدل التحويل. لا توجد أرقام مفبركة.</p></section></div>
@@ -16,4 +16,19 @@
 <section class="card"><span class="status">لوحة تشغيل خارجية</span><h3>🚀 Vercel</h3><p>حالة النشر، أخطاء البناء، الدومين وإعدادات الاستضافة.</p><a class="btn secondary" target="_blank" rel="noopener noreferrer" href="https://vercel.com/dashboard">لوحة Vercel ↗</a></section>
 <section class="card"><span class="status">مستودع المشروع</span><h3>💻 GitHub</h3><p>ملفات الموقع، سجل التعديلات ومراجعة الكود.</p><a class="btn secondary" target="_blank" rel="noopener noreferrer" href="https://github.com/3bkarinootech/3bkarino-tech">مستودع الموقع ↗</a></section>
 <section class="card"><span class="status">محتوى الموقع</span><h3>🧩 المشاريع والخدمات</h3><p>مراجعة Portfolio والباقات وصفحات الخدمات والمحتوى.</p><div class="quick"><a href="/portfolio">المشاريع</a><a href="/pricing">الباقات</a><a href="/blog">المقالات</a></div></section></div>
-<footer>3bkarino Tech — لوحة تجميع أدوات الإدارة. الصفحات التي تحتوي على بيانات العملاء تطلب صلاحيات مستقلة؛ هذه الصفحة لا تعرض بيانات شخصية.</footer></main></body></html>
+<footer>3bkarino Tech — لوحة تجميع أدوات الإدارة. الصفحات التي تحتوي على بيانات العملاء تطلب صلاحيات مستقلة؛ هذه الصفحة لا تعرض بيانات شخصية.</footer></main><script>
+(async function(){
+ const box=document.getElementById('liveMetrics'),tables=document.getElementById('gaTables');
+ function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+ try{
+ const r=await fetch('/api/admin/analytics',{credentials:'same-origin',cache:'no-store'});
+ if(!r.ok)throw Error('API not available');
+ const d=await r.json();
+ if(!d.connected){box.innerHTML='<section class="card"><h3>الربط قيد الإعداد</h3><p>'+esc(d.reason||'غير متصل')+'</p></section>';return}
+ const items=[['الزوار',d.activeUsers],['الجلسات',d.sessions],['مشاهدات الصفحات',d.views],['الأحداث',d.events]];
+ box.innerHTML=items.map(x=>'<section class="card"><h3>'+x[0]+'</h3><div class="metric">'+Number(x[1]).toLocaleString('en-US')+'</div><p>بيانات حقيقية من Google Analytics</p></section>').join('');
+ function rows(arr,key,val){return '<div class="card">'+arr.map(x=>'<div style="display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #29415c;padding:8px 0"><span>'+esc(x[key])+'</span><b>'+Number(x[val]).toLocaleString('en-US')+'</b></div>').join('')+'</div>'}
+ tables.innerHTML='<h2>الصفحات الأكثر زيارة</h2>'+rows(d.pages,'page','views')+'<h2>مصادر الزيارات</h2>'+rows(d.channels,'channel','sessions');
+ }catch(e){box.innerHTML='<section class="card"><h3>تعذر تحميل البيانات</h3><p>تحقق من إعدادات API وإعادة النشر.</p></section>'}
+})();
+</script></body></html>
