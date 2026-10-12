@@ -2,7 +2,7 @@ import { next } from '@vercel/functions';
 
 // Private admin area: deny by default unless credentials are configured.
 // This runs before static content is served.
-export const config = { matcher: ['/admin/overview', '/admin/overview/:path*', '/api/admin/analytics'] };
+export const config = { matcher: ['/admin/overview', '/admin/overview/:path*', '/api/admin/analytics', '/api/admin/records-summary'] };
 export default async function middleware(request) {
   const user = process.env.COMMAND_CENTER_USER;
   const password = process.env.COMMAND_CENTER_PASSWORD;
