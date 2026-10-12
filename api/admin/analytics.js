@@ -20,14 +20,16 @@ export default async function handler(req,res){
     const credentials=JSON.parse(serviceJson);
     const client=new BetaAnalyticsDataClient({credentials});
     const property='properties/'+String(propertyId).replace(/^properties\//,'');
-    const [overview,topPages,sources]=await Promise.all([
+    const [overview,topPages,sources,conversions]=await Promise.all([
       client.runReport({property,dateRanges:[{startDate:'7daysAgo',endDate:'today'}],metrics:[{name:'activeUsers'},{name:'sessions'},{name:'screenPageViews'},{name:'eventCount'}]}),
       client.runReport({property,dateRanges:[{startDate:'7daysAgo',endDate:'today'}],dimensions:[{name:'pagePath'}],metrics:[{name:'screenPageViews'}],limit:8,orderBys:[{metric:{metricName:'screenPageViews'},desc:true}]}),
       client.runReport({property,dateRanges:[{startDate:'7daysAgo',endDate:'today'}],dimensions:[{name:'sessionDefaultChannelGroup'}],metrics:[{name:'sessions'}],limit:8,orderBys:[{metric:{metricName:'sessions'},desc:true}]}),
+      client.runReport({property,dateRanges:[{startDate:'7daysAgo',endDate:'today'}],dimensions:[{name:'eventName'}],metrics:[{name:'eventCount'}],dimensionFilter:{filter:{fieldName:'eventName',inListFilter:{values:['whatsapp_click','contact_click','book_interest_click','portfolio_project_click']}}},limit:20}),
     ]);
     const row=overview[0].rows?.[0]?.metricValues||[];
     const pages=(topPages[0].rows||[]).map(r=>({page:r.dimensionValues?.[0]?.value||'',views:Number(r.metricValues?.[0]?.value||0)}));
     const channels=(sources[0].rows||[]).map(r=>({channel:r.dimensionValues?.[0]?.value||'',sessions:Number(r.metricValues?.[0]?.value||0)}));
-    return res.status(200).json({connected:true,period:'آخر 7 أيام',activeUsers:Number(row[0]?.value||0),sessions:Number(row[1]?.value||0),views:Number(row[2]?.value||0),events:Number(row[3]?.value||0),pages,channels});
+    const conversionEvents=(conversions[0].rows||[]).map(r=>({name:r.dimensionValues?.[0]?.value||'',count:Number(r.metricValues?.[0]?.value||0)}));
+    return res.status(200).json({connected:true,conversionEvents,period:'آخر 7 أيام',activeUsers:Number(row[0]?.value||0),sessions:Number(row[1]?.value||0),views:Number(row[2]?.value||0),events:Number(row[3]?.value||0),pages,channels});
   }catch(e){return res.status(502).json({connected:false,reason:'Unable to read GA4 data. Check service account access and property ID.'})}
 }
